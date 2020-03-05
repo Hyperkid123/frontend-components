@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { DataProps, ConfigProp, LabelsProp, ConfigDefaults, LabelsDefaults  } from './Props';
+import { DataProps, ConfigProp, LabelsProp, ConfigDefaults, LabelsDefaults } from './Props';
 import { select, event } from 'd3';
 import classnames from 'classnames';
 import Axis from './Axis';
@@ -47,7 +47,9 @@ class Matrix extends Component {
 
     onDocClick(event) {
         if (this.ref && !this.ref.contains(event.target)) {
-            select(this.ref).selectAll('svg.axis-grid g circle').attr('stroke', 'none');
+            select(this.ref)
+                .selectAll('svg.axis-grid g circle')
+                .attr('stroke', 'none');
             this.setState({ activeNode: {} });
         }
     }
@@ -61,10 +63,11 @@ class Matrix extends Component {
         const tooltip = select(this.tooltip);
         ref.selectAll('svg.axis-grid g').on('click', function() {
             ref.selectAll('svg.axis-grid g circle').attr('stroke', 'none');
-            select(event.currentTarget).select('circle').attr('stroke', 'black').attr('stroke-width', 2);
-            tooltip.style('left', (event.x) + 'px')
-            .style('top', (event.y - 28) + 'px');
-
+            select(event.currentTarget)
+                .select('circle')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 2);
+            tooltip.style('left', event.x + 'px').style('top', event.y - 28 + 'px');
         });
     }
 
@@ -75,49 +78,39 @@ class Matrix extends Component {
     render() {
         const { data, activeNode } = this.state;
         const {
-            config: {
-                size = 540,
-                gridSize = size - 110,
-                pad,
-                shift
-            },
+            config: { size = 540, gridSize = size - 110, pad, shift },
             labels
         } = this.props;
         return (
-            <div identifier= { this.props.identifier } className="ins-matrix-chart" widget-type='InsightsMatrix' widget-id={ this.props.identifier }>
-                <svg width={size} height={size} ref={ref => this.ref = ref}>
+            <div identifier={this.props.identifier} className="ins-matrix-chart" widget-type="InsightsMatrix" widget-id={this.props.identifier}>
+                <svg width={size} height={size} ref={(ref) => (this.ref = ref)}>
                     <Axis size={gridSize} pad={pad} shift={shift}>
                         {Object.values(data).map((oneSegment, key) => (
                             <Segment key={key} size={gridSize / 2} coords={oneSegment.coords}>
-                                {callOnSegmentData(
-                                    oneSegment.rows,
-                                    (_rows, rowKey, cell, cellKey) => (
-                                        <NodeElement
-                                            key={`${rowKey}-${cellKey}`}
-                                            config={this.props.config}
-                                            color={oneSegment.color}
-                                            cellData={cell}
-                                            rowCoord={rowKey}
-                                            cellCoord={cellKey}
-                                            onClick={this.onNodeClick}
-                                        />
-                                    )
-                                )}
+                                {callOnSegmentData(oneSegment.rows, (_rows, rowKey, cell, cellKey) => (
+                                    <NodeElement
+                                        key={`${rowKey}-${cellKey}`}
+                                        config={this.props.config}
+                                        color={oneSegment.color}
+                                        cellData={cell}
+                                        rowCoord={rowKey}
+                                        cellCoord={cellKey}
+                                        onClick={this.onNodeClick}
+                                    />
+                                ))}
                             </Segment>
                         ))}
                     </Axis>
                     <Labels size={gridSize} values={labels} />
                 </svg>
-                <div className={classnames({
-                    tooltip: true,
-                    active: activeNode && activeNode.cellData && activeNode.cellData.length !== 0
-                })}
-                ref={ref => this.tooltip = ref}>
-                    {
-                        activeNode &&
-              activeNode.cellData &&
-              <Tooltip color={activeNode.color} cellData={activeNode.cellData}/>
-                    }
+                <div
+                    className={classnames({
+                        tooltip: true,
+                        active: activeNode && activeNode.cellData && activeNode.cellData.length !== 0
+                    })}
+                    ref={(ref) => (this.tooltip = ref)}
+                >
+                    {activeNode && activeNode.cellData && <Tooltip color={activeNode.color} cellData={activeNode.cellData} />}
                 </div>
             </div>
         );

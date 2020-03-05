@@ -7,8 +7,8 @@ const LabeledInput = ({ type = 'text', className, children, name, ...props }) =>
     // Might generate ID which is not unique enough
     name = name || new Date().getTime() + Math.random().toString(36);
     return (
-        <label className={ classnames('pf-c-form__label', className) } htmlFor={ name }>
-            <Input { ...props } type={ type } name={ name } id={ name } /> { children }
+        <label className={classnames('pf-c-form__label', className)} htmlFor={name}>
+            <Input {...props} type={type} name={name} id={name} /> {children}
         </label>
     );
 };

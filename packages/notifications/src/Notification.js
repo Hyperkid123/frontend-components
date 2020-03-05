@@ -19,19 +19,19 @@ class Notification extends Component {
 
     handleDismiss = () => {
         this.props.onDismiss(this.props.id);
-    }
+    };
 
     setDismissTimeout = () => {
         if (!this.props.dismissable) {
             this.dismissTimeout = setTimeout(() => this.handleDismiss(), this.props.dismissDelay);
         }
-    }
+    };
 
     clearDismissTimeout = () => {
         if (this.dismissTimeout) {
             clearTimeout(this.dismissTimeout);
         }
-    }
+    };
 
     componentWillUnmount() {
         this.clearDismissTimeout();
@@ -42,26 +42,24 @@ class Notification extends Component {
         return (
             <Alert
                 className="notification-item"
-                title={ title && title.replace(/<\/?[^>]+(>|$)/g, '') }
-                { ...rest }
-                action={ dismissable ?
-                    <AlertActionCloseButton
-                        aria-label="close-notification"
-                        variant="plain"
-                        onClick={ this.handleDismiss }
-                    >
-                        <CloseIcon/>
-                    </AlertActionCloseButton> : null
+                title={title && title.replace(/<\/?[^>]+(>|$)/g, '')}
+                {...rest}
+                action={
+                    dismissable ? (
+                        <AlertActionCloseButton aria-label="close-notification" variant="plain" onClick={this.handleDismiss}>
+                            <CloseIcon />
+                        </AlertActionCloseButton>
+                    ) : null
                 }
                 onMouseEnter={this.clearDismissTimeout}
                 onMouseLeave={this.setDismissTimeout}
             >
-                { (typeof description === 'string') ? description.replace(/<\/?[^>]+(>|$)/g, '') : description }
-                {
-                    sentryId && <TextContent>
-                        <Text component={ TextVariants.small }>Tracking Id: { sentryId }</Text>
+                {typeof description === 'string' ? description.replace(/<\/?[^>]+(>|$)/g, '') : description}
+                {sentryId && (
+                    <TextContent>
+                        <Text component={TextVariants.small}>Tracking Id: {sentryId}</Text>
                     </TextContent>
-                }
+                )}
             </Alert>
         );
     }

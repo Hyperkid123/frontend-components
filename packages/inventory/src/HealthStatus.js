@@ -34,13 +34,14 @@ class HealthStatus extends React.Component {
     render() {
         const { items, className } = this.props;
         return (
-            <div className={ className }>
-                { items && Object.keys(items).map(oneKey => (
-                    <div key={ oneKey } onClick={ (event) => this.onStatusClicked(event, items[oneKey], HealthToIcon[oneKey]) }>
-                        <span>{ HealthToIcon[oneKey].component }</span>
-                        <span>{ items[oneKey].title }</span>
-                    </div>
-                )) }
+            <div className={className}>
+                {items &&
+                    Object.keys(items).map((oneKey) => (
+                        <div key={oneKey} onClick={(event) => this.onStatusClicked(event, items[oneKey], HealthToIcon[oneKey])}>
+                            <span>{HealthToIcon[oneKey].component}</span>
+                            <span>{items[oneKey].title}</span>
+                        </div>
+                    ))}
             </div>
         );
     }

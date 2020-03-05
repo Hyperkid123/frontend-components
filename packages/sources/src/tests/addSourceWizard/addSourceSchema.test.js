@@ -47,7 +47,7 @@ describe('Add source schema', () => {
         let DefaultIcon = () => <div>Default icon</div>;
 
         beforeEach(() => {
-            sourceTypes = [ OPENSHIFT_TYPE ];
+            sourceTypes = [OPENSHIFT_TYPE];
         });
 
         it('returns icon', () => {

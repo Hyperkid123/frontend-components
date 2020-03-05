@@ -1,4 +1,3 @@
-
 import validate from './validator';
 import RemediationWizard, { getMountedInstance } from './RemediationWizard';
 export { RemediationWizard };

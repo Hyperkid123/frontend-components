@@ -6,13 +6,9 @@ import translatedMessages from '../../../locales/data.json';
 import localeEn from 'react-intl/locale-data/en';
 import localeCs from 'react-intl/locale-data/cs';
 
-let defaultLocale = [ ...localeEn, ...localeCs ];
+let defaultLocale = [...localeEn, ...localeCs];
 
-const IntlProvider = ({
-    locale,
-    messages,
-    ...props
-}) => {
+const IntlProvider = ({ locale, messages, ...props }) => {
     if (addLocaleData) {
         addLocaleData(defaultLocale);
     }
@@ -20,18 +16,18 @@ const IntlProvider = ({
     const language = locale || localStorage.getItem(LOCALSTORAGE_KEY) || navigator.language.split(/[-_]/)[0] || 'en';
     return (
         <ReactIntlProvider
-            locale={ language }
-            messages={ {
+            locale={language}
+            messages={{
                 ...translatedMessages[language],
-                ...messages && messages.hasOwnProperty(language) ? messages[language] : messages
-            } }
-            { ...props }
+                ...(messages && messages.hasOwnProperty(language) ? messages[language] : messages)
+            }}
+            {...props}
         />
     );
 };
 
 export const updateLocaleData = (localeData = []) => {
-    defaultLocale = [ ...defaultLocale, ...localeData ];
+    defaultLocale = [...defaultLocale, ...localeData];
     return defaultLocale;
 };
 

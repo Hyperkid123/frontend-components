@@ -24,45 +24,40 @@ export const diskMapper = (devices = []) => ({
     cells: [
         {
             title: 'Device',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         {
             title: 'Label',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         {
             title: 'Mount point',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         {
             title: 'Type',
-            transforms: [ sortable ]
+            transforms: [sortable]
         }
     ],
-    rows: devices.map(({
-        device,
-        label,
-        mountpoint,
-        options,
-        mounttype
-    }) => {
+    rows: devices.map(({ device, label, mountpoint, options, mounttype }) => {
         const calculatedOptions = (options && options.options) || options;
-        return ({
+        return {
             isOpen: false,
-            child: <div>
-                {
-                    calculatedOptions &&
-                    Object.entries(calculatedOptions.value || calculatedOptions)
-                    .map(([ oneKey, option ]) => `${oneKey}=${option.value || option}`).join(',  ')
-                }
-            </div>,
+            child: (
+                <div>
+                    {calculatedOptions &&
+                        Object.entries(calculatedOptions.value || calculatedOptions)
+                            .map(([oneKey, option]) => `${oneKey}=${option.value || option}`)
+                            .join(',  ')}
+                </div>
+            ),
             cells: [
                 (device && device.value) || device,
                 label,
                 (mountpoint && mountpoint.value) || mountpoint,
                 (mounttype && mounttype.value) || mounttype
             ]
-        });
+        };
     }),
     expandable: true
 });
@@ -71,74 +66,78 @@ export const productsMapper = (products = []) => ({
     cells: [
         {
             title: 'Name',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         'Status'
     ],
-    rows: products.map(product => ([
+    rows: products.map((product) => [
         product.name,
         {
-            title: statusHelper[product.status] ||
-                <OutlinedQuestionCircleIcon className="ins-c-inventory__detail--unknown" />
+            title: statusHelper[product.status] || <OutlinedQuestionCircleIcon className="ins-c-inventory__detail--unknown" />
         }
-    ]))
+    ])
 });
 
 export const interfaceMapper = (data = []) => ({
     cells: [
         {
             title: 'MAC address',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         {
             title: 'MTU',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         {
             title: 'Name',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         'State',
         {
             title: 'Type',
-            transforms: [ sortable ]
+            transforms: [sortable]
         }
     ],
-    rows: data.map(item => ([
+    rows: data.map((item) => [
         item.mac_address,
         item.mtu,
         item.name,
         {
-            title: statusHelper[item.state] ||
-                <OutlinedQuestionCircleIcon className="ins-c-inventory__detail--unknown" />
+            title: statusHelper[item.state] || <OutlinedQuestionCircleIcon className="ins-c-inventory__detail--unknown" />
         },
         item.type
-    ]))
+    ])
 });
 
 export const repositoriesMapper = ({ enabled, disabled } = { enabled: [], disabled: [] }) => ({
     cells: [
         {
             title: 'Name',
-            transforms: [ sortable ]
+            transforms: [sortable]
         },
         'Enabled',
         'GPG check'
     ],
-    rows: [ ...enabled, ...disabled ].map(repository => ([
+    rows: [...enabled, ...disabled].map((repository) => [
         {
-            title: <a href={ repository.base_url } target="_blank" rel="noopener noreferrer">{ repository.name }</a>,
+            title: (
+                <a href={repository.base_url} target="_blank" rel="noopener noreferrer">
+                    {repository.name}
+                </a>
+            ),
             sortValue: repository.name
         },
         { title: enabledHelper[Boolean(repository.enabled)] },
         { title: enabledHelper[Boolean(repository.gpgcheck)] }
-    ]))
+    ])
 });
 
 export const generalMapper = (data = [], title = '') => ({
-    cells: [{
-        title,
-        transforms: [ sortable ]
-    }],
-    rows: data.map(item => ([ item ]))
+    cells: [
+        {
+            title,
+            transforms: [sortable]
+        }
+    ],
+    rows: data.map((item) => [item])
 });

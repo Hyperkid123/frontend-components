@@ -19,11 +19,13 @@ const Shield = ({ impact, hasLabel, hasTooltip, size }) => {
     );
     return (
         <span>
-            {hasTooltip ?
+            {hasTooltip ? (
                 <Tooltip content={<div>{attributes.message}</div>} position={'bottom'}>
                     {body}
                 </Tooltip>
-                : body}
+            ) : (
+                body
+            )}
         </span>
     );
 };
@@ -36,7 +38,7 @@ Shield.defaultProps = {
 };
 
 Shield.propTypes = {
-    impact: propTypes.oneOfType([ propTypes.string, propTypes.number ]),
+    impact: propTypes.oneOfType([propTypes.string, propTypes.number]),
     hasLabel: propTypes.bool,
     size: propTypes.string, // sm, md, lg and xl,
     label: propTypes.bool,

@@ -7,16 +7,12 @@ export const SkeletonSize = { xs: 'xs', sm: 'sm', md: 'md', lg: 'lg' };
 import './skeleton.scss';
 
 const Skeleton = ({ size, isDark, className, ...props }) => {
-
-    const skeletonClasses = classNames(
-        'ins-c-skeleton',
-        `ins-c-skeleton__${size}`,
-        { [`ins-m-dark`]: isDark },
-        className
-    );
+    const skeletonClasses = classNames('ins-c-skeleton', `ins-c-skeleton__${size}`, { [`ins-m-dark`]: isDark }, className);
 
     return (
-        <div className={ skeletonClasses } { ...props }>&nbsp;</div>
+        <div className={skeletonClasses} {...props}>
+            &nbsp;
+        </div>
     );
 };
 

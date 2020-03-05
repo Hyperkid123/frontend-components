@@ -6,18 +6,16 @@ import { Tooltip } from '@patternfly/react-core';
 
 export const CSV_TYPE = 'text/csv;charset=utf-8;';
 export const JSON_TYPE = 'data:text/json;charset=utf-8,';
-const monthMap = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'
-];
+const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 export function mergeArraysByKey(arrays, key = 'id') {
-    let mergedObject = merge(...arrays.map(row => mapKeys(row, a => a && a[key])));
+    let mergedObject = merge(...arrays.map((row) => mapKeys(row, (a) => a && a[key])));
     return Object.values(mergedObject);
 }
 
 export function downloadFile(data, filename = `${new Date().toISOString()}`, format = CSV_TYPE) {
     const type = format === 'json' ? JSON_TYPE : CSV_TYPE;
-    const blob = new Blob([ data ], { type });
+    const blob = new Blob([data], { type });
     const link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
     link.setAttribute('download', `${filename}.${format}`);
@@ -33,11 +31,13 @@ export function parseCvssScore(cvssV2, cvssV3, withLabels = false) {
     return (
         (cvssV3 && parseFloat(cvssV3).toFixed(1)) ||
         (cvssV2 && (
-            <Tooltip content={ v2Tooltip } position={ 'left' }>
-                <span>{ `${parseFloat(cvssV2).toFixed(1)}` } { withLabels && '(CVSSv2)' }</span>
+            <Tooltip content={v2Tooltip} position={'left'}>
+                <span>
+                    {`${parseFloat(cvssV2).toFixed(1)}`} {withLabels && '(CVSSv2)'}
+                </span>
             </Tooltip>
         )) || (
-            <Tooltip content={ naTooltip } position={ 'left' }>
+            <Tooltip content={naTooltip} position={'left'}>
                 <span>N/A</span>
             </Tooltip>
         )
@@ -55,8 +55,8 @@ export function processDate(dateString) {
     return `${day} ${month} ${date.getFullYear()}`;
 }
 
-export const RowLoader = props => (
-    <ContentLoader height={ 20 } width={ 480 } { ...props }>
+export const RowLoader = (props) => (
+    <ContentLoader height={20} width={480} {...props}>
         <rect x="30" y="0" rx="3" ry="3" width="250" height="7" />
         <rect x="300" y="0" rx="3" ry="3" width="70" height="7" />
         <rect x="385" y="0" rx="3" ry="3" width="95" height="7" />
@@ -78,7 +78,7 @@ export function getBaseName(pathname, level = 2) {
         release = `/beta/`;
     }
 
-    return [ ...new Array(level) ].reduce((acc, _curr, key) => {
-        return `${acc}${pathName[key] || ''}${key < (level - 1) ? '/' : ''}`;
+    return [...new Array(level)].reduce((acc, _curr, key) => {
+        return `${acc}${pathName[key] || ''}${key < level - 1 ? '/' : ''}`;
     }, release);
 }

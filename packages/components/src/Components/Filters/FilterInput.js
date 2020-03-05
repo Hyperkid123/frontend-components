@@ -12,12 +12,13 @@ class FilterInput extends Component {
         switch (type) {
             case 'checkbox':
                 param in filters && filters[param] && filters[param].includes(value)
-                    ? this.setState({ checked: true }) : this.setState({ checked: false });
+                    ? this.setState({ checked: true })
+                    : this.setState({ checked: false });
                 break;
         }
     }
 
-    handleChange = checked => {
+    handleChange = (checked) => {
         const { type, addRemoveFilters, param, value } = this.props;
         let updateState;
         switch (type) {
@@ -39,26 +40,26 @@ class FilterInput extends Component {
                 case 'checkbox':
                     return (
                         <Checkbox
-                            aria-label={ label }
-                            id={ id }
-                            isChecked={ checked }
-                            label={ label }
-                            onChange={ this.handleChange }
-                            param={ param }
-                            value={ value }
+                            aria-label={label}
+                            id={id}
+                            isChecked={checked}
+                            label={label}
+                            onChange={this.handleChange}
+                            param={param}
+                            value={value}
                         />
                     );
                 case 'radio':
                     return (
                         <Radio
-                            isChecked={ filters[param] === value }
-                            aria-label={ label }
-                            id={ id }
-                            label={ label }
-                            name={ param }
-                            onChange={ this.handleChange }
-                            param={ param }
-                            value={ value }
+                            isChecked={filters[param] === value}
+                            aria-label={label}
+                            id={id}
+                            label={label}
+                            name={param}
+                            onChange={this.handleChange}
+                            param={param}
+                            value={value}
                         />
                     );
             }

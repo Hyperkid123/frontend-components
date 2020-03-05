@@ -3,7 +3,7 @@ import React from 'react';
 jest.mock('@redhat-cloud-services/frontend-components-inventory/actions', () => ({
     loadEntity: jest.fn().mockImplementation(() => ({
         type: 'test-load-entity',
-        payload: new Promise(res => res())
+        payload: new Promise((res) => res())
     }))
 }));
 import { render, mount } from 'enzyme';
@@ -20,7 +20,7 @@ describe('SystemCard', () => {
     let mockStore;
 
     beforeEach(() => {
-        mockStore = configureStore([ promiseMiddleware() ]);
+        mockStore = configureStore([promiseMiddleware()]);
         initialState = {
             entityDetails: {
                 entity: {
@@ -40,21 +40,27 @@ describe('SystemCard', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<SystemCard store={ store } />);
+        const wrapper = render(<SystemCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<SystemCard store={ store } />);
+        const wrapper = render(<SystemCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     describe('API', () => {
         it('should calculate correct ansible host - direct ansible host', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<SystemCard store={ store } />);
-            expect(wrapper.find('SystemCard').first().instance().getAnsibleHost()).toBe('test-ansible-host');
+            const wrapper = mount(<SystemCard store={store} />);
+            expect(
+                wrapper
+                    .find('SystemCard')
+                    .first()
+                    .instance()
+                    .getAnsibleHost()
+            ).toBe('test-ansible-host');
         });
 
         it('should calculate correct ansible host - fqdn', () => {
@@ -68,8 +74,14 @@ describe('SystemCard', () => {
                     }
                 }
             });
-            const wrapper = mount(<SystemCard store={ store } />);
-            expect(wrapper.find('SystemCard').first().instance().getAnsibleHost()).toBe('test-fqdn');
+            const wrapper = mount(<SystemCard store={store} />);
+            expect(
+                wrapper
+                    .find('SystemCard')
+                    .first()
+                    .instance()
+                    .getAnsibleHost()
+            ).toBe('test-fqdn');
         });
 
         it('should calculate correct ansible host - fqdn', () => {
@@ -83,39 +95,77 @@ describe('SystemCard', () => {
                     }
                 }
             });
-            const wrapper = mount(<SystemCard store={ store } />);
-            expect(wrapper.find('SystemCard').first().instance().getAnsibleHost()).toBe('test-id');
+            const wrapper = mount(<SystemCard store={store} />);
+            expect(
+                wrapper
+                    .find('SystemCard')
+                    .first()
+                    .instance()
+                    .getAnsibleHost()
+            ).toBe('test-id');
         });
 
         it('should show edit display name', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<SystemCard store={ store } />);
-            wrapper.find('a[href$="display_name"]').first().simulate('click', {
-                preventDefault: () => undefined
-            });
-            expect(wrapper.find('TextInputModal[title="Edit name"]').first().instance().props.isOpen).toBe(true);
-            expect(wrapper.find('TextInputModal[title="Edit Ansible host"]').first().instance().props.isOpen).toBe(false);
+            const wrapper = mount(<SystemCard store={store} />);
+            wrapper
+                .find('a[href$="display_name"]')
+                .first()
+                .simulate('click', {
+                    preventDefault: () => undefined
+                });
+            expect(
+                wrapper
+                    .find('TextInputModal[title="Edit name"]')
+                    .first()
+                    .instance().props.isOpen
+            ).toBe(true);
+            expect(
+                wrapper
+                    .find('TextInputModal[title="Edit Ansible host"]')
+                    .first()
+                    .instance().props.isOpen
+            ).toBe(false);
         });
 
         it('should show edit display name', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<SystemCard store={ store } />);
-            wrapper.find('a[href$="ansible_name"]').first().simulate('click', {
-                preventDefault: () => undefined
-            });
-            expect(wrapper.find('TextInputModal[title="Edit name"]').first().instance().props.isOpen).toBe(false);
-            expect(wrapper.find('TextInputModal[title="Edit Ansible host"]').first().instance().props.isOpen).toBe(true);
+            const wrapper = mount(<SystemCard store={store} />);
+            wrapper
+                .find('a[href$="ansible_name"]')
+                .first()
+                .simulate('click', {
+                    preventDefault: () => undefined
+                });
+            expect(
+                wrapper
+                    .find('TextInputModal[title="Edit name"]')
+                    .first()
+                    .instance().props.isOpen
+            ).toBe(false);
+            expect(
+                wrapper
+                    .find('TextInputModal[title="Edit Ansible host"]')
+                    .first()
+                    .instance().props.isOpen
+            ).toBe(true);
         });
 
         it('should call edit display name actions', () => {
             mock.onPatch('/api/inventory/v1/hosts/test-id').reply(200, mockedData);
             mock.onGet('/api/inventory/v1/hosts/test-id/system_profile').reply(200, mockedData);
             const store = mockStore(initialState);
-            const wrapper = mount(<SystemCard store={ store } />);
-            wrapper.find('a[href$="display_name"]').first().simulate('click', {
-                preventDefault: () => undefined
-            });
-            wrapper.find('button[data-action="confirm"]').first().simulate('click');
+            const wrapper = mount(<SystemCard store={store} />);
+            wrapper
+                .find('a[href$="display_name"]')
+                .first()
+                .simulate('click', {
+                    preventDefault: () => undefined
+                });
+            wrapper
+                .find('button[data-action="confirm"]')
+                .first()
+                .simulate('click');
             expect(store.getActions()[0].type).toBe('SET_DISPLAY_NAME_PENDING');
         });
 
@@ -123,11 +173,17 @@ describe('SystemCard', () => {
             mock.onPatch('/api/inventory/v1/hosts/test-id').reply(200, mockedData);
             mock.onGet('/api/inventory/v1/hosts/test-id/system_profile').reply(200, mockedData);
             const store = mockStore(initialState);
-            const wrapper = mount(<SystemCard store={ store } />);
-            wrapper.find('a[href$="ansible_name"]').first().simulate('click', {
-                preventDefault: () => undefined
-            });
-            wrapper.find('button[data-action="confirm"]').first().simulate('click');
+            const wrapper = mount(<SystemCard store={store} />);
+            wrapper
+                .find('a[href$="ansible_name"]')
+                .first()
+                .simulate('click', {
+                    preventDefault: () => undefined
+                });
+            wrapper
+                .find('button[data-action="confirm"]')
+                .first()
+                .simulate('click');
             expect(store.getActions()[0].type).toBe('SET_ANSIBLE_HOST_PENDING');
         });
     });

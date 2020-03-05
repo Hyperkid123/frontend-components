@@ -6,37 +6,46 @@ import styles from '../utils/styles';
 
 const appliedStyles = styles();
 
-const PanelItem = ({
-    style,
-    children,
-    title,
-    titleProps,
-    ...props
-}) => (<View { ...props } style={{
-    flex: 1,
-    ...style
-}}>
-    <Text { ...titleProps } style={{
-        ...appliedStyles.thirdTitle,
-        ...appliedStyles.displayFont,
-        ...titleProps.style
-    }}>
-        {title}
-    </Text>
-    <View style={[ appliedStyles.flexRow, {
-        justifyContent: 'flex-start'
-    }]}>
-        {
-            (typeof children === 'string' || children instanceof String) ?
-                <Text style={{
-                    fontSize: 20
-                }}>
+const PanelItem = ({ style, children, title, titleProps, ...props }) => (
+    <View
+        {...props}
+        style={{
+            flex: 1,
+            ...style
+        }}
+    >
+        <Text
+            {...titleProps}
+            style={{
+                ...appliedStyles.thirdTitle,
+                ...appliedStyles.displayFont,
+                ...titleProps.style
+            }}
+        >
+            {title}
+        </Text>
+        <View
+            style={[
+                appliedStyles.flexRow,
+                {
+                    justifyContent: 'flex-start'
+                }
+            ]}
+        >
+            {typeof children === 'string' || children instanceof String ? (
+                <Text
+                    style={{
+                        fontSize: 20
+                    }}
+                >
                     {children}
-                </Text> :
+                </Text>
+            ) : (
                 children
-        }
+            )}
+        </View>
     </View>
-</View>);
+);
 
 PanelItem.propTypes = {
     style: styleProps,

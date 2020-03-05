@@ -13,11 +13,10 @@ import { LegendPosition } from '../Donut/Donut.js';
  * Pie used for displaying statuses
  */
 
-const ConditionalLink = ({ condition, wrap, children }) => condition ? wrap(children) : children;
+const ConditionalLink = ({ condition, wrap, children }) => (condition ? wrap(children) : children);
 
 class Pie extends Component {
-
-    componentDidMount () {
+    componentDidMount() {
         this._updateChart();
     }
 
@@ -33,21 +32,22 @@ class Pie extends Component {
     updateLabels(pie) {
         if (this.props.withLegend) {
             select(this.legend)
-            .selectAll('div.ins-l-pie__legend--item')
-            .each(function() {
-                select(this)
-                .select('span').style('background-color', pie.color(this.getAttribute('data-id')));
-            })
-            .on('mouseover', function () {
-                pie.focus(this.getAttribute('data-id'));
-            })
-            .on('mouseout', function () {
-                pie.revert();
-            });
+                .selectAll('div.ins-l-pie__legend--item')
+                .each(function() {
+                    select(this)
+                        .select('span')
+                        .style('background-color', pie.color(this.getAttribute('data-id')));
+                })
+                .on('mouseover', function() {
+                    pie.focus(this.getAttribute('data-id'));
+                })
+                .on('mouseout', function() {
+                    pie.revert();
+                });
         }
     }
 
-    _updateChart () {
+    _updateChart() {
         let data = {
             type: 'pie',
             columns: this.props.values
@@ -76,12 +76,8 @@ class Pie extends Component {
         this.updateLabels(this.pie);
     }
 
-    render () {
-
-        const pieClasses = classNames(
-            this.props.className,
-            'ins-c-pie'
-        );
+    render() {
+        const pieClasses = classNames(this.props.className, 'ins-c-pie');
 
         const wrapperClasses = classNames({
             'ins-l-pie-wrapper': true,
@@ -93,36 +89,40 @@ class Pie extends Component {
 
         let pieLegend;
         if (this.props.withLegend) {
-            pieLegend =
-            <div className='ins-l-pie__legend' ref={ ref => {this.legend = ref;} }>
-                { this.props.values && this.props.values.map(oneItem => (
-                    <div key={ oneItem }  data-id={ oneItem[0] } className="pie ins-l-pie__legend--item">
-                        <div className="badge-wrapper">
-                            { /* if this.props.link has a value, wrap the spans in a Link tag */ }
-                            <ConditionalLink
-                                key={ oneItem[0] }
-                                condition={ this.props.link }
-                                wrap={ children =>
-                                    <Link to={ `${this.props.link}${oneItem[0].toLowerCase()}` }>
-                                        { children }
-                                    </Link>
-                                }>
-                                <span className="badge"></span>
-                                <span className="badge__label">{ oneItem[0] }</span>
-                                <span className="badge__number">({ oneItem[1] })</span>
-                            </ConditionalLink>
-                        </div>
-                    </div>
-                )) }
-            </div>;
+            pieLegend = (
+                <div
+                    className="ins-l-pie__legend"
+                    ref={(ref) => {
+                        this.legend = ref;
+                    }}
+                >
+                    {this.props.values &&
+                        this.props.values.map((oneItem) => (
+                            <div key={oneItem} data-id={oneItem[0]} className="pie ins-l-pie__legend--item">
+                                <div className="badge-wrapper">
+                                    {/* if this.props.link has a value, wrap the spans in a Link tag */}
+                                    <ConditionalLink
+                                        key={oneItem[0]}
+                                        condition={this.props.link}
+                                        wrap={(children) => <Link to={`${this.props.link}${oneItem[0].toLowerCase()}`}>{children}</Link>}
+                                    >
+                                        <span className="badge"></span>
+                                        <span className="badge__label">{oneItem[0]}</span>
+                                        <span className="badge__number">({oneItem[1]})</span>
+                                    </ConditionalLink>
+                                </div>
+                            </div>
+                        ))}
+                </div>
+            );
         }
 
         return (
-            <div className={ wrapperClasses } widget-type='InsightsPie' widget-id={ this.props.identifier } >
-                <div className='ins-l-pie'>
-                    <div id={ this.props.identifier } className={ pieClasses }></div>
+            <div className={wrapperClasses} widget-type="InsightsPie" widget-id={this.props.identifier}>
+                <div className="ins-l-pie">
+                    <div id={this.props.identifier} className={pieClasses}></div>
                 </div>
-                { pieLegend }
+                {pieLegend}
             </div>
         );
     }

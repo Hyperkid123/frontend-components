@@ -4,7 +4,7 @@ import * as pfReactTable from '@patternfly/react-table';
 import propTypes from 'prop-types';
 import { reactCore } from '../../utils/src/inventoryDependencies';
 
-function getLoader () {
+function getLoader() {
     return (insights.experimental && insights.experimental.loadRemediations) || insights.loadRemediations;
 }
 
@@ -23,25 +23,23 @@ class RemediationButton extends React.Component {
             react: React,
             reactCore,
             pfReactTable
-        }).then(remediations => this.setState({ remediations }));
+        }).then((remediations) => this.setState({ remediations }));
     }
 
     onClick = () => {
         Promise.resolve(this.props.dataProvider())
-        .then(data => this.state.remediations.openWizard(data))
-        .then(result => result && this.props.onRemediationCreated(result));
-    }
+            .then((data) => this.state.remediations.openWizard(data))
+            .then((result) => result && this.props.onRemediationCreated(result));
+    };
 
     render() {
         return (
             <React.Fragment>
-                <reactCore.Button
-                    isDisabled={ this.props.isDisabled || this.state.remediations === false }
-                    onClick={ this.onClick } >
-                    { this.props.children }
+                <reactCore.Button isDisabled={this.props.isDisabled || this.state.remediations === false} onClick={this.onClick}>
+                    {this.props.children}
                 </reactCore.Button>
 
-                { this.state.remediations.RemediationWizard && <this.state.remediations.RemediationWizard /> }
+                {this.state.remediations.RemediationWizard && <this.state.remediations.RemediationWizard />}
             </React.Fragment>
         );
     }
@@ -56,7 +54,7 @@ RemediationButton.propTypes = {
 
 RemediationButton.defaultProps = {
     isDisabled: false,
-    onRemediationCreated: f => f,
+    onRemediationCreated: (f) => f,
     children: 'Remediate with Ansible'
 };
 

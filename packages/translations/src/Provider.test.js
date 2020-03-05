@@ -1,7 +1,6 @@
 import React from 'react';
 import IntlProvider, { updateLocaleData } from './Provider';
 import { mount } from 'enzyme';
-import { LOCALSTORAGE_KEY } from './';
 import toJson from 'enzyme-to-json';
 
 describe('updateLocaleData', () => {
@@ -16,13 +15,21 @@ describe('updateLocaleData', () => {
 
 describe('provider', () => {
     test('should render correctly', () => {
-        const wrapper = mount(<IntlProvider><div>Test</div></IntlProvider>);
+        const wrapper = mount(
+            <IntlProvider>
+                <div>Test</div>
+            </IntlProvider>
+        );
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     describe('messages', () => {
         test('no langauge', () => {
-            const wrapper = mount(<IntlProvider messages={ { 'some.msg': 'Message' } }><div>Test</div></IntlProvider>);
+            const wrapper = mount(
+                <IntlProvider messages={{ 'some.msg': 'Message' }}>
+                    <div>Test</div>
+                </IntlProvider>
+            );
             expect(toJson(wrapper)).toMatchSnapshot();
         });
 
@@ -37,12 +44,20 @@ describe('provider', () => {
             };
 
             test('no locale', () => {
-                const wrapper = mount(<IntlProvider messages={ translations }><div>Test</div></IntlProvider>);
+                const wrapper = mount(
+                    <IntlProvider messages={translations}>
+                        <div>Test</div>
+                    </IntlProvider>
+                );
                 expect(toJson(wrapper)).toMatchSnapshot();
             });
 
             test('cs-locale', () => {
-                const wrapper = mount(<IntlProvider messages={ translations } locale="cs"><div>Test</div></IntlProvider>);
+                const wrapper = mount(
+                    <IntlProvider messages={translations} locale="cs">
+                        <div>Test</div>
+                    </IntlProvider>
+                );
                 expect(toJson(wrapper)).toMatchSnapshot();
             });
         });

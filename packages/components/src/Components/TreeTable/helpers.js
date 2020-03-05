@@ -9,7 +9,7 @@ export const sizeCalculator = (rows) => {
         }
 
         let currRow = rows[key];
-        currRow.level = rows[currRow.treeParent] ? (rows[currRow.treeParent].level + 1) : 0;
+        currRow.level = rows[currRow.treeParent] ? rows[currRow.treeParent].level + 1 : 0;
         const pointKey = typeof currRow.treeParent === 'undefined' ? 0 : currRow.treeParent + 1;
         if (!points[pointKey]) {
             points[pointKey] = { size: 0 };
@@ -27,10 +27,7 @@ export const sizeCalculator = (rows) => {
 export const collapseBuilder = (parentKey = 'treeParent') => (rows, _e, _val, { rowData }) => {
     const currRow = rows[rowData.id];
     const isTreeOpen = !currRow.isTreeOpen;
-    const rowsToChange = [
-        rows[rowData.id],
-        ...isTreeOpen === false ? rows.filter(row => row[parentKey] === rowData.id) : []
-    ];
+    const rowsToChange = [rows[rowData.id], ...(isTreeOpen === false ? rows.filter((row) => row[parentKey] === rowData.id) : [])];
     for (let key = 0; key < rowsToChange.length; key++) {
         rowsToChange[key].isTreeOpen = rowsToChange[key].isTreeOpen === undefined ? undefined : isTreeOpen;
     }

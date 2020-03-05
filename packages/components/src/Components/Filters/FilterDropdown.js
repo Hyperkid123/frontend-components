@@ -19,7 +19,7 @@ class FilterDropdown extends Component {
         }
     };
 
-    onToggle = isOpen => {
+    onToggle = (isOpen) => {
         this.setState({
             isOpen
         });
@@ -32,32 +32,33 @@ class FilterDropdown extends Component {
         return (
             <Dropdown
                 className="ins-c-filter__dropdown"
-                onSelect={ this.onSelect }
-                toggle={ <DropdownToggle onToggle={ this.onToggle }>{ label }</DropdownToggle> } isOpen={ isOpen }
+                onSelect={this.onSelect}
+                toggle={<DropdownToggle onToggle={this.onToggle}>{label}</DropdownToggle>}
+                isOpen={isOpen}
             >
-                <div className='pf-c-dropdown__menu-item'>
-                    { filterCategories.map(
+                <div className="pf-c-dropdown__menu-item">
+                    {filterCategories.map(
                         (data, index) =>
                             !hideCategories.includes(data.urlParam) && (
-                                <div key={ `${data.urlParam}${index}` } className="filterTitle">
-                                    { data.title }
-                                    { data.values.map((item, key) => (
+                                <div key={`${data.urlParam}${index}`} className="filterTitle">
+                                    {data.title}
+                                    {data.values.map((item, key) => (
                                         <FilterInput
-                                            key={ `check${index}${key}` }
-                                            aria-label={ item.label }
-                                            id={ `${data.urlParam}${key}` }
-                                            label={ item.label }
-                                            addRemoveFilters={ this.addRemoveFilters }
-                                            param={ data.urlParam }
-                                            type={ data.type }
-                                            value={ item.value }
-                                            filters={ filters }
+                                            key={`check${index}${key}`}
+                                            aria-label={item.label}
+                                            id={`${data.urlParam}${key}`}
+                                            label={item.label}
+                                            addRemoveFilters={this.addRemoveFilters}
+                                            param={data.urlParam}
+                                            type={data.type}
+                                            value={item.value}
+                                            filters={filters}
                                         />
-                                    )) }
-                                    { index !== filterCategories.length - 1 && <br /> }
+                                    ))}
+                                    {index !== filterCategories.length - 1 && <br />}
                                 </div>
                             )
-                    ) }
+                    )}
                 </div>
             </Dropdown>
         );
@@ -82,10 +83,7 @@ FilterDropdown.propTypes = {
             )
         })
     ),
-    label: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ])
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 };
 
 FilterDropdown.defaultProps = {

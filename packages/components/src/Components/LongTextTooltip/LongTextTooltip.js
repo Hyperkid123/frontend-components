@@ -15,18 +15,13 @@ class LongTextTooltip extends React.Component {
         const { content, maxLength, tooltipMaxWidth, tooltipPosition, ...rest } = this.props;
         return (
             <React.Fragment>
-                { content.length > maxLength ? (
-                    <Tooltip
-                        maxWidth={ tooltipMaxWidth }
-                        position={ tooltipPosition }
-                        content={ <div>{ content }</div>  }
-                        { ...rest }
-                    >
-                        <div>{ this.truncate(content, maxLength) }</div>
+                {content.length > maxLength ? (
+                    <Tooltip maxWidth={tooltipMaxWidth} position={tooltipPosition} content={<div>{content}</div>} {...rest}>
+                        <div>{this.truncate(content, maxLength)}</div>
                     </Tooltip>
                 ) : (
-                    <span>{ content }</span>
-                ) }
+                    <span>{content}</span>
+                )}
             </React.Fragment>
         );
     }

@@ -1,4 +1,4 @@
-export default function Deferred () {
+export default function Deferred() {
     this.resolve = null;
     this.reject = null;
     this.promise = new Promise((resolve, reject) => {

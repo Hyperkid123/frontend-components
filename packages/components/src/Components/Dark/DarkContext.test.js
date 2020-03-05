@@ -8,7 +8,7 @@ describe('DarkContext', () => {
     it('should render children', () => {
         const wrapper = shallow(
             <DarkContext>
-                <div id='isPresent' />
+                <div id="isPresent" />
             </DarkContext>
         );
 
@@ -19,9 +19,7 @@ describe('DarkContext', () => {
     it('should pass props', () => {
         const wrapper = mount(
             <DarkContext>
-                <ThemeContext.Consumer>
-                    { value => <div value={value} id='consumer'/> }
-                </ThemeContext.Consumer>
+                <ThemeContext.Consumer>{(value) => <div value={value} id="consumer" />}</ThemeContext.Consumer>
             </DarkContext>
         );
         expect(wrapper.find('#consumer').props()).toEqual(expect.objectContaining({ value: 'dark' }));

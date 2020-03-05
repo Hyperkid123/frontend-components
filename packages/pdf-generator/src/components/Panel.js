@@ -7,39 +7,34 @@ import styles from '../utils/styles';
 
 const appliedStyles = styles();
 
-const Panel = ({
-    style,
-    title,
-    titleProps,
-    contentProps,
-    children,
-    description,
-    ...props
-}) => (<View
-    {...props}
-    style={{
-        ...style
-    }}
->
-    <Text { ...titleProps } style={[
-        appliedStyles.secondTitle,
-        appliedStyles.smallSpacing,
-        ...titleProps.style || []
-    ]}>
-        {title}
-    </Text>
-    <View {...contentProps} style={{
-        ...appliedStyles.flexRow,
-        ...contentProps.style
-    }}>
-        {children}
-        <Text style={{
-            flex: 3
-        }}>
-            {customTitle(description)}
+const Panel = ({ style, title, titleProps, contentProps, children, description, ...props }) => (
+    <View
+        {...props}
+        style={{
+            ...style
+        }}
+    >
+        <Text {...titleProps} style={[appliedStyles.secondTitle, appliedStyles.smallSpacing, ...(titleProps.style || [])]}>
+            {title}
         </Text>
+        <View
+            {...contentProps}
+            style={{
+                ...appliedStyles.flexRow,
+                ...contentProps.style
+            }}
+        >
+            {children}
+            <Text
+                style={{
+                    flex: 3
+                }}
+            >
+                {customTitle(description)}
+            </Text>
+        </View>
     </View>
-</View>);
+);
 
 Panel.propTypes = {
     style: styleProps,

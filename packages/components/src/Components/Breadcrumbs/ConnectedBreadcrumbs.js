@@ -19,16 +19,13 @@ class ConnectedBreadcrumbs extends Component {
         const { match, location, current, mappings } = this.props;
         if (!current && mappings) {
             const root = match.path.split('/').slice(2);
-            const rest = location.pathname.substring(match.path.length).split('/').slice(1);
-            return [
-                ...root,
-                ...rest.map((item, key) => mappings[key] || item)
-            ];
+            const rest = location.pathname
+                .substring(match.path.length)
+                .split('/')
+                .slice(1);
+            return [...root, ...rest.map((item, key) => mappings[key] || item)];
         } else {
-            return [
-                ...location.pathname.split('/').slice(2, -1),
-                current
-            ];
+            return [...location.pathname.split('/').slice(2, -1), current];
         }
     }
 
@@ -36,10 +33,11 @@ class ConnectedBreadcrumbs extends Component {
         const { match, location, history, current, staticContext, dispatch, ...props } = this.props;
         const mappedBreadcrumbs = this.calculateBreadcrumbs() || [];
         return (
-            <Breadcrumbs { ...props }
-                items={ mappedBreadcrumbs.slice(0, -1).map(item => ({ title: item, navigate: item })) }
-                onNavigate={ this.onNavigate }
-                current={ mappedBreadcrumbs.slice(-1)[0] }
+            <Breadcrumbs
+                {...props}
+                items={mappedBreadcrumbs.slice(0, -1).map((item) => ({ title: item, navigate: item }))}
+                onNavigate={this.onNavigate}
+                current={mappedBreadcrumbs.slice(-1)[0]}
             />
         );
     }

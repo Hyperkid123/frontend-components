@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { treeTable, TreeRowWrapper, sizeCalculator, collapseBuilder } from '../../components/src/Components/TreeTable';
 import './index.scss';
-import {
-    Table,
-    TableHeader,
-    TableBody,
-    textCenter
-} from '@patternfly/react-table';
+import { Table, TableHeader, TableBody, textCenter } from '@patternfly/react-table';
 
 const origRows = [
     {
-        cells: [ 'one', 'two', 'three', 'four', 'five' ],
+        cells: ['one', 'two', 'three', 'four', 'five'],
         isTreeOpen: true
     },
     {
@@ -40,32 +35,32 @@ const origRows = [
         treeParent: 1
     },
     {
-        cells: [ 'one', 'two', 'three', 'four', 'five' ]
+        cells: ['one', 'two', 'three', 'four', 'five']
     }
 ];
 
 class MyCmp extends Component {
     state = {
         cells: [
-            { title: 'Repositories', cellTransforms: [ treeTable((...props) => this.collapseRows(...props)) ] },
+            { title: 'Repositories', cellTransforms: [treeTable((...props) => this.collapseRows(...props))] },
             'Branches',
             { title: 'Pull requests' },
             'Workspaces',
             {
                 title: 'Last Commit',
-                transforms: [ textCenter ],
-                cellTransforms: [ textCenter ]
+                transforms: [textCenter],
+                cellTransforms: [textCenter]
             }
         ],
         rows: origRows
-    }
+    };
 
     collapseRows = (...props) => {
         const { rows } = this.state;
         this.setState({
             rows: collapseBuilder()(rows, ...props)
         });
-    }
+    };
 
     render() {
         const { cells, rows } = this.state;

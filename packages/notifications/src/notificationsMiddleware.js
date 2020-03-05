@@ -1,4 +1,3 @@
-
 import get from 'lodash/get';
 import has from 'lodash/has';
 import { addNotification } from './redux/actions/notifications';
@@ -13,12 +12,12 @@ const prepareErrorMessage = (payload, errorTitleKey, errorDescriptionKey) => {
 
     let titleKey = errorTitleKey;
     if (Array.isArray(errorTitleKey)) {
-        titleKey = errorTitleKey.find(key => has(payload, key));
+        titleKey = errorTitleKey.find((key) => has(payload, key));
     }
 
     let descriptionKey = errorDescriptionKey;
     if (Array.isArray(errorDescriptionKey)) {
-        descriptionKey = errorDescriptionKey.find(key => has(payload, key));
+        descriptionKey = errorDescriptionKey.find((key) => has(payload, key));
     }
 
     return {
@@ -28,12 +27,8 @@ const prepareErrorMessage = (payload, errorTitleKey, errorDescriptionKey) => {
     };
 };
 
-const shouldDispatchDefaultError = ({
-    isRejected,
-    hasCustomNotification,
-    noErrorOverride,
-    dispatchDefaultFailure
-}) => isRejected && !hasCustomNotification && !noErrorOverride && dispatchDefaultFailure;
+const shouldDispatchDefaultError = ({ isRejected, hasCustomNotification, noErrorOverride, dispatchDefaultFailure }) =>
+    isRejected && !hasCustomNotification && !noErrorOverride && dispatchDefaultFailure;
 
 const createNotificationsMiddleware = (options = {}) => {
     const defaultOptions = {
@@ -48,16 +43,16 @@ const createNotificationsMiddleware = (options = {}) => {
     };
     const middlewareOptions = { ...defaultOptions, ...options };
 
-    const matchPending = type => type.match(new RegExp(`^.*${middlewareOptions.pendingSuffix}$`));
-    const matchFulfilled = type => type.match(new RegExp(`^.*${middlewareOptions.fulfilledSuffix}$`));
-    const matchRejected = type => type.match(new RegExp(`^.*${middlewareOptions.rejectedSuffix}$`));
+    const matchPending = (type) => type.match(new RegExp(`^.*${middlewareOptions.pendingSuffix}$`));
+    const matchFulfilled = (type) => type.match(new RegExp(`^.*${middlewareOptions.fulfilledSuffix}$`));
+    const matchRejected = (type) => type.match(new RegExp(`^.*${middlewareOptions.rejectedSuffix}$`));
 
     const defaultNotificationOptions = {
         dismissable: !middlewareOptions.autoDismiss,
         dismissDelay: middlewareOptions.dismissDelay
     };
 
-    return ({ dispatch }) => next => action => {
+    return ({ dispatch }) => (next) => (action) => {
         const { meta, type } = action;
         if (meta && meta.notifications) {
             const { notifications } = meta;
@@ -66,30 +61,35 @@ const createNotificationsMiddleware = (options = {}) => {
             } else if (matchFulfilled(type) && notifications.fulfilled) {
                 dispatch(addNotification({ ...defaultNotificationOptions, ...notifications.fulfilled }));
             } else if (matchRejected(type) && notifications.rejected) {
-                dispatch(addNotification({
-                    ...defaultNotificationOptions,
-                    ...notifications.rejected,
-                    sentryId: action.payload && action.payload.sentryId
-                }));
+                dispatch(
+                    addNotification({
+                        ...defaultNotificationOptions,
+                        ...notifications.rejected,
+                        sentryId: action.payload && action.payload.sentryId
+                    })
+                );
             }
         }
 
-        if (shouldDispatchDefaultError({
-            isRejected: matchRejected(type),
-            hasCustomNotification: meta && meta.notifications && meta.notifications.rejected,
-            noErrorOverride: meta && meta.noError,
-            dispatchDefaultFailure: middlewareOptions.dispatchDefaultFailure
-        })) {
-            dispatch(addNotification({
-                variant: 'danger',
-                dismissable: true,
-                ...prepareErrorMessage(action.payload, middlewareOptions.errorTitleKey, middlewareOptions.errorDescriptionKey)
-            }));
+        if (
+            shouldDispatchDefaultError({
+                isRejected: matchRejected(type),
+                hasCustomNotification: meta && meta.notifications && meta.notifications.rejected,
+                noErrorOverride: meta && meta.noError,
+                dispatchDefaultFailure: middlewareOptions.dispatchDefaultFailure
+            })
+        ) {
+            dispatch(
+                addNotification({
+                    variant: 'danger',
+                    dismissable: true,
+                    ...prepareErrorMessage(action.payload, middlewareOptions.errorTitleKey, middlewareOptions.errorDescriptionKey)
+                })
+            );
         }
 
         next(action);
     };
-
 };
 
 export default createNotificationsMiddleware;

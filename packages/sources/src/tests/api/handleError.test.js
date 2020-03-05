@@ -8,14 +8,10 @@ describe('handleError', () => {
     const DETAIL = 'auth id does not exist';
     const DETAIL_ERROR = 'remove endpoint is unavailable';
     const ERROR = {
-        errors: [
-            { detail: DETAIL }
-        ]
+        errors: [{ detail: DETAIL }]
     };
     const DELETE_ERROR = {
-        errors: [
-            { detail: DETAIL_ERROR }
-        ]
+        errors: [{ detail: DETAIL_ERROR }]
     };
     const SOURCE_ID = '11111';
 
@@ -42,9 +38,7 @@ describe('handleError', () => {
 
     it('handles nonsense error', async () => {
         const NONSENSE_ERROR = {
-            blabla: [
-                { text: 'lorem ipsum' }
-            ]
+            blabla: [{ text: 'lorem ipsum' }]
         };
 
         const result = await handleError(NONSENSE_ERROR);
@@ -59,7 +53,7 @@ describe('handleError', () => {
 
         const result = await handleError(ERROR);
 
-        const someTextIsNotInError = [ DETAIL ].some((text) => !result.includes(text));
+        const someTextIsNotInError = [DETAIL].some((text) => !result.includes(text));
         expect(spyDelete).not.toHaveBeenCalled();
         expect(someTextIsNotInError).toEqual(false);
     });
@@ -71,7 +65,7 @@ describe('handleError', () => {
 
         const result = await handleError(ERROR, SOURCE_ID);
 
-        const someTextIsNotInError = [ DETAIL, DETAIL_ERROR ].some((text) => !result.includes(text));
+        const someTextIsNotInError = [DETAIL, DETAIL_ERROR].some((text) => !result.includes(text));
         expect(spyDeleteError).toHaveBeenCalledWith(SOURCE_ID);
         expect(someTextIsNotInError).toEqual(false);
     });

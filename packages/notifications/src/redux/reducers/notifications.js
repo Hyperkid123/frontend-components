@@ -1,19 +1,22 @@
 import { applyReducerHash } from '@redhat-cloud-services/frontend-components-utilities/files/ReducerRegistry';
-import {
-    ADD_NOTIFICATION,
-    REMOVE_NOTIFICATION,
-    CLEAR_NOTIFICATIONS
-} from '../action-types';
+import { ADD_NOTIFICATION, REMOVE_NOTIFICATION, CLEAR_NOTIFICATIONS } from '../action-types';
 
 function generateID(type) {
-    let text = 'cloud-services' + type + '-' + new Date().getTime() + Math.random().toString(36).slice(2);
+    let text =
+        'cloud-services' +
+        type +
+        '-' +
+        new Date().getTime() +
+        Math.random()
+            .toString(36)
+            .slice(2);
     return text;
 }
 
-const addNotification = (notifications, { payload }) => [ ...notifications, { ...payload, id: generateID('notyfication') }];
+const addNotification = (notifications, { payload }) => [...notifications, { ...payload, id: generateID('notyfication') }];
 const removeNotification = (notifications, { payload }) => {
     const index = notifications.findIndex(({ id }) => id === payload);
-    return [ ...notifications.slice(0, index), ...notifications.slice(index + 1) ];
+    return [...notifications.slice(0, index), ...notifications.slice(index + 1)];
 };
 
 const clearNotifications = () => [];

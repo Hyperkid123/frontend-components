@@ -52,21 +52,11 @@ describe('schema builder', () => {
         const NO_STEP_FIELD_3 = { name: 'cosi-3' };
         const STEP_FIELD_2 = { name: 'cosi-a-2', stepKey: STEP_KEY };
 
-        const NO_STEP_FIELDS = [
-            NO_STEP_FIELD_1,
-            NO_STEP_FIELD_2,
-            NO_STEP_FIELD_3
-        ];
+        const NO_STEP_FIELDS = [NO_STEP_FIELD_1, NO_STEP_FIELD_2, NO_STEP_FIELD_3];
 
-        const STEP_FIELDS = [
-            STEP_FIELD_1,
-            STEP_FIELD_2
-        ];
+        const STEP_FIELDS = [STEP_FIELD_1, STEP_FIELD_2];
 
-        const FIELDS = [
-            ...NO_STEP_FIELDS,
-            ...STEP_FIELDS
-        ];
+        const FIELDS = [...NO_STEP_FIELDS, ...STEP_FIELDS];
 
         const STEP_FIELDS_PARSED = [
             { ...STEP_FIELD_1, stepKey: undefined },
@@ -96,9 +86,7 @@ describe('schema builder', () => {
 
     describe('getAdditionalEndpointFields', () => {
         it('returns additionalEndpointFields for openshift', () => {
-            expect(getAdditionalEndpointFields('openshift')).toEqual(
-                hardcodedSchemas.openshift.endpoint.additionalFields
-            );
+            expect(getAdditionalEndpointFields('openshift')).toEqual(hardcodedSchemas.openshift.endpoint.additionalFields);
         });
 
         it('returns additionalEndpointFields for amazon (empty)', () => {
@@ -119,10 +107,12 @@ describe('schema builder', () => {
     });
 
     describe('injectEndpointFieldsInfo', () => {
-        const FIELDS = [{
-            name: 'url',
-            component: 'cosi'
-        }];
+        const FIELDS = [
+            {
+                name: 'url',
+                component: 'cosi'
+            }
+        ];
 
         it('returns injected fields for openshift token', () => {
             expect(injectEndpointFieldsInfo(FIELDS, 'openshift')).toEqual([
@@ -139,10 +129,12 @@ describe('schema builder', () => {
     });
 
     describe('injectAuthFieldsInfo', () => {
-        const FIELDS = [{
-            name: 'authentication.username',
-            component: 'cosi'
-        }];
+        const FIELDS = [
+            {
+                name: 'authentication.username',
+                component: 'cosi'
+            }
+        ];
 
         it('returns injected fields for amazon access_key_secret_key', () => {
             expect(injectAuthFieldsInfo(FIELDS, 'amazon', 'access_key_secret_key', 'generic')).toEqual([
@@ -160,13 +152,14 @@ describe('schema builder', () => {
         it('removes password requirements', () => {
             const disablePassword = true;
 
-            const passwordField = { name: 'authentication.password', isRequired: true, validate: [{ type: validatorTypes.REQUIRED }, { type: 'cosi' }] };
+            const passwordField = {
+                name: 'authentication.password',
+                isRequired: true,
+                validate: [{ type: validatorTypes.REQUIRED }, { type: 'cosi' }]
+            };
             const unchangedField = { name: 'unchanged', isRequired: true, validate: [{ type: validatorTypes.REQUIRED }] };
 
-            const fields = [
-                passwordField,
-                unchangedField
-            ];
+            const fields = [passwordField, unchangedField];
 
             expect(injectAuthFieldsInfo(fields, 'nonsense', 'nonsense', 'generic', disablePassword)).toEqual([
                 { name: 'authentication.password', validate: [{ type: 'cosi' }], isRequired: false, helperText: expect.any(String) },
@@ -181,10 +174,7 @@ describe('schema builder', () => {
 
             expect(createEndpointStep(ENDPOINT, 'openshift')).toEqual(
                 expect.objectContaining({
-                    fields: [
-                        ...getAdditionalEndpointFields('openshift'),
-                        ...injectEndpointFieldsInfo(ENDPOINT.fields, 'openshift')
-                    ],
+                    fields: [...getAdditionalEndpointFields('openshift'), ...injectEndpointFieldsInfo(ENDPOINT.fields, 'openshift')],
                     title: sourceTypes.find(({ name }) => name === 'openshift').schema.endpoint.title,
                     stepKey: 'openshift-endpoint',
                     nextStep: 'summary'
@@ -195,17 +185,14 @@ describe('schema builder', () => {
 
     describe('createAdditionalSteps', () => {
         const ADDITIONAL_STEPS = [
-            { name: 'step-1', nextStep: 'step-2', fields: [ 'a' ] },
-            { name: 'step-2', stepKey: 'step-2', nextStep: 'step-3', fields: [ 'b' ] },
-            { name: 'step-3', stepKey: 'step-3', fields: [ 'c' ] }
+            { name: 'step-1', nextStep: 'step-2', fields: ['a'] },
+            { name: 'step-2', stepKey: 'step-2', nextStep: 'step-3', fields: ['b'] },
+            { name: 'step-3', stepKey: 'step-3', fields: ['c'] }
         ];
 
         const INSERTED_STEP = { name: 'component-1', stepKey: 'red-hat-generic-additional-step' };
 
-        const TYPES_FIELDS = [
-            INSERTED_STEP,
-            { name: 'component-2' }
-        ];
+        const TYPES_FIELDS = [INSERTED_STEP, { name: 'component-2' }];
 
         it('returns createAdditionalSteps', () => {
             const HAS_ENDPOINT = false;
@@ -281,15 +268,16 @@ describe('schema builder', () => {
 
     describe('generate auth selection pages', () => {
         let expectedSchema;
-        const APPEND_ENDPOINT_FIELDS = [ true ];
-        const EMPTY_APPEND_ENDPOINT = [ ];
+        const APPEND_ENDPOINT_FIELDS = [true];
+        const EMPTY_APPEND_ENDPOINT = [];
         const NOT_EDITING = false;
 
         describe('createGenericAuthTypeSelection', () => {
             it('generate single selection', () => {
                 const fields = [
-                    ...OPENSHIFT_TYPE.schema.authentication[0].fields.filter(({ stepKey }) => !stepKey)
-                    .map((field) => expect.objectContaining(field)),
+                    ...OPENSHIFT_TYPE.schema.authentication[0].fields
+                        .filter(({ stepKey }) => !stepKey)
+                        .map((field) => expect.objectContaining(field)),
                     createEndpointFlagger(false)
                 ];
 
@@ -321,10 +309,7 @@ describe('schema builder', () => {
                 const secretKey = expect.objectContaining({ component: 'auth-select', authName: 'access_key_secret_key' });
 
                 expectedSchema = expect.objectContaining({
-                    fields: expect.arrayContaining([
-                        arnSelect,
-                        secretKey
-                    ]),
+                    fields: expect.arrayContaining([arnSelect, secretKey]),
                     title: expect.any(String),
                     stepKey: AMAZON_TYPE.name,
                     name: AMAZON_TYPE.name,
@@ -343,10 +328,7 @@ describe('schema builder', () => {
 
         describe('createSpecificAuthTypeSelection', () => {
             it('generate single selection', () => {
-                const fields = [
-                    ...AZURE_TYPE.schema.authentication[0].fields.filter(({ stepKey }) => !stepKey),
-                    createEndpointFlagger(false)
-                ];
+                const fields = [...AZURE_TYPE.schema.authentication[0].fields.filter(({ stepKey }) => !stepKey), createEndpointFlagger(false)];
                 const expectedName = `${AZURE_TYPE.name}-${TOPOLOGY_INV_APP.id}`;
 
                 expectedSchema = expect.objectContaining({
@@ -377,8 +359,9 @@ describe('schema builder', () => {
 
             it('generate with custom steps', () => {
                 const expectedName = `${AMAZON_TYPE.name}-${COST_MANAGEMENT_APP.id}`;
-                const firstAdditionalStep = hardcodedSchemas[AMAZON_TYPE.name]
-                .authentication.arn[COST_MANAGEMENT_APP.name].additionalSteps.find(({ stepKey }) => !stepKey);
+                const firstAdditionalStep = hardcodedSchemas[AMAZON_TYPE.name].authentication.arn[COST_MANAGEMENT_APP.name].additionalSteps.find(
+                    ({ stepKey }) => !stepKey
+                );
                 const fields = firstAdditionalStep.fields.map((field) => expect.objectContaining(field));
 
                 expectedSchema = expect.objectContaining({
@@ -389,16 +372,21 @@ describe('schema builder', () => {
                     nextStep: firstAdditionalStep.nextStep
                 });
 
-                expect(createSpecificAuthTypeSelection(AMAZON_TYPE, COST_MANAGEMENT_APP, APPEND_ENDPOINT_FIELDS, NOT_EDITING)).toEqual(expectedSchema);
+                expect(createSpecificAuthTypeSelection(AMAZON_TYPE, COST_MANAGEMENT_APP, APPEND_ENDPOINT_FIELDS, NOT_EDITING)).toEqual(
+                    expectedSchema
+                );
             });
         });
     });
 
     describe('schemaBuilder', () => {
         it('builds schema', () => {
-            const schema = schemaBuilder(sourceTypes.filter(({ schema }) => schema), applicationTypes);
+            const schema = schemaBuilder(
+                sourceTypes.filter(({ schema }) => schema),
+                applicationTypes
+            );
 
-            expect(schema).toEqual(expect.arrayContaining([ expect.any(Object) ]));
+            expect(schema).toEqual(expect.arrayContaining([expect.any(Object)]));
             expect(schema).toHaveLength(28);
         });
     });

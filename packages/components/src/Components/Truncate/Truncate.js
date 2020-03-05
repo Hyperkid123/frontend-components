@@ -10,7 +10,6 @@ import './truncate.scss';
 import sanitizeHtml from 'sanitize-html';
 
 class Truncate extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +18,7 @@ class Truncate extends React.Component {
         this.toggleText = this.toggleText.bind(this);
     }
 
-    toggleText (event) {
+    toggleText(event) {
         event && event.preventDefault();
         this.setState({
             showText: !this.state.showText
@@ -31,7 +30,6 @@ class Truncate extends React.Component {
     }
 
     render() {
-
         const truncateClasses = classNames(
             'ins-c-truncate',
             this.props.className,
@@ -45,51 +43,48 @@ class Truncate extends React.Component {
 
         const { showText } = this.state;
 
-        const expandButton =
-            <Button
-                className='ins-c-expand-button'
-                variant='link'
-                onClick={ this.toggleText }>
-                { this.props.expandText }
-            </Button>;
+        const expandButton = (
+            <Button className="ins-c-expand-button" variant="link" onClick={this.toggleText}>
+                {this.props.expandText}
+            </Button>
+        );
 
-        const collapseButton =
-            <Button
-                className='ins-c-collapse-button'
-                variant='link'
-                onClick={ this.toggleText }>
-                { this.props.collapseText }
-            </Button>;
+        const collapseButton = (
+            <Button className="ins-c-collapse-button" variant="link" onClick={this.toggleText}>
+                {this.props.collapseText}
+            </Button>
+        );
 
         if (this.props.inline) {
             return (
                 <React.Fragment>
                     <span
-                        className={ truncateClasses }
-                        widget-type='InsightsTruncateInline'
-                        dangerouslySetInnerHTML={ this.dangerousHtml(showText === false ? `${trimmedText}${textOverflow ? '...' : '' }`
-                            : this.props.text) } />
-                    { textOverflow && (showText === false ? expandButton : collapseButton) }
+                        className={truncateClasses}
+                        widget-type="InsightsTruncateInline"
+                        dangerouslySetInnerHTML={this.dangerousHtml(
+                            showText === false ? `${trimmedText}${textOverflow ? '...' : ''}` : this.props.text
+                        )}
+                    />
+                    {textOverflow && (showText === false ? expandButton : collapseButton)}
                 </React.Fragment>
             );
         } else {
             return (
-                <Stack className={ truncateClasses }>
+                <Stack className={truncateClasses}>
                     <StackItem>
                         <span
-                            widget-type='InsightsTruncateBlock'
-                            dangerouslySetInnerHTML={ this.dangerousHtml(showText === false ? `${trimmedText}${textOverflow ? '...' : '' }`
-                                : this.props.text) } />
+                            widget-type="InsightsTruncateBlock"
+                            dangerouslySetInnerHTML={this.dangerousHtml(
+                                showText === false ? `${trimmedText}${textOverflow ? '...' : ''}` : this.props.text
+                            )}
+                        />
                     </StackItem>
-                    { textOverflow && <StackItem>
-                        { showText === false ? expandButton : collapseButton }
-                    </StackItem>
-                    }
+                    {textOverflow && <StackItem>{showText === false ? expandButton : collapseButton}</StackItem>}
                 </Stack>
             );
         }
     }
-};
+}
 
 export default Truncate;
 

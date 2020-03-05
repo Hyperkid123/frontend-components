@@ -2,14 +2,7 @@ const history = require('connect-history-api-fallback');
 const convert = require('koa-connect');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = ({
-    port,
-    publicPath,
-    appEntry,
-    rootFolder,
-    https,
-    mode
-} = {}) => {
+module.exports = ({ port, publicPath, appEntry, rootFolder, https, mode } = {}) => {
     return {
         mode: mode || (process.env.NODE_ENV === 'production' ? 'production' : 'development'),
         devtool: 'source-map',
@@ -36,43 +29,50 @@ module.exports = ({
             chunkFilename: 'js/[name].js'
         },
         module: {
-            rules: [{
-                test: /src\/.*\.js$/,
-                exclude: /(node_modules|bower_components)/i,
-                use: [{ loader: 'source-map-loader' }, { loader: 'babel-loader' }, { loader: 'eslint-loader' }]
-            }, {
-                test: /src\/.*\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: /(node_modules)/i
-            }, {
-                test: /\.s?[ac]ss$/,
-                use: [
-                    process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader'
-                    },
-                    {
-                        loader: 'sass-loader'
-                    }
-                ]
-            }, {
-                test: /\.(woff(2)?|ttf|jpg|png|eot|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'fonts/'
-                    }
-                }]
-            },
-            {
-                test: /\.mjs$/,
-                include: /node_modules/,
-                type: 'javascript/auto'
-            }]
+            rules: [
+                {
+                    test: /src\/.*\.js$/,
+                    exclude: /(node_modules|bower_components)/i,
+                    use: [{ loader: 'source-map-loader' }, { loader: 'babel-loader' }, { loader: 'eslint-loader' }]
+                },
+                {
+                    test: /src\/.*\.tsx?$/,
+                    loader: 'ts-loader',
+                    exclude: /(node_modules)/i
+                },
+                {
+                    test: /\.s?[ac]ss$/,
+                    use: [
+                        process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        {
+                            loader: 'css-loader'
+                        },
+                        {
+                            loader: 'sass-loader'
+                        }
+                    ]
+                },
+                {
+                    test: /\.(woff(2)?|ttf|jpg|png|eot|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[name].[ext]',
+                                outputPath: 'fonts/'
+                            }
+                        }
+                    ]
+                },
+                {
+                    test: /\.mjs$/,
+                    include: /node_modules/,
+                    type: 'javascript/auto'
+                }
+            ]
         },
         resolve: {
-            extensions: [ '.ts', '.tsx', '.mjs', '.js', '.scss' ]
+            extensions: ['.ts', '.tsx', '.mjs', '.js', '.scss']
         },
         devServer: {
             contentBase: `${rootFolder || ''}/dist`,
@@ -90,7 +90,7 @@ module.exports = ({
                 publicPath
             },
             // https://github.com/webpack-contrib/webpack-serve/blob/master/docs/addons/history-fallback.config.js
-            add: app => app.use(convert(history({})))
+            add: (app) => app.use(convert(history({})))
         }
     };
 };

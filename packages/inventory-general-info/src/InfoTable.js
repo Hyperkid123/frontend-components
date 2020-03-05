@@ -19,7 +19,7 @@ class InfoTable extends Component {
                 direction
             }
         });
-    }
+    };
 
     onCollapse = (_event, index, isOpen) => {
         const { opened } = this.state;
@@ -27,52 +27,56 @@ class InfoTable extends Component {
         this.setState({
             opened
         });
-    }
+    };
 
     render() {
         const { cells, rows, expandable } = this.props;
         const { sortBy, opened } = this.state;
-        const collapsibleProps = expandable ? {
-            onCollapse: this.onCollapse
-        } : {};
-        const mappedRows = expandable ? flatMap(rows, ({ child, ...row }, key) => [
-            {
-                ...row,
-                isOpen: opened[key * 2] || false
-            },
-            {
-                cells: [{ title: child }],
-                parent: key * 2
-            }
-        ]) : rows;
+        const collapsibleProps = expandable
+            ? {
+                  onCollapse: this.onCollapse
+              }
+            : {};
+        const mappedRows = expandable
+            ? flatMap(rows, ({ child, ...row }, key) => [
+                  {
+                      ...row,
+                      isOpen: opened[key * 2] || false
+                  },
+                  {
+                      cells: [{ title: child }],
+                      parent: key * 2
+                  }
+              ])
+            : rows;
         return (
             <Fragment>
-                {
-                    cells.length !== 1 ? <Table
+                {cells.length !== 1 ? (
+                    <Table
                         aria-label="General information dialog table"
-                        variant={ TableVariant.compact }
-                        cells={ cells }
-                        rows={ mappedRows }
-                        sortBy={ {
+                        variant={TableVariant.compact}
+                        cells={cells}
+                        rows={mappedRows}
+                        sortBy={{
                             ...sortBy,
                             index: expandable && sortBy.index === 0 ? 1 : sortBy.index
-                        } }
-                        onSort={ this.onSort }
-                        { ...collapsibleProps }
+                        }}
+                        onSort={this.onSort}
+                        {...collapsibleProps}
                     >
                         <TableHeader />
                         <TableBody />
-                    </Table> :
-                        <TextContent>
-                            { rows.map((row, key) => (
-                                <Text component={ TextVariants.small } key={ key }>
-                                    { row.title || row }
-                                </Text>
-                            )) }
-                        </TextContent>
-                }
+                    </Table>
+                ) : (
+                    <TextContent>
+                        {rows.map((row, key) => (
+                            <Text component={TextVariants.small} key={key}>
+                                {row.title || row}
+                            </Text>
+                        ))}
+                    </TextContent>
+                )}
             </Fragment>
-
         );
     }
 }

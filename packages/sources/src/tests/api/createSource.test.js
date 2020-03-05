@@ -66,7 +66,6 @@ describe('doCreateSource', () => {
             };
             AUTHENTICATION_FORM_DATA = {
                 password: '123455'
-
             };
             ENDPOINT_FORM_DATA = { url: 'https//' };
             APPLICATION_FORM_DATA = { collect_info: true };
@@ -79,10 +78,10 @@ describe('doCreateSource', () => {
             };
 
             CREATED_SOURCE_ID = '12349876';
-            CREATE_SOURCE_DATA_OUT = ({ id: CREATED_SOURCE_ID });
+            CREATE_SOURCE_DATA_OUT = { id: CREATED_SOURCE_ID };
 
             CREATED_EDNPOINT_ID = '8765';
-            CREATE_EDNPOINT_DATA_OUT = ({ id: CREATED_EDNPOINT_ID });
+            CREATE_EDNPOINT_DATA_OUT = { id: CREATED_EDNPOINT_ID };
 
             CREATE_AUTHENTICATION_DATA_OUT = { something: '123' };
             CREATE_APPLICATION_DATA_OUT = { application: 234 };
@@ -128,10 +127,8 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [
-                    { ...CREATE_EDNPOINT_DATA_OUT }
-                ],
-                applications: [ undefined ]
+                endpoint: [{ ...CREATE_EDNPOINT_DATA_OUT }],
+                applications: [undefined]
             };
 
             api.getSourcesApi = () => mocks;
@@ -154,8 +151,8 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [ undefined ],
-                applications: [ undefined ]
+                endpoint: [undefined],
+                applications: [undefined]
             };
 
             api.getSourcesApi = () => mocks;
@@ -178,10 +175,8 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [
-                    CREATE_EDNPOINT_DATA_OUT
-                ],
-                applications: [ undefined ]
+                endpoint: [CREATE_EDNPOINT_DATA_OUT],
+                applications: [undefined]
             };
 
             api.getSourcesApi = () => mocks;
@@ -212,12 +207,12 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [
-                    { ...CREATE_EDNPOINT_DATA_OUT }
-                ],
-                applications: [{
-                    ...CREATE_APPLICATION_DATA_OUT
-                }]
+                endpoint: [{ ...CREATE_EDNPOINT_DATA_OUT }],
+                applications: [
+                    {
+                        ...CREATE_APPLICATION_DATA_OUT
+                    }
+                ]
             };
 
             const EXPECTED_CREATE_APPLICATION_ARG = {
@@ -250,10 +245,12 @@ describe('doCreateSource', () => {
 
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [ undefined ],
-                applications: [{
-                    ...CREATE_APPLICATION_DATA_OUT
-                }]
+                endpoint: [undefined],
+                applications: [
+                    {
+                        ...CREATE_APPLICATION_DATA_OUT
+                    }
+                ]
             };
 
             const EXPECTED_CREATE_APPLICATION_ARG = {
@@ -290,12 +287,12 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [
-                    { ...CREATE_EDNPOINT_DATA_OUT }
-                ],
-                applications: [{
-                    ...CREATE_APPLICATION_DATA_OUT
-                }]
+                endpoint: [{ ...CREATE_EDNPOINT_DATA_OUT }],
+                applications: [
+                    {
+                        ...CREATE_APPLICATION_DATA_OUT
+                    }
+                ]
             };
 
             const EXPECTED_CREATE_APPLICATION_ARG = {
@@ -344,12 +341,12 @@ describe('doCreateSource', () => {
             };
             const EXPECTED_RESULT = {
                 id: CREATED_SOURCE_ID,
-                endpoint: [
-                    { ...CREATE_EDNPOINT_DATA_OUT }
-                ],
-                applications: [{
-                    ...CREATE_APPLICATION_DATA_OUT
-                }]
+                endpoint: [{ ...CREATE_EDNPOINT_DATA_OUT }],
+                applications: [
+                    {
+                        ...CREATE_APPLICATION_DATA_OUT
+                    }
+                ]
             };
 
             const EXPECTED_CREATE_APPLICATION_ARG = {

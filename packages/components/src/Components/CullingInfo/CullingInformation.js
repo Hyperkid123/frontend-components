@@ -30,36 +30,34 @@ const calculateTooltip = (culled, warning, currDate) => {
 };
 
 const CullingInformation = ({ culled, className, staleWarning, stale, currDate, children, ...props }) => {
-    if ((new Date(currDate) - new Date(stale)) < 0) {
+    if (new Date(currDate) - new Date(stale) < 0) {
         return children;
     }
 
     const { isWarn, isError, msg } = calculateTooltip(culled, staleWarning, currDate);
-    return <React.Fragment>
-        <Tooltip
-            { ...props }
-            content={msg}
-            position="bottom"
-        >
-            <span className={
-                classnames({
-                    'ins-c-inventory__culling-warning': isWarn,
-                    'ins-c-inventory__culling-danger': isError
-                })
-            }>
-                { isError && <ExclamationCircleIcon /> }
-                { isWarn && <ExclamationTriangleIcon /> }
-                {children}
-            </span>
-        </Tooltip>
-    </React.Fragment>;
+    return (
+        <React.Fragment>
+            <Tooltip {...props} content={msg} position="bottom">
+                <span
+                    className={classnames({
+                        'ins-c-inventory__culling-warning': isWarn,
+                        'ins-c-inventory__culling-danger': isError
+                    })}
+                >
+                    {isError && <ExclamationCircleIcon />}
+                    {isWarn && <ExclamationTriangleIcon />}
+                    {children}
+                </span>
+            </Tooltip>
+        </React.Fragment>
+    );
 };
 
 CullingInformation.propTypes = {
-    culled: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date) ]),
-    staleWarning: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date) ]),
-    stale: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date) ]),
-    currDate: PropTypes.oneOfType([ PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date) ])
+    culled: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
+    staleWarning: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
+    stale: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)]),
+    currDate: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.instanceOf(Date)])
 };
 CullingInformation.defaultProps = {
     culled: new Date(0),

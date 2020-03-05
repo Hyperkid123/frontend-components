@@ -5,47 +5,40 @@ import LoadingCard from './LoadingCard';
 import { generalMapper, interfaceMapper } from './dataMapper';
 import { infrastructureSelector } from './selectors';
 
-const InfrastructureCard = ({ infrastructure, handleClick, detailLoaded }) => (<LoadingCard
-    title="Infrastructure"
-    isLoading={ !detailLoaded }
-    items={ [
-        { title: 'Type', value: infrastructure.type },
-        { title: 'Vendor', value: infrastructure.vendor },
-        {
-            title: 'IPv4 addresses',
-            value: infrastructure.ipv4 ? `${infrastructure.ipv4.length} addresses` : 0,
-            target: 'ipv4',
-            onClick: () => {
-                handleClick(
-                    'IPv4',
-                    generalMapper(infrastructure.ipv4, 'IP address')
-                );
+const InfrastructureCard = ({ infrastructure, handleClick, detailLoaded }) => (
+    <LoadingCard
+        title="Infrastructure"
+        isLoading={!detailLoaded}
+        items={[
+            { title: 'Type', value: infrastructure.type },
+            { title: 'Vendor', value: infrastructure.vendor },
+            {
+                title: 'IPv4 addresses',
+                value: infrastructure.ipv4 ? `${infrastructure.ipv4.length} addresses` : 0,
+                target: 'ipv4',
+                onClick: () => {
+                    handleClick('IPv4', generalMapper(infrastructure.ipv4, 'IP address'));
+                }
+            },
+            {
+                title: 'IPv6 addresses',
+                value: infrastructure.ipv6 ? `${infrastructure.ipv6.length} addresses` : 0,
+                target: 'ipv6',
+                onClick: () => {
+                    handleClick('IPv6', generalMapper(infrastructure.ipv6, 'IP address'));
+                }
+            },
+            {
+                title: 'Interfaces/NICs',
+                value: infrastructure.nics ? `${infrastructure.nics.length} NICs` : 0,
+                target: 'interfaces',
+                onClick: () => {
+                    handleClick('Interfaces/NICs', interfaceMapper(infrastructure.nics));
+                }
             }
-        },
-        {
-            title: 'IPv6 addresses',
-            value: infrastructure.ipv6 ? `${infrastructure.ipv6.length} addresses` : 0,
-            target: 'ipv6',
-            onClick: () => {
-                handleClick(
-                    'IPv6',
-                    generalMapper(infrastructure.ipv6, 'IP address')
-                );
-            }
-        },
-        {
-            title: 'Interfaces/NICs',
-            value: infrastructure.nics ? `${infrastructure.nics.length} NICs` : 0,
-            target: 'interfaces',
-            onClick: () => {
-                handleClick(
-                    'Interfaces/NICs',
-                    interfaceMapper(infrastructure.nics)
-                );
-            }
-        }
-    ] }
-/>);
+        ]}
+    />
+);
 
 InfrastructureCard.propTypes = {
     detailLoaded: PropTypes.bool,
@@ -63,11 +56,7 @@ InfrastructureCard.defaultProps = {
     handleClick: () => undefined
 };
 
-export default connect(({
-    systemProfileStore: {
-        systemProfile
-    }
-}) => ({
+export default connect(({ systemProfileStore: { systemProfile } }) => ({
     detailLoaded: systemProfile && systemProfile.loaded,
     infrastructure: infrastructureSelector(systemProfile)
 }))(InfrastructureCard);

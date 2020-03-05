@@ -13,15 +13,19 @@ const config = {
         perPage: 10,
         onSetPage: jest.fn(),
         onPerPageSelect: jest.fn()
-
     },
     exportConfig: {
         onSelect: jest.fn()
     },
     actionsConfig: {
         actions: [
-            <Button key="first" onClick={onActionClicked}> Some action</Button>,
-            <Button key="second" onClick={onActionClicked}>Another button</Button>,
+            <Button key="first" onClick={onActionClicked}>
+                {' '}
+                Some action
+            </Button>,
+            <Button key="second" onClick={onActionClicked}>
+                Another button
+            </Button>,
             {
                 label: 'Or objects',
                 onClick: onActionClicked
@@ -36,40 +40,54 @@ const config = {
         onSortChange: jest.fn()
     },
     bulkSelect: {
-        items: [{
-            title: 'Some action',
-            onClick: jest.fn()
-        }],
+        items: [
+            {
+                title: 'Some action',
+                onClick: jest.fn()
+            }
+        ],
         checked: false,
         onSelect: jest.fn()
     },
     filterConfig: {
-        items: [{
-            label: 'First filter'
-        }, {
-            label: 'Second filter',
-            type: 'checkbox',
-            filterValues: {
-                items: [{ label: 'Some checkbox' }]
+        items: [
+            {
+                label: 'First filter'
+            },
+            {
+                label: 'Second filter',
+                type: 'checkbox',
+                filterValues: {
+                    items: [{ label: 'Some checkbox' }]
+                }
             }
-        }]
+        ]
     },
     activeFiltersConfig: {
-        filters: [{
-            category: 'Some',
-            chips: [{
-                name: 'something'
-            }, {
-                name: 'something 2'
-            }]
-        }, {
-            category: 'Another',
-            chips: [{
-                name: 'One chip'
-            }]
-        }, {
-            name: 'Something else'
-        }],
+        filters: [
+            {
+                category: 'Some',
+                chips: [
+                    {
+                        name: 'something'
+                    },
+                    {
+                        name: 'something 2'
+                    }
+                ]
+            },
+            {
+                category: 'Another',
+                chips: [
+                    {
+                        name: 'One chip'
+                    }
+                ]
+            },
+            {
+                name: 'Something else'
+            }
+        ],
         onDelete: jest.fn()
     }
 };
@@ -82,9 +100,11 @@ describe('PrimaryToolbar', () => {
         });
 
         it('elements instead of data', () => {
-            const elementsConfig = Object.keys(config).map(key => ({
-                [key]: <div>Loading...</div>
-            })).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+            const elementsConfig = Object.keys(config)
+                .map((key) => ({
+                    [key]: <div>Loading...</div>
+                }))
+                .reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
             const wrapper = shallow(<PrimaryToolbar {...elementsConfig} />);
             expect(toJson(wrapper)).toMatchSnapshot();
@@ -97,12 +117,12 @@ describe('PrimaryToolbar', () => {
             });
 
             it('only - bulk select', () => {
-                const wrapper = shallow(<PrimaryToolbar bulkSelect={ config.bulkSelect } />);
+                const wrapper = shallow(<PrimaryToolbar bulkSelect={config.bulkSelect} />);
                 expect(toJson(wrapper)).toMatchSnapshot();
             });
 
             it('only - filterConfig', () => {
-                const wrapper = shallow(<PrimaryToolbar filterConfig={ config.filterConfig } />);
+                const wrapper = shallow(<PrimaryToolbar filterConfig={config.filterConfig} />);
                 expect(toJson(wrapper)).toMatchSnapshot();
             });
         });
@@ -120,35 +140,38 @@ describe('PrimaryToolbar', () => {
         it('wrong actionsConfig', () => {
             // eslint-disable-next-line no-unused-vars
             const { actionsConfig, ...rest } = config;
-            const wrapper = shallow(<PrimaryToolbar { ...rest } />);
+            const wrapper = shallow(<PrimaryToolbar {...rest} />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
     });
 
     describe('API', () => {
         it('should call DESC sort', () => {
-            const wrapper = mount(<PrimaryToolbar
-                {...config}
-                sortByConfig={ { ...config.sortByConfig, direction: 'desc' } }
-            />);
-            wrapper.find('.ins-c-primary-toolbar__actions button.pf-c-dropdown__toggle').first().simulate('click');
+            const wrapper = mount(<PrimaryToolbar {...config} sortByConfig={{ ...config.sortByConfig, direction: 'desc' }} />);
+            wrapper
+                .find('.ins-c-primary-toolbar__actions button.pf-c-dropdown__toggle')
+                .first()
+                .simulate('click');
             wrapper.update();
             wrapper
-            .find('.ins-c-primary-toolbar__overflow-actions.pf-c-dropdown__menu-item')
-            .first()
-            .simulate('click');
+                .find('.ins-c-primary-toolbar__overflow-actions.pf-c-dropdown__menu-item')
+                .first()
+                .simulate('click');
             expect(config.sortByConfig.onSortChange).toHaveBeenCalled();
             expect(config.sortByConfig.onSortChange.mock.calls[0][1]).toBe('asc');
         });
 
         it('should call ASC sort', () => {
-            const wrapper = mount(<PrimaryToolbar { ...config } />);
-            wrapper.find('.ins-c-primary-toolbar__actions button.pf-c-dropdown__toggle').first().simulate('click');
+            const wrapper = mount(<PrimaryToolbar {...config} />);
+            wrapper
+                .find('.ins-c-primary-toolbar__actions button.pf-c-dropdown__toggle')
+                .first()
+                .simulate('click');
             wrapper.update();
             wrapper
-            .find('.ins-c-primary-toolbar__overflow-actions.pf-c-dropdown__menu-item')
-            .at(1)
-            .simulate('click');
+                .find('.ins-c-primary-toolbar__overflow-actions.pf-c-dropdown__menu-item')
+                .at(1)
+                .simulate('click');
             expect(config.sortByConfig.onSortChange).toHaveBeenCalled();
             expect(config.sortByConfig.onSortChange.mock.calls[1][1]).toBe('desc');
         });

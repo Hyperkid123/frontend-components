@@ -24,13 +24,13 @@ describe('InfrastructureCard', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<InfrastructureCard store={ store } />);
+        const wrapper = render(<InfrastructureCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<InfrastructureCard store={ store } />);
+        const wrapper = render(<InfrastructureCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -43,7 +43,7 @@ describe('InfrastructureCard', () => {
                 }
             }
         });
-        const wrapper = render(<InfrastructureCard store={ store } />);
+        const wrapper = render(<InfrastructureCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -51,32 +51,44 @@ describe('InfrastructureCard', () => {
         it('should NOT call handleClick', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<InfrastructureCard store={ store } />);
-            wrapper.find('TextListItem a').first().simulate('click');
+            const wrapper = mount(<InfrastructureCard store={store} />);
+            wrapper
+                .find('TextListItem a')
+                .first()
+                .simulate('click');
             expect(onClick).not.toHaveBeenCalled();
         });
 
         it('should call handleClick on packages', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<InfrastructureCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').first().simulate('click');
+            const wrapper = mount(<InfrastructureCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .first()
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
 
         it('should call handleClick on services', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<InfrastructureCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').at(1).simulate('click');
+            const wrapper = mount(<InfrastructureCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .at(1)
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
 
         it('should call handleClick on services', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<InfrastructureCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').at(2).simulate('click');
+            const wrapper = mount(<InfrastructureCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .at(2)
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
     });

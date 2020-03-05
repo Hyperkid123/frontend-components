@@ -8,7 +8,7 @@ it('getRegistry', () => {
 });
 
 it('registry decorator', () => {
-    const App = function () { };
+    const App = function() {};
 
     registry()(App);
 
@@ -22,7 +22,8 @@ it('registry decorator', () => {
 it('should dispatch action', () => {
     const registry = getRegistry();
     registry.store.dispatch({
-        type: '@@INSIGHTS-CORE/NAVIGATION', payload: {
+        type: '@@INSIGHTS-CORE/NAVIGATION',
+        payload: {
             some: 'data'
         }
     });

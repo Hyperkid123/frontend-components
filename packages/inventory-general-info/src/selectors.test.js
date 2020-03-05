@@ -7,14 +7,7 @@ import {
     configurationSelector,
     collectionInformationSelector
 } from './selectors';
-import {
-    testProperties,
-    osTest,
-    biosTest,
-    infraTest,
-    configTest,
-    collectInfoTest
-} from './__mock__/selectors';
+import { testProperties, osTest, biosTest, infraTest, configTest, collectInfoTest } from './__mock__/selectors';
 
 it('propertiesSelector should return correct data', () => {
     expect(propertiesSelector(testProperties)).toEqual({
@@ -78,9 +71,9 @@ it('infrastructureSelector should return correct data', () => {
     expect(infrastructureSelector(infraTest)).toEqual({
         type: 'test-type',
         vendor: 'test-vendor',
-        ipv4: [ '1' ],
-        ipv6: [ '6' ],
-        nics: [ 'test' ]
+        ipv4: ['1'],
+        ipv6: ['6'],
+        nics: ['test']
     });
 });
 
@@ -96,17 +89,19 @@ it('infrastructureSelector - no data', () => {
 
 it('configurationSelector should return correct data', () => {
     expect(configurationSelector(configTest)).toEqual({
-        packages: [ 'packages' ],
-        services: [ 'services' ],
-        processes: [ 'processes' ],
+        packages: ['packages'],
+        services: ['services'],
+        processes: ['processes'],
         repositories: {
             disabled: [],
-            enabled: [{
-                base_url: 'test-url',
-                name: 'test-name',
-                enabled: true,
-                gpgcheck: true
-            }]
+            enabled: [
+                {
+                    base_url: 'test-url',
+                    name: 'test-name',
+                    enabled: true,
+                    gpgcheck: true
+                }
+            ]
         }
     });
 });

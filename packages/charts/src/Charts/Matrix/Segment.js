@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const Segment = ({ coords: [ X, Y ], className, size, color, children, ...props }) => (
+const Segment = ({ coords: [X, Y], className, size, color, children, ...props }) => (
     <svg className={classNames('axis-grid', className)} x={X} y={Y}>
         <rect {...props} width={size} height={size} fill={color} />
         {children}

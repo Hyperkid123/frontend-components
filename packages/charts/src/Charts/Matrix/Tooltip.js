@@ -4,12 +4,12 @@ import { CellDataProp } from './Props';
 
 const Tooltip = ({ color, cellData }) => (
     <React.Fragment>
-        { cellData.map((item, key) => (
-            <div key={ key }>
-                <span className="tooltip-box" style={ { background: color } }></span>
-                { item.label }
+        {cellData.map((item, key) => (
+            <div key={key}>
+                <span className="tooltip-box" style={{ background: color }}></span>
+                {item.label}
             </div>
-        )) }
+        ))}
     </React.Fragment>
 );
 

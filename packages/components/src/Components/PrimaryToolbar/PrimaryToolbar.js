@@ -28,20 +28,20 @@ class PrimaryToolbar extends Component {
             ...props
         } = this.props;
         const overflowActions = [
-            ...sortByConfig ?
-                [
-                    {
-                        label: 'Sort order ASC',
-                        props: { isDisabled: sortByConfig.direction === SortByDirection.asc },
-                        onClick: (e) => sortByConfig.onSortChange &&
-                            sortByConfig.onSortChange(e, SortByDirection.asc)
-                    }, {
-                        label: 'Sort order DESC',
-                        props: { isDisabled: sortByConfig.direction === SortByDirection.desc },
-                        onClick: (e) => sortByConfig.onSortChange &&
-                            sortByConfig.onSortChange(e, SortByDirection.desc)
-                    }
-                ] : []
+            ...(sortByConfig
+                ? [
+                      {
+                          label: 'Sort order ASC',
+                          props: { isDisabled: sortByConfig.direction === SortByDirection.asc },
+                          onClick: (e) => sortByConfig.onSortChange && sortByConfig.onSortChange(e, SortByDirection.asc)
+                      },
+                      {
+                          label: 'Sort order DESC',
+                          props: { isDisabled: sortByConfig.direction === SortByDirection.desc },
+                          onClick: (e) => sortByConfig.onSortChange && sortByConfig.onSortChange(e, SortByDirection.desc)
+                      }
+                  ]
+                : [])
         ];
         return (
             <DataToolbar
@@ -51,88 +51,56 @@ class PrimaryToolbar extends Component {
                 id={id || 'ins-primary-data-toolbar'}
             >
                 <DataToolbarContent>
-                    {
-                        (bulkSelect || filterConfig) &&
-                        <DataToolbarGroup
-                            className="ins-c-primary-toolbar__group-filter pf-m-spacer-lg pf-m-space-items-lg"
-                            variant="filter-group"
-                        >
-                            {
-                                bulkSelect &&
-                                <DataToolbarItem>
-                                    {
-                                        React.isValidElement(bulkSelect) ?
-                                            bulkSelect :
-                                            <BulkSelect {...bulkSelect} />
-                                    }
-                                </DataToolbarItem>
-                            }
-                            {
-                                filterConfig &&
+                    {(bulkSelect || filterConfig) && (
+                        <DataToolbarGroup className="ins-c-primary-toolbar__group-filter pf-m-spacer-lg pf-m-space-items-lg" variant="filter-group">
+                            {bulkSelect && (
+                                <DataToolbarItem>{React.isValidElement(bulkSelect) ? bulkSelect : <BulkSelect {...bulkSelect} />}</DataToolbarItem>
+                            )}
+                            {filterConfig && (
                                 <DataToolbarItem className="ins-c-primary-toolbar__filter">
-                                    {
-                                        React.isValidElement(filterConfig) ?
-                                            filterConfig :
-                                            <ConditionalFilter {...filterConfig} />
-                                    }
+                                    {React.isValidElement(filterConfig) ? filterConfig : <ConditionalFilter {...filterConfig} />}
                                 </DataToolbarItem>
-                            }
+                            )}
                         </DataToolbarGroup>
-                    }
-                    {
-                        React.isValidElement(actionsConfig) ? actionsConfig :
-                            (
-                                (actionsConfig && actionsConfig.actions && actionsConfig.actions.length > 0) ||
-                                sortByConfig ||
-                                exportConfig
-                            ) && (
-                                <Actions
-                                    {...actionsConfig || {}}
-                                    exportConfig={exportConfig}
-                                    overflowActions={overflowActions}
-                                />
-                            )
-                    }
-                    {
-                        sortByConfig &&
+                    )}
+                    {React.isValidElement(actionsConfig)
+                        ? actionsConfig
+                        : ((actionsConfig && actionsConfig.actions && actionsConfig.actions.length > 0) || sortByConfig || exportConfig) && (
+                              <Actions {...(actionsConfig || {})} exportConfig={exportConfig} overflowActions={overflowActions} />
+                          )}
+                    {sortByConfig && (
                         <DataToolbarItem className="ins-c-primary-toolbar__sort-by">
-                            {
-                                React.isValidElement(sortByConfig) ?
-                                    sortByConfig :
-                                    <SortBy  {...sortByConfig} />
-                            }
+                            {React.isValidElement(sortByConfig) ? sortByConfig : <SortBy {...sortByConfig} />}
                         </DataToolbarItem>
-                    }
+                    )}
                     {children}
-                    {
-                        pagination &&
+                    {pagination && (
                         <DataToolbarItem className="ins-c-primary-toolbar__pagination">
-                            {
-                                React.isValidElement(pagination) ?
-                                    pagination :
-                                    <Pagination isCompact {...pagination} />
-                            }
+                            {React.isValidElement(pagination) ? pagination : <Pagination isCompact {...pagination} />}
                         </DataToolbarItem>
-                    }
+                    )}
                 </DataToolbarContent>
-                {
-                    activeFiltersConfig &&
-                        React.isValidElement(activeFiltersConfig) ?
+                {activeFiltersConfig && React.isValidElement(activeFiltersConfig) ? (
+                    <DataToolbarContent>
+                        <DataToolbarItem>{activeFiltersConfig}</DataToolbarItem>
+                    </DataToolbarContent>
+                ) : (
+                    activeFiltersConfig !== undefined &&
+                    activeFiltersConfig.filters.length > 0 && (
                         <DataToolbarContent>
-                            <DataToolbarItem>{activeFiltersConfig}</DataToolbarItem>
+                            <DataToolbarItem>
+                                <FilterChips {...activeFiltersConfig} />
+                            </DataToolbarItem>
                         </DataToolbarContent>
-                        : activeFiltersConfig !== undefined && activeFiltersConfig.filters.length > 0 &&
-                        <DataToolbarContent>
-                            <DataToolbarItem><FilterChips {...activeFiltersConfig} /></DataToolbarItem>
-                        </DataToolbarContent>
-                }
+                    )
+                )}
             </DataToolbar>
         );
     }
 }
 
 PrimaryToolbar.propTypes = {
-    id: PropTypes.oneOfType([ PropTypes.number, PropTypes.string ]),
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     className: PropTypes.string,
     toggleIsExpanded: PropTypes.func,
     bulkSelect: PropTypes.shape(BulkSelect.propTypes),

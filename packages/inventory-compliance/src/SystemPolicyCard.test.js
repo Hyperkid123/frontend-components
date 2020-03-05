@@ -17,8 +17,8 @@ describe('SystemPolicyCard component', () => {
             compliant: false
         };
         const wrapper = render(
-            <IntlProvider locale={ navigator.language }>
-                <SystemPolicyCard policy={ policy } />
+            <IntlProvider locale={navigator.language}>
+                <SystemPolicyCard policy={policy} />
             </IntlProvider>
         );
         expect(toJson(wrapper)).toMatchSnapshot();

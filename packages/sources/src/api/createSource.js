@@ -3,9 +3,9 @@ import { handleError } from './handleError';
 import { getSourcesApi } from './index';
 import { patchSource } from './costManagementAuthentication';
 
-export const parseUrl = url => {
+export const parseUrl = (url) => {
     if (!url) {
-        return ({});
+        return {};
     }
 
     try {
@@ -18,13 +18,13 @@ export const parseUrl = url => {
         };
     } catch (error) {
         console.log(error);
-        return ({});
+        return {};
     }
 };
 
-export const urlOrHost = formData => formData.url ? parseUrl(formData.url) : formData;
+export const urlOrHost = (formData) => (formData.url ? parseUrl(formData.url) : formData);
 
-export const handleErrorWrapper = (sourceId) => async(error) => await handleError(error, sourceId);
+export const handleErrorWrapper = (sourceId) => async (error) => await handleError(error, sourceId);
 
 export const doCreateSource = async (formData, sourceTypes) => {
     let sourceDataOut;
@@ -32,7 +32,7 @@ export const doCreateSource = async (formData, sourceTypes) => {
     try {
         const source_type_id = sourceTypes.find((x) => x.name === formData.source_type).id;
 
-        sourceDataOut = await getSourcesApi().createSource({ ...formData.source, source_type_id  });
+        sourceDataOut = await getSourcesApi().createSource({ ...formData.source, source_type_id });
 
         const promises = [];
 
@@ -67,7 +67,7 @@ export const doCreateSource = async (formData, sourceTypes) => {
             promises.push(Promise.resolve(undefined));
         }
 
-        const [ endpointDataOut, applicationDataOut ] = await Promise.all(promises);
+        const [endpointDataOut, applicationDataOut] = await Promise.all(promises);
 
         if (endpointDataOut) {
             const authenticationData = {
@@ -89,8 +89,8 @@ export const doCreateSource = async (formData, sourceTypes) => {
 
         return {
             ...sourceDataOut,
-            endpoint: [ endpointDataOut ],
-            applications: [ applicationDataOut ]
+            endpoint: [endpointDataOut],
+            applications: [applicationDataOut]
         };
     } catch (error) {
         const errorMessage = await handleError(error, sourceDataOut ? sourceDataOut.id : undefined);

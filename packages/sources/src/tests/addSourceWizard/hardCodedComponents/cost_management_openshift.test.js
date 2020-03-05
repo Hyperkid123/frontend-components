@@ -1,11 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    Popover,
-    ClipboardCopy
-} from '@patternfly/react-core';
+import { TextContent, Text, Popover, ClipboardCopy } from '@patternfly/react-core';
 
 import * as OpCm from '../../../addSourceWizard/hardcodedComponents/openshift/costManagement';
 
@@ -37,7 +32,7 @@ describe('Cost Management OpenShift steps components', () => {
             expect(wrapper.find(Text)).toHaveLength(1);
         });
         test('System list', () => {
-            const wrapper = mount(<OpCm.PrerequisiteSystemList/>);
+            const wrapper = mount(<OpCm.PrerequisiteSystemList />);
 
             expect(wrapper.find(TextContent)).toHaveLength(1);
             expect(wrapper.find('ul')).toHaveLength(1);
@@ -45,7 +40,7 @@ describe('Cost Management OpenShift steps components', () => {
         });
     });
     test('Obtain login description', () => {
-        const wrapper = mount(<OpCm.ObtainLoginDescription/>);
+        const wrapper = mount(<OpCm.ObtainLoginDescription />);
 
         expect(wrapper.find(Popover)).toHaveLength(1);
         expect(wrapper.find('ol')).toHaveLength(1);

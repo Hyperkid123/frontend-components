@@ -5,38 +5,56 @@ import { RowLoader, processDate, parseCvssScore, downloadFile, mergeArraysByKey,
 
 describe('mergeArraysByKey', () => {
     it('should join two arrays by ID', () => {
-        const result = mergeArraysByKey([ [{
-            id: '1',
-            value: '5'
-        }, {
-            id: '2',
-            value: '9'
-        }],
-        [{
-            id: '1',
-            value: '7'
-        }] ]);
+        const result = mergeArraysByKey([
+            [
+                {
+                    id: '1',
+                    value: '5'
+                },
+                {
+                    id: '2',
+                    value: '9'
+                }
+            ],
+            [
+                {
+                    id: '1',
+                    value: '7'
+                }
+            ]
+        ]);
         expect(result.length).toBe(2);
-        expect(result).toEqual(expect.arrayContaining([ expect.objectContaining({ id: '1', value: '7' }) ]));
+        expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ id: '1', value: '7' })]));
     });
 
     it('should join arryas by different key', () => {
-        const result = mergeArraysByKey([ [{
-            key: '1',
-            value: '5'
-        }, {
-            key: '2',
-            value: '9'
-        }, {
-            id: '5',
-            value: '4'
-        }],
-        [{
-            key: '1',
-            value: '7'
-        }] ], 'key');
+        const result = mergeArraysByKey(
+            [
+                [
+                    {
+                        key: '1',
+                        value: '5'
+                    },
+                    {
+                        key: '2',
+                        value: '9'
+                    },
+                    {
+                        id: '5',
+                        value: '4'
+                    }
+                ],
+                [
+                    {
+                        key: '1',
+                        value: '7'
+                    }
+                ]
+            ],
+            'key'
+        );
         expect(result.length).toBe(3);
-        expect(result).toEqual(expect.arrayContaining([ expect.objectContaining({ key: '1', value: '7' }) ]));
+        expect(result).toEqual(expect.arrayContaining([expect.objectContaining({ key: '1', value: '7' })]));
     });
 });
 
@@ -75,7 +93,7 @@ describe('parseCvssScore', () => {
 
     it('cvssV3', () => {
         const result = parseCvssScore(1, 2);
-        const wrapper = mount(<React.Fragment>{ result }</React.Fragment>);
+        const wrapper = mount(<React.Fragment>{result}</React.Fragment>);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -115,7 +133,6 @@ describe('processDate', () => {
 
     it('should render parse date correctly', () => {
         expect(processDate(1557000000000)).toBe('04 May 2019');
-
     });
 });
 
@@ -128,14 +145,14 @@ describe('RowLoader', () => {
 
 describe('getBaseName', () => {
     [
-        [ '/group/application', '/group/application' ],
-        [ '/group/application/navigation', '/group/application' ],
-        [ '/group', '/group/' ],
-        [ '/beta/group/application', '/beta/group/application' ],
-        [ '/beta/group', '/beta/group/' ],
-        [ '/group/application#id', '/group/application' ],
-        [ '/group/application?param=value', '/group/application' ]
-    ].map(([ pathName, baseName ]) =>
+        ['/group/application', '/group/application'],
+        ['/group/application/navigation', '/group/application'],
+        ['/group', '/group/'],
+        ['/beta/group/application', '/beta/group/application'],
+        ['/beta/group', '/beta/group/'],
+        ['/group/application#id', '/group/application'],
+        ['/group/application?param=value', '/group/application']
+    ].map(([pathName, baseName]) =>
         it(`should return ${baseName} for ${pathName}`, () => {
             expect(getBaseName(pathName)).toBe(baseName);
         })

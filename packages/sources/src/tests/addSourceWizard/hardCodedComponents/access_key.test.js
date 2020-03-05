@@ -1,10 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    Popover
-} from '@patternfly/react-core';
+import { TextContent, Text, Popover } from '@patternfly/react-core';
 
 import * as AwsAccess from '../../../addSourceWizard/hardcodedComponents/aws/access_key';
 

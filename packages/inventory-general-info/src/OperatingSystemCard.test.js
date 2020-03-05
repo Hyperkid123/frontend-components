@@ -24,13 +24,13 @@ describe('OperatingSystemCard', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<OperatingSystemCard store={ store } />);
+        const wrapper = render(<OperatingSystemCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<OperatingSystemCard store={ store } />);
+        const wrapper = render(<OperatingSystemCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -43,7 +43,7 @@ describe('OperatingSystemCard', () => {
                 }
             }
         });
-        const wrapper = render(<OperatingSystemCard store={ store } />);
+        const wrapper = render(<OperatingSystemCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -51,16 +51,22 @@ describe('OperatingSystemCard', () => {
         it('should NOT call handleClick', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<OperatingSystemCard store={ store } />);
-            wrapper.find('TextListItem a').first().simulate('click');
+            const wrapper = mount(<OperatingSystemCard store={store} />);
+            wrapper
+                .find('TextListItem a')
+                .first()
+                .simulate('click');
             expect(onClick).not.toHaveBeenCalled();
         });
 
         it('should call handleClick on packages', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<OperatingSystemCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').first().simulate('click');
+            const wrapper = mount(<OperatingSystemCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .first()
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
     });

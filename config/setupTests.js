@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import 'babel-polyfill';
 
 configure({ adapter: new Adapter() });
-global.SVGPathElement = function () {};
+global.SVGPathElement = function() {};
 
 global.MutationObserver = class {
     constructor(callback) {}
@@ -13,18 +13,21 @@ global.MutationObserver = class {
 };
 
 global.window.insights = {
-    ...window.insights || {},
+    ...(window.insights || {}),
     chrome: {
-        ...(window.insights && window.insights.chrome) || {},
+        ...((window.insights && window.insights.chrome) || {}),
         auth: {
-            ...(window.insights && window.insights.chrome && window.insights.chrome) || {},
-            getUser: () => new Promise((res) => res({
-                identity: {
-                    // eslint-disable-next-line camelcase
-                    account_number: '0',
-                    type: 'User'
-                }
-            }))
+            ...((window.insights && window.insights.chrome && window.insights.chrome) || {}),
+            getUser: () =>
+                new Promise((res) =>
+                    res({
+                        identity: {
+                            // eslint-disable-next-line camelcase
+                            account_number: '0',
+                            type: 'User'
+                        }
+                    })
+                )
         }
     }
 };

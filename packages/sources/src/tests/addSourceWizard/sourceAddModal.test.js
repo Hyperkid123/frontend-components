@@ -29,7 +29,7 @@ describe('Steps components', () => {
     });
 
     it('renders correctly with sourceTypes and applicationTypes', () => {
-        const wrapper = shallow(<AddSourceWizard { ...initialProps } sourceTypes={ sourceTypes } applicationTypes={ applicationTypes }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} sourceTypes={sourceTypes} applicationTypes={applicationTypes} />);
         expect(wrapper.find(SourcesFormRenderer)).toHaveLength(1);
     });
 
@@ -38,7 +38,7 @@ describe('Steps components', () => {
         dependency.doLoadApplicationTypes = jest.fn(() => new Promise((resolve) => resolve({ applicationTypes })));
         dependency.doLoadSourceTypes = jest.fn(() => new Promise((resolve) => resolve({ sourceTypes })));
 
-        const wrapper = shallow(<AddSourceWizard { ...initialProps } applicationTypes={ applicationTypes }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} applicationTypes={applicationTypes} />);
 
         // loading state
         expect(wrapper.find(SourcesFormRenderer)).toHaveLength(0);
@@ -59,7 +59,7 @@ describe('Steps components', () => {
         dependency.doLoadSourceTypes = jest.fn(() => new Promise((resolve) => resolve({ sourceTypes })));
         dependency.doLoadApplicationTypes = jest.fn(() => new Promise((resolve) => resolve({ applicationTypes })));
 
-        const wrapper = shallow(<AddSourceWizard { ...initialProps } sourceTypes={ sourceTypes }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} sourceTypes={sourceTypes} />);
 
         // loading state
         expect(wrapper.find(SourcesFormRenderer)).toHaveLength(0);
@@ -80,7 +80,7 @@ describe('Steps components', () => {
         dependency.doLoadSourceTypes = jest.fn(() => new Promise((resolve) => resolve({ sourceTypes })));
         dependency.doLoadApplicationTypes = jest.fn(() => new Promise((resolve) => resolve({ applicationTypes })));
 
-        const wrapper = shallow(<AddSourceWizard { ...initialProps }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} />);
 
         // loading state
         expect(wrapper.find(SourcesFormRenderer)).toHaveLength(0);

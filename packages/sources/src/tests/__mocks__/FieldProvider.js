@@ -18,7 +18,6 @@ const MockFieldProvider = ({ input, render, meta, component, children, ...rest }
     }
 
     return render({ ...rest, input: fieldInput, meta: fieldMeta, children });
-
 };
 
 export default MockFieldProvider;

@@ -6,30 +6,17 @@ const asyncInventory = [
     'SET_ANSIBLE_HOST',
     'LOAD_TAGS',
     'ALL_TAGS'
-].reduce((acc, curr) => [
-    ...acc,
-    ...[ curr, `${curr}_PENDING`, `${curr}_FULFILLED`, `${curr}_REJECTED` ]
-], []);
+].reduce((acc, curr) => [...acc, ...[curr, `${curr}_PENDING`, `${curr}_FULFILLED`, `${curr}_REJECTED`]], []);
 
-export const INVENTORY_ACTION_TYPES = [
-    ...asyncInventory
-]
-.reduce((acc, curr) => {
+export const INVENTORY_ACTION_TYPES = [...asyncInventory].reduce((acc, curr) => {
     acc[curr] = curr;
     return acc;
-},
-{}
-);
+}, {});
 
-export const ACTION_TYPES = [
-    ...asyncInventory
-]
-.reduce((acc, curr) => {
+export const ACTION_TYPES = [...asyncInventory].reduce((acc, curr) => {
     acc[curr] = curr;
     return acc;
-},
-{}
-);
+}, {});
 
 export const UPDATE_ENTITIES = 'UPDATE_ENTITIES';
 export const SELECT_ENTITY = 'SELECT_ENTITY';

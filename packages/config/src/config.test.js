@@ -7,14 +7,7 @@ port,
 import configBuilder from './config';
 
 describe('should create dummy config with no options', () => {
-    const {
-        mode,
-        optimization,
-        entry,
-        output,
-        devServer,
-        serve
-    } = configBuilder();
+    const { mode, optimization, entry, output, devServer, serve } = configBuilder();
 
     const { mode: prodMode } = configBuilder({ mode: 'production' });
     test('mode', () => {
@@ -84,11 +77,7 @@ describe('should create dummy config with no options', () => {
 });
 
 describe('rootFolder', () => {
-    const {
-        output,
-        devServer,
-        serve
-    } = configBuilder({ rootFolder: '/some' });
+    const { output, devServer, serve } = configBuilder({ rootFolder: '/some' });
     test('output', () => {
         expect(output.path).toBe('/some/dist');
     });
@@ -103,17 +92,12 @@ describe('rootFolder', () => {
 });
 
 test('appEntry correctly set', () => {
-    const {
-        entry
-    } = configBuilder({ appEntry: 'testEntry' });
+    const { entry } = configBuilder({ appEntry: 'testEntry' });
     expect(entry).toEqual({ App: 'testEntry' });
 });
 
 describe('publicPath', () => {
-    const {
-        output,
-        serve
-    } = configBuilder({ publicPath: 'test-value' });
+    const { output, serve } = configBuilder({ publicPath: 'test-value' });
 
     test('output', () => {
         expect(output.publicPath).toBe('test-value');
@@ -125,10 +109,7 @@ describe('publicPath', () => {
 });
 
 describe('port', () => {
-    const {
-        devServer,
-        serve
-    } = configBuilder({ port: 1000 });
+    const { devServer, serve } = configBuilder({ port: 1000 });
 
     test('devServer', () => {
         expect(devServer.port).toBe(1000);
@@ -140,8 +121,6 @@ describe('port', () => {
 });
 
 test('https', () => {
-    const {
-        devServer
-    } = configBuilder({ https: true });
+    const { devServer } = configBuilder({ https: true });
     expect(devServer.https).toBe(true);
 });

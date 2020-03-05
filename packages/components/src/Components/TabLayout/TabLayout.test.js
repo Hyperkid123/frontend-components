@@ -37,14 +37,20 @@ describe('TabLayout component', () => {
 
         it('should call onTabClick', () => {
             const wrapper = mount(<TabLayout onTabClick={onTabClick} items={items} />);
-            wrapper.find('.ins-tabs > div').first().simulate('click');
+            wrapper
+                .find('.ins-tabs > div')
+                .first()
+                .simulate('click');
             expect(onTabClick.mock.calls.length).toBe(1);
             expect(onTabClick.mock.calls[0][1]).toMatchObject(items[0]);
         });
 
-        it('it shouldn\'t call onTabClick', () => {
+        it("it shouldn't call onTabClick", () => {
             const wrapper = mount(<TabLayout items={items} />);
-            wrapper.find('.ins-tabs > div').first().simulate('click');
+            wrapper
+                .find('.ins-tabs > div')
+                .first()
+                .simulate('click');
             expect(onTabClick.mock.calls.length).toBe(1);
         });
     });

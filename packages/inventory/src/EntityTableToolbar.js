@@ -8,17 +8,7 @@ import { fetchAllTags, clearFilters, entitiesLoading } from './redux/actions';
 import debounce from 'lodash/debounce';
 import { Spinner } from '@patternfly/react-core/dist/esm/experimental';
 import { InventoryContext } from './Inventory';
-import {
-    mapGroups,
-    TEXT_FILTER,
-    reduceFilters,
-    constructGroups,
-    TEXTUAL_CHIP,
-    STALE_CHIP,
-    TAG_CHIP,
-    mergeTableProps,
-    staleness
-} from './constants';
+import { mapGroups, TEXT_FILTER, reduceFilters, constructGroups, TEXTUAL_CHIP, STALE_CHIP, TAG_CHIP, mergeTableProps, staleness } from './constants';
 import flatMap from 'lodash/flatMap';
 
 class ContextEntityTableToolbar extends Component {
@@ -27,22 +17,24 @@ class ContextEntityTableToolbar extends Component {
         selected: {},
         filterTagsBy: '',
         staleFilter: []
-    }
+    };
 
     updateData = (config) => {
         const { onRefresh, onRefreshData, perPage, filters, page } = this.props;
-        onRefresh ? onRefresh({
-            page,
-            per_page: perPage,
-            filters,
-            ...config
-        }) : onRefreshData({
-            page,
-            per_page: perPage,
-            filters,
-            ...config
-        });
-    }
+        onRefresh
+            ? onRefresh({
+                  page,
+                  per_page: perPage,
+                  filters,
+                  ...config
+              })
+            : onRefreshData({
+                  page,
+                  per_page: perPage,
+                  filters,
+                  ...config
+              });
+    };
 
     debouncedRefresh = debounce((config) => {
         this.updateData(config);
@@ -68,7 +60,7 @@ class ContextEntityTableToolbar extends Component {
 
     onSetTextFilter = (value, debounced = true) => {
         const { perPage, filters } = this.props;
-        const textualFilter = filters.find(oneFilter => oneFilter.value === TEXT_FILTER);
+        const textualFilter = filters.find((oneFilter) => oneFilter.value === TEXT_FILTER);
         if (textualFilter) {
             textualFilter.filter = value;
         } else {
@@ -77,27 +69,21 @@ class ContextEntityTableToolbar extends Component {
 
         const refresh = debounced ? this.debouncedRefresh : this.updateData;
         this.setState({ textFilter: value }, () => refresh({ page: 1, perPage, filters }));
-    }
+    };
 
     onSetStaleFilter = (value, debounced = true) => {
         const { perPage, filters } = this.props;
         const refresh = debounced ? this.debouncedRefresh : this.updateData;
-        const newFilters = [
-            ...filters.filter(oneFilter => !oneFilter.hasOwnProperty('staleFilter')),
-            { staleFilter: value }
-        ];
+        const newFilters = [...filters.filter((oneFilter) => !oneFilter.hasOwnProperty('staleFilter')), { staleFilter: value }];
         this.setState({ staleFilter: value }, () => refresh({ page: 1, perPage, filters: newFilters }));
-    }
+    };
 
     applyTags = (newSelection, debounced = true) => {
         const { perPage, filters } = this.props;
         const tagFilters = mapGroups(newSelection);
 
         const refresh = debounced ? this.debouncedRefresh : this.updateData;
-        const newFilters = [
-            ...filters.filter(oneFilter => !oneFilter.hasOwnProperty('tagFilters')),
-            { tagFilters }
-        ];
+        const newFilters = [...filters.filter((oneFilter) => !oneFilter.hasOwnProperty('tagFilters')), { tagFilters }];
         refresh({
             page: 1,
             perPage,
@@ -105,7 +91,7 @@ class ContextEntityTableToolbar extends Component {
         });
 
         return newFilters;
-    }
+    };
 
     createTagsFilter = () => {
         const { allTags, allTagsLoaded, additionalTagsCount, getAllTags, filters } = this.props;
@@ -129,43 +115,51 @@ class ContextEntityTableToolbar extends Component {
                         group,
                         item
                     };
-                    this.setState(
-                        { selected: newSelection },
-                        () => {
-                            const newFilter = this.applyTags(newSelection);
-                            getAllTags(filterTagsBy, { filters: newFilter });
-                        });
+                    this.setState({ selected: newSelection }, () => {
+                        const newFilter = this.applyTags(newSelection);
+                        getAllTags(filterTagsBy, { filters: newFilter });
+                    });
                 },
                 selected,
-                ...allTagsLoaded && allTags.length > 0 ? {
-                    groups: [
-                        ...constructGroups(allTags),
-                        ...additionalTagsCount > 0 ? [{
-                            items: [{
-                                label: `${additionalTagsCount} more tags available`,
-                                isDisabled: true,
-                                className: 'ins-c-inventory__tags-more-items'
-                            }]
-                        }] : []
-                    ]
-                } : {
-                    items: [
-                        {
-                            label: !allTagsLoaded ? <Fragment>
-                                <span>
-                                    Loading... <Spinner size="md" />
-                                </span>
-                            </Fragment> : <div className="ins-c-inventory__tags-no-tags">
-                                No tags available
-                            </div>,
-                            isDisabled: true,
-                            className: 'ins-c-inventory__tags-tail'
-                        }
-                    ]
-                }
+                ...(allTagsLoaded && allTags.length > 0
+                    ? {
+                          groups: [
+                              ...constructGroups(allTags),
+                              ...(additionalTagsCount > 0
+                                  ? [
+                                        {
+                                            items: [
+                                                {
+                                                    label: `${additionalTagsCount} more tags available`,
+                                                    isDisabled: true,
+                                                    className: 'ins-c-inventory__tags-more-items'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                  : [])
+                          ]
+                      }
+                    : {
+                          items: [
+                              {
+                                  label: !allTagsLoaded ? (
+                                      <Fragment>
+                                          <span>
+                                              Loading... <Spinner size="md" />
+                                          </span>
+                                      </Fragment>
+                                  ) : (
+                                      <div className="ins-c-inventory__tags-no-tags">No tags available</div>
+                                  ),
+                                  isDisabled: true,
+                                  className: 'ins-c-inventory__tags-tail'
+                              }
+                          ]
+                      })
             }
         };
-    }
+    };
 
     constructFilters = () => {
         const { perPage, onClearFilters, activeFiltersConfig, getAllTags, hasItems } = this.props;
@@ -173,32 +167,42 @@ class ContextEntityTableToolbar extends Component {
         return {
             filters: [
                 ...mapGroups(selected, 'chips'),
-                ...textFilter.length > 0 ? [{
-                    category: 'Display name',
-                    type: TEXTUAL_CHIP,
-                    chips: [
-                        { name: textFilter }
-                    ]
-                }] : [],
-                ...!hasItems && staleFilter && staleFilter.length > 0 ? [{
-                    category: 'Status',
-                    type: STALE_CHIP,
-                    chips: staleness.filter(({ value }) => staleFilter.includes(value))
-                    .map(({ label, ...props }) => ({ name: label, ...props }))
-                }] : [],
-                ...(activeFiltersConfig && activeFiltersConfig.filters) || []
+                ...(textFilter.length > 0
+                    ? [
+                          {
+                              category: 'Display name',
+                              type: TEXTUAL_CHIP,
+                              chips: [{ name: textFilter }]
+                          }
+                      ]
+                    : []),
+                ...(!hasItems && staleFilter && staleFilter.length > 0
+                    ? [
+                          {
+                              category: 'Status',
+                              type: STALE_CHIP,
+                              chips: staleness
+                                  .filter(({ value }) => staleFilter.includes(value))
+                                  .map(({ label, ...props }) => ({ name: label, ...props }))
+                          }
+                      ]
+                    : []),
+                ...((activeFiltersConfig && activeFiltersConfig.filters) || [])
             ],
-            onDelete: (e, [ deleted ], isAll) => {
+            onDelete: (e, [deleted], isAll) => {
                 if (isAll) {
                     this.updateData({ page: 1, perPage, filters: [] });
                     onClearFilters();
-                    this.setState({
-                        selected: {},
-                        textFilter: '',
-                        staleFilter: []
-                    }, () => {
-                        getAllTags(filterTagsBy, {});
-                    });
+                    this.setState(
+                        {
+                            selected: {},
+                            textFilter: '',
+                            staleFilter: []
+                        },
+                        () => {
+                            getAllTags(filterTagsBy, {});
+                        }
+                    );
                 } else {
                     if (deleted.type === TEXTUAL_CHIP) {
                         this.onSetTextFilter('', false);
@@ -219,18 +223,18 @@ class ContextEntityTableToolbar extends Component {
                 activeFiltersConfig && activeFiltersConfig.onDelete && activeFiltersConfig.onDelete(e, deleted, isAll);
             }
         };
-    }
+    };
 
     isFilterSelected = () => {
         const { activeFiltersConfig } = this.props;
         const { selected, textFilter, staleFilter } = this.state;
-        return textFilter.length > 0 || flatMap(
-            Object.values(selected),
-            (value) => Object.values(value).filter(Boolean)
-        ).filter(Boolean).length > 0 ||
-        (staleFilter && staleFilter.length > 0) ||
-        (activeFiltersConfig && activeFiltersConfig.filters && activeFiltersConfig.filters.length > 0);
-    }
+        return (
+            textFilter.length > 0 ||
+            flatMap(Object.values(selected), (value) => Object.values(value).filter(Boolean)).filter(Boolean).length > 0 ||
+            (staleFilter && staleFilter.length > 0) ||
+            (activeFiltersConfig && activeFiltersConfig.filters && activeFiltersConfig.filters.length > 0)
+        );
+    };
 
     render() {
         const {
@@ -258,56 +262,67 @@ class ContextEntityTableToolbar extends Component {
             ...props
         } = this.props;
         const inventoryFilters = [
-            ...!hasItems ? [{
-                label: 'Name',
-                value: 'name-filter',
-                filterValues: {
-                    placeholder: 'Filter by name',
-                    value: this.state.textFilter,
-                    onChange: (_e, value) => this.onSetTextFilter(value)
-                }
-            }, {
-                label: 'Status',
-                value: 'stale-status',
-                type: 'checkbox',
-                filterValues: {
-                    value: this.state.staleFilter,
-                    onChange: (_e, value) => this.onSetStaleFilter(value),
-                    items: staleness
-                }
-            }] : [],
-            ...(localStorage.getItem('rhcs-tags') && !hasItems) ? [ this.createTagsFilter() ] : [],
-            ...(filterConfig && filterConfig.items) || []
+            ...(!hasItems
+                ? [
+                      {
+                          label: 'Name',
+                          value: 'name-filter',
+                          filterValues: {
+                              placeholder: 'Filter by name',
+                              value: this.state.textFilter,
+                              onChange: (_e, value) => this.onSetTextFilter(value)
+                          }
+                      },
+                      {
+                          label: 'Status',
+                          value: 'stale-status',
+                          type: 'checkbox',
+                          filterValues: {
+                              value: this.state.staleFilter,
+                              onChange: (_e, value) => this.onSetStaleFilter(value),
+                              items: staleness
+                          }
+                      }
+                  ]
+                : []),
+            ...(localStorage.getItem('rhcs-tags') && !hasItems ? [this.createTagsFilter()] : []),
+            ...((filterConfig && filterConfig.items) || [])
         ];
-        return <PrimaryToolbar
-            {...props}
-            className={`ins-c-inventory__table--toolbar ${hasItems ? 'ins-c-inventory__table--toolbar-has-items' : ''}`}
-            {...inventoryFilters.length > 0 && {
-                filterConfig: {
-                    ...filterConfig || {},
-                    items: inventoryFilters
+        return (
+            <PrimaryToolbar
+                {...props}
+                className={`ins-c-inventory__table--toolbar ${hasItems ? 'ins-c-inventory__table--toolbar-has-items' : ''}`}
+                {...(inventoryFilters.length > 0 && {
+                    filterConfig: {
+                        ...(filterConfig || {}),
+                        items: inventoryFilters
+                    }
+                })}
+                {...(this.isFilterSelected() && { activeFiltersConfig: this.constructFilters() })}
+                actionsConfig={loaded ? actionsConfig : null}
+                pagination={
+                    loaded ? (
+                        {
+                            page,
+                            itemCount: total,
+                            perPage,
+                            onSetPage: (_e, newPage) => this.updateData({ page: newPage, per_page: perPage, filters }),
+                            onPerPageSelect: (_e, newPerPage) => this.updateData({ page: 1, per_page: newPerPage, filters })
+                        }
+                    ) : (
+                        <Skeleton size={SkeletonSize.lg} />
+                    )
                 }
-            }}
-            { ...this.isFilterSelected() && { activeFiltersConfig: this.constructFilters() } }
-            actionsConfig={ loaded ? actionsConfig : null }
-            pagination={loaded ? {
-                page,
-                itemCount: total,
-                perPage,
-                onSetPage: (_e, newPage) => this.updateData({ page: newPage, per_page: perPage, filters }),
-                onPerPageSelect: (_e, newPerPage) => this.updateData({ page: 1, per_page: newPerPage, filters })
-            } : <Skeleton size={SkeletonSize.lg} />}
-        >
-            { children }
-        </PrimaryToolbar>;
+            >
+                {children}
+            </PrimaryToolbar>
+        );
     }
 }
 
 const EntityTableToolbar = ({ ...props }) => (
     <InventoryContext.Consumer>
-        {({ onRefreshData }) => (
-            <ContextEntityTableToolbar {...props} onRefreshData={onRefreshData} />
-        )}
+        {({ onRefreshData }) => <ContextEntityTableToolbar {...props} onRefreshData={onRefreshData} />}
     </InventoryContext.Consumer>
 );
 
@@ -347,7 +362,8 @@ EntityTableToolbar.defaultProps = {
 
 function mapStateToProps(
     { entities: { page, perPage, total, loaded, activeFilters, allTags, allTagsLoaded, additionalTagsCount } },
-    { totalItems, page: currPage, perPage: currPerPage, hasItems, onRefresh }) {
+    { totalItems, page: currPage, perPage: currPerPage, hasItems, onRefresh }
+) {
     return {
         page: hasItems ? currPage : page,
         perPage: hasItems ? currPerPage : perPage,
@@ -362,12 +378,16 @@ function mapStateToProps(
     };
 }
 
-export default connect(mapStateToProps, (dispatch) => ({
-    getAllTags: (search, options) => {
-        if (localStorage.getItem('rhcs-tags')) {
-            dispatch(fetchAllTags(search, options));
-        }
-    },
-    onClearFilters: () => dispatch(clearFilters()),
-    onRefresh: () => dispatch(entitiesLoading())
-}), mergeTableProps)(EntityTableToolbar);
+export default connect(
+    mapStateToProps,
+    (dispatch) => ({
+        getAllTags: (search, options) => {
+            if (localStorage.getItem('rhcs-tags')) {
+                dispatch(fetchAllTags(search, options));
+            }
+        },
+        onClearFilters: () => dispatch(clearFilters()),
+        onRefresh: () => dispatch(entitiesLoading())
+    }),
+    mergeTableProps
+)(EntityTableToolbar);

@@ -23,64 +23,56 @@ class InventoryTable extends Component {
     onRefreshData = (options) => {
         const { onUpdateData } = this.state;
         onUpdateData(options);
-    }
+    };
 
     render() {
-        const {
-            items,
-            pathPrefix = 0,
-            filters,
-            apiBase,
-            showHealth,
-            onRefresh,
-            page,
-            perPage,
-            total,
-            children,
-            ...props
-        } = this.props;
+        const { items, pathPrefix = 0, filters, apiBase, showHealth, onRefresh, page, perPage, total, children, ...props } = this.props;
         return (
-            <InventoryContext.Provider value={ {
-                onRefreshData: this.state.onRefreshData,
-                onUpdateData: this.state.onUpdateData,
-                setRefresh: (onRefreshData) => this.setState({
-                    onRefreshData
-                }),
-                setUpdate: (onUpdateData) => this.setState({
-                    onUpdateData
-                })
-            } }>
+            <InventoryContext.Provider
+                value={{
+                    onRefreshData: this.state.onRefreshData,
+                    onUpdateData: this.state.onUpdateData,
+                    setRefresh: (onRefreshData) =>
+                        this.setState({
+                            onRefreshData
+                        }),
+                    setUpdate: (onUpdateData) =>
+                        this.setState({
+                            onUpdateData
+                        })
+                }}
+            >
                 <EntityTableToolbar
-                    { ...props }
+                    {...props}
                     onRefresh={onRefresh}
-                    totalItems={ total || (items && items.length) }
-                    hasItems={ Boolean(items) }
-                    filters={ filters }
-                    pathPrefix={ pathPrefix }
-                    apiBase={ apiBase }
-                    page={ page }
-                    perPage={ perPage }
+                    totalItems={total || (items && items.length)}
+                    hasItems={Boolean(items)}
+                    filters={filters}
+                    pathPrefix={pathPrefix}
+                    apiBase={apiBase}
+                    page={page}
+                    perPage={perPage}
                 >
-                    { children }
+                    {children}
                 </EntityTableToolbar>
                 <InventoryList
-                    { ...props }
-                    hasItems={ Boolean(items) }
-                    onRefresh={ onRefresh }
-                    items={ items }
-                    pathPrefix={ pathPrefix }
-                    apiBase={ apiBase }
-                    perPage={ perPage }
-                    showHealth={ showHealth }
+                    {...props}
+                    hasItems={Boolean(items)}
+                    onRefresh={onRefresh}
+                    items={items}
+                    pathPrefix={pathPrefix}
+                    apiBase={apiBase}
+                    perPage={perPage}
+                    showHealth={showHealth}
                 />
                 <TableToolbar isFooter className="ins-c-inventory__table--toolbar">
                     <Pagination
                         isFull
-                        totalItems={ total || (items && items.length) }
-                        page={ page }
-                        hasItems={ Boolean(items) }
-                        onRefresh={ onRefresh }
-                        perPage={ perPage }
+                        totalItems={total || (items && items.length)}
+                        page={page}
+                        hasItems={Boolean(items)}
+                        onRefresh={onRefresh}
+                        perPage={perPage}
                     />
                 </TableToolbar>
             </InventoryContext.Provider>
@@ -89,56 +81,55 @@ class InventoryTable extends Component {
 }
 
 const InventoryItem = ({ pathPrefix = 0, apiBase, useCard = false, hideBack = false, ...props }) => (
-    <InventoryDetail
-        { ...props }
-        pathPrefix={ pathPrefix }
-        apiBase={ apiBase }
-        useCard={ useCard }
-        hideBack={ hideBack }
-    />
+    <InventoryDetail {...props} pathPrefix={pathPrefix} apiBase={apiBase} useCard={useCard} hideBack={hideBack} />
 );
 
 const Inventory = ({ match = {}, noTable = false, items, pathPrefix = 0, apiBase }) => {
     return (
         <Switch>
-            {
-                !noTable &&
-                <Route exact path={ match.url } render={ props => (
-                    <InventoryTable { ...props } items={ items } pathPrefix={ pathPrefix } apiBase={ apiBase } />
-                ) } />
-            }
-            <Route path={ `${match.url}${match.url.substr(-1, 1) === '/' ? '' : '/'}:inventoryId` }
-                render={ props => (
+            {!noTable && (
+                <Route
+                    exact
+                    path={match.url}
+                    render={(props) => <InventoryTable {...props} items={items} pathPrefix={pathPrefix} apiBase={apiBase} />}
+                />
+            )}
+            <Route
+                path={`${match.url}${match.url.substr(-1, 1) === '/' ? '' : '/'}:inventoryId`}
+                render={(props) => (
                     <Fragment>
-                        <InventoryItem { ...props } root={ match.url } pathPrefix={ pathPrefix } apiBase={ apiBase } />
+                        <InventoryItem {...props} root={match.url} pathPrefix={pathPrefix} apiBase={apiBase} />
                         <AppInfo />
                     </Fragment>
-                ) }
+                )}
             />
         </Switch>
     );
 };
 
-export default routerParams((Inventory));
+export default routerParams(Inventory);
 
-const reduxComponent = (props, store, ConnectedComponent) => <Fragment>
-    {
-        store ? <Provider store={store}>
+const reduxComponent = (props, store, ConnectedComponent) => (
+    <Fragment>
+        {store ? (
+            <Provider store={store}>
+                <ConnectedComponent {...props} />
+            </Provider>
+        ) : (
             <ConnectedComponent {...props} />
-        </Provider> :
-            <ConnectedComponent {...props} />
-    }
-</Fragment>;
+        )}
+    </Fragment>
+);
 
 export function inventoryConnector(store) {
     const InventoryDetail = (props) => (
         <Fragment>
-            <InventoryItem { ...props } />
+            <InventoryItem {...props} />
             <AppInfo />
         </Fragment>
     );
 
-    const connectedInventory = routerParams((Inventory));
+    const connectedInventory = routerParams(Inventory);
 
     connectedInventory.updateEntities = updateEntities;
     connectedInventory.InventoryTable = React.forwardRef((props, ref) => reduxComponent({ ...props, ref }, store, InventoryTable));

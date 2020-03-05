@@ -6,7 +6,7 @@ import { Dropdown, DropdownItem, DropdownToggle } from '@patternfly/react-core';
 class PaginationNav extends Component {
     state = {
         isOpen: false
-    }
+    };
 
     onSelect = () => {
         this.setState({
@@ -14,7 +14,7 @@ class PaginationNav extends Component {
         });
     };
 
-    onToggle = isOpen => {
+    onToggle = (isOpen) => {
         this.setState({
             isOpen
         });
@@ -36,25 +36,31 @@ class PaginationNav extends Component {
         } = this.props;
         const { isOpen } = this.state;
         return (
-            <div className={ `pf-c-options-menu ${className}` } { ...props }>
-                <span id={ `${widtgetId}-label` } hidden>Items per page:</span>
+            <div className={`pf-c-options-menu ${className}`} {...props}>
+                <span id={`${widtgetId}-label`} hidden>
+                    Items per page:
+                </span>
                 <div className="pf-c-options-menu__toggle pf-m-text pf-m-plain">
-                    <Dropdown direction={ dropDirection }
+                    <Dropdown
+                        direction={dropDirection}
                         isPlain
-                        isOpen={ isOpen }
-                        onSelect={ this.onSelect }
-                        dropdownItems={ perPageOptions.map(({ title, value }) => (
-                            <DropdownItem onClick={ event => value !== perPage && onSetPerPage(event, value) } key={ value } component="button">
-                                { title }
-                                { value === perPage && <CheckIcon className="pf-c-options-menu__menu-item-icon" size="md" /> }
+                        isOpen={isOpen}
+                        onSelect={this.onSelect}
+                        dropdownItems={perPageOptions.map(({ title, value }) => (
+                            <DropdownItem onClick={(event) => value !== perPage && onSetPerPage(event, value)} key={value} component="button">
+                                {title}
+                                {value === perPage && <CheckIcon className="pf-c-options-menu__menu-item-icon" size="md" />}
                             </DropdownItem>
-                        )) }
+                        ))}
                         toggle={
-                            <DropdownToggle onToggle={ this.onToggle } iconComponent={ null } className="pf-c-options-menu__toggle-button">
+                            <DropdownToggle onToggle={this.onToggle} iconComponent={null} className="pf-c-options-menu__toggle-button">
                                 <span className="pf-c-options-menu__toggle-text">
-                                    <b>{ itemsStart } - { itemsEnd }</b> of <b>{ itemCount }</b> { itemsTitle }
+                                    <b>
+                                        {itemsStart} - {itemsEnd}
+                                    </b>{' '}
+                                    of <b>{itemCount}</b> {itemsTitle}
                                 </span>
-                                { dropDirection === 'up' ? <CaretUpIcon /> : <CaretDownIcon /> }
+                                {dropDirection === 'up' ? <CaretUpIcon /> : <CaretDownIcon />}
                             </DropdownToggle>
                         }
                     />
@@ -73,10 +79,12 @@ PaginationNav.propTypes = {
     onSetPerPage: PropTypes.func,
     itemCount: PropTypes.number.isRequired,
     perPage: PropTypes.number,
-    perPageOptions: PropTypes.arrayOf(PropTypes.shape({
-        title: PropTypes.node,
-        value: PropTypes.number
-    }))
+    perPageOptions: PropTypes.arrayOf(
+        PropTypes.shape({
+            title: PropTypes.node,
+            value: PropTypes.number
+        })
+    )
 };
 
 PaginationNav.defaultProps = {

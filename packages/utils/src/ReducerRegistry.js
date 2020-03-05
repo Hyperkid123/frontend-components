@@ -11,10 +11,13 @@ export function applyReducerHash(reducerHash, initialState = {}) {
 }
 
 export function dispatchActionsToStore(actions, store) {
-    return Object.keys(actions).reduce((acc, curr) => ({
-        ...acc,
-        [curr]: (...passTrough) => store && store.dispatch(actions[curr](...passTrough))
-    }), {});
+    return Object.keys(actions).reduce(
+        (acc, curr) => ({
+            ...acc,
+            [curr]: (...passTrough) => store && store.dispatch(actions[curr](...passTrough))
+        }),
+        {}
+    );
 }
 
 /**
@@ -25,11 +28,7 @@ export function dispatchActionsToStore(actions, store) {
 class ReducerRegistry {
     constructor(initState = {}, middlewares = [], composeEnhancersDefault = compose) {
         const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || composeEnhancersDefault;
-        this.store = createStore(
-            (state = initState) => state,
-            initState,
-            composeEnhancers(applyMiddleware(...middlewares))
-        );
+        this.store = createStore((state = initState) => state, initState, composeEnhancers(applyMiddleware(...middlewares)));
         this.reducers = {};
     }
 

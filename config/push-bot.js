@@ -11,7 +11,7 @@ dotenv.config();
 const octokit = Octokit({
     auth: process.env.GH_TOKEN_PUSH,
     userAgent: 'nacho-bot',
-    previews: [ 'jean-grey', 'symmetra' ],
+    previews: ['jean-grey', 'symmetra'],
     timeZone: 'Europe/Prague',
     baseUrl: 'https://api.github.com'
 });
@@ -43,7 +43,7 @@ const pushFile = async ({ owner, repo }, fileName, message) => {
         path: fileName,
         message: message || 'Release of new version!',
         content: content,
-        ...sha && { sha }
+        ...(sha && { sha })
     });
 };
 

@@ -24,7 +24,7 @@ class ContextFooterPagination extends Component {
         } else {
             onRefreshData(pagination);
         }
-    }
+    };
 
     onSetPage = (event, page) => {
         const { perPage, filters } = this.props;
@@ -41,33 +41,35 @@ class ContextFooterPagination extends Component {
                 page: undefined
             });
         }
-    }
+    };
 
     onPerPageSelect = (_event, perPage) => {
         const { filters } = this.props;
         // eslint-disable-next-line camelcase
         this.updatePagination({ page: 1, per_page: perPage, filters });
-    }
+    };
 
     render() {
         const { total, page, perPage, loaded, direction, isFull } = this.props;
         const { page: statePage } = this.state;
-        const extra = isFull ? {
-            variant: PaginationVariant.bottom
-        } : {};
+        const extra = isFull
+            ? {
+                  variant: PaginationVariant.bottom
+              }
+            : {};
         return (
             <Fragment>
-                { loaded && (
+                {loaded && (
                     <Pagination
-                        { ...extra }
-                        itemCount={ total }
-                        page={ statePage || page }
-                        perPage={ perPage }
-                        dropDirection={ direction }
-                        onSetPage={ this.onSetPage }
-                        onPerPageSelect={ this.onPerPageSelect }
+                        {...extra}
+                        itemCount={total}
+                        page={statePage || page}
+                        perPage={perPage}
+                        dropDirection={direction}
+                        onSetPage={this.onSetPage}
+                        onPerPageSelect={this.onPerPageSelect}
                     />
-                ) }
+                )}
             </Fragment>
         );
     }
@@ -75,9 +77,7 @@ class ContextFooterPagination extends Component {
 
 const FooterPagination = ({ ...props }) => (
     <InventoryContext.Consumer>
-        { ({ onRefreshData }) => (
-            <ContextFooterPagination { ...props } onRefreshData={ onRefreshData } />
-        ) }
+        {({ onRefreshData }) => <ContextFooterPagination {...props} onRefreshData={onRefreshData} />}
     </InventoryContext.Consumer>
 );
 
@@ -107,7 +107,8 @@ FooterPagination.defaultProps = {
 
 function stateToProps(
     { entities: { page, perPage, total, loaded, activeFilters } },
-    { totalItems, page: currPage, perPage: currPerPage, hasItems, isFull }) {
+    { totalItems, page: currPage, perPage: currPerPage, hasItems, isFull }
+) {
     return {
         page: hasItems ? currPage : page,
         perPage: hasItems ? currPerPage : perPage,

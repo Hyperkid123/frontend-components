@@ -28,13 +28,13 @@ describe('AddSourceWizard', () => {
     });
 
     it('renders correctly with sourceTypes', () => {
-        const wrapper = shallow(<AddSourceWizard { ...initialProps }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} />);
         expect(wrapper.find(Form)).toHaveLength(1);
         expect(wrapper.find(Modal)).toHaveLength(1);
     });
 
     it('renders correctly without sourceTypes', () => {
-        const wrapper = shallow(<AddSourceWizard { ...initialProps } sourceTypes={ undefined }/>);
+        const wrapper = shallow(<AddSourceWizard {...initialProps} sourceTypes={undefined} />);
         expect(wrapper.find(Form)).toHaveLength(1);
         expect(wrapper.find(Modal)).toHaveLength(1);
     });
@@ -43,8 +43,12 @@ describe('AddSourceWizard', () => {
         createSource.doCreateSource = jest.fn(() => new Promise((resolve) => resolve('ok')));
         dependency.findSource = jest.fn(() => Promise.resolve({ data: { sources: [] } }));
 
-        const wrapper = mount(<AddSourceWizard { ...initialProps }/>);
-        const form = wrapper.find(FormRenderer).children().children().instance().form;
+        const wrapper = mount(<AddSourceWizard {...initialProps} />);
+        const form = wrapper
+            .find(FormRenderer)
+            .children()
+            .children()
+            .instance().form;
 
         form.change('source.name', 'nameee');
 
@@ -64,15 +68,22 @@ describe('AddSourceWizard', () => {
         createSource.doCreateSource = jest.fn(() => new Promise((resolve) => resolve({ name: 'source' })));
         dependency.findSource = jest.fn(() => Promise.resolve({ data: { sources: [] } }));
 
-        const wrapper = mount(<AddSourceWizard { ...initialProps } afterSuccess={ afterSubmitMock }/>);
-        const form = wrapper.find(FormRenderer).children().children().instance().form;
+        const wrapper = mount(<AddSourceWizard {...initialProps} afterSuccess={afterSubmitMock} />);
+        const form = wrapper
+            .find(FormRenderer)
+            .children()
+            .children()
+            .instance().form;
 
         form.change('source.name', 'nameee');
 
         setTimeout(() => {
             form.submit().then(() => {
                 wrapper.update();
-                wrapper.find(Button).at(0).simulate('click');
+                wrapper
+                    .find(Button)
+                    .at(0)
+                    .simulate('click');
                 wrapper.update();
 
                 expect(afterSubmitMock).toHaveBeenCalledWith({ name: 'source' });
@@ -87,14 +98,21 @@ describe('AddSourceWizard', () => {
         const onClose = jest.fn();
         dependency.findSource = jest.fn(() => Promise.resolve({ data: { sources: [] } }));
 
-        const wrapper = mount(<AddSourceWizard { ...initialProps } onClose={ onClose }/>);
-        const form = wrapper.find(FormRenderer).children().children().instance().form;
+        const wrapper = mount(<AddSourceWizard {...initialProps} onClose={onClose} />);
+        const form = wrapper
+            .find(FormRenderer)
+            .children()
+            .children()
+            .instance().form;
 
         form.change('source.name', NAME);
 
         setTimeout(() => {
             wrapper.update();
-            wrapper.find(Button).at(CANCEL_BUTTON_INDEX).simulate('click');
+            wrapper
+                .find(Button)
+                .at(CANCEL_BUTTON_INDEX)
+                .simulate('click');
 
             expect(onClose).toHaveBeenCalledWith({ source: { name: NAME } });
             done();
@@ -105,8 +123,12 @@ describe('AddSourceWizard', () => {
         const ERROR_MESSAGE = 'fail';
         createSource.doCreateSource = jest.fn(() => new Promise((_resolve, reject) => reject(ERROR_MESSAGE)));
 
-        const wrapper = mount(<AddSourceWizard { ...initialProps }/>);
-        const form = wrapper.find(FormRenderer).children().children().instance().form;
+        const wrapper = mount(<AddSourceWizard {...initialProps} />);
+        const form = wrapper
+            .find(FormRenderer)
+            .children()
+            .children()
+            .instance().form;
 
         form.change('source.name', 'nameee');
 
@@ -116,7 +138,12 @@ describe('AddSourceWizard', () => {
                 expect(wrapper.find(FinalWizard)).toHaveLength(1);
                 expect(wrapper.find(FinishedStep)).toHaveLength(0);
                 expect(wrapper.find(ErroredStep)).toHaveLength(1);
-                expect(wrapper.find(ErroredStep).html().includes(ERROR_MESSAGE)).toEqual(true);
+                expect(
+                    wrapper
+                        .find(ErroredStep)
+                        .html()
+                        .includes(ERROR_MESSAGE)
+                ).toEqual(true);
                 done();
             });
         }, 1000);

@@ -8,13 +8,13 @@ import { Title } from '@patternfly/react-core';
  */
 
 const PageHeaderTitle = ({ className, title }) => {
-
-    let pageHeaderTitleClasses = classNames(
-        className
-    );
+    let pageHeaderTitleClasses = classNames(className);
 
     return (
-        <Title size='2xl' className={ pageHeaderTitleClasses } widget-type='InsightsPageHeaderTitle'> { title } </Title>
+        <Title size="2xl" className={pageHeaderTitleClasses} widget-type="InsightsPageHeaderTitle">
+            {' '}
+            {title}{' '}
+        </Title>
     );
 };
 

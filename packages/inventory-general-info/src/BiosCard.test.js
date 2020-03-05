@@ -12,24 +12,26 @@ describe('BiosCard', () => {
 
     beforeEach(() => {
         mockStore = configureStore();
-        initialState = { systemProfileStore: {
-            systemProfile: {
-                loaded: true,
-                ...biosTest,
-                cpu_flags: [ 'one' ]
+        initialState = {
+            systemProfileStore: {
+                systemProfile: {
+                    loaded: true,
+                    ...biosTest,
+                    cpu_flags: ['one']
+                }
             }
-        } };
+        };
     });
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {} });
-        const wrapper = render(<BiosCard store={ store } />);
+        const wrapper = render(<BiosCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<BiosCard store={ store } />);
+        const wrapper = render(<BiosCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -39,14 +41,17 @@ describe('BiosCard', () => {
             systemProfileStore: {
                 systemProfile: {
                     ...initialState.systemProfileStore.systemProfile,
-                    cpu_flags: [ 'one' ]
+                    cpu_flags: ['one']
                 }
             }
         });
-        const wrapper = mount(<BiosCard store={ store } handleClick={ onClick } />);
-        wrapper.find('a').first().simulate('click', {
-            preventDefault: () => undefined
-        });
+        const wrapper = mount(<BiosCard store={store} handleClick={onClick} />);
+        wrapper
+            .find('a')
+            .first()
+            .simulate('click', {
+                preventDefault: () => undefined
+            });
         expect(onClick).toHaveBeenCalled();
     });
 
@@ -56,14 +61,17 @@ describe('BiosCard', () => {
             systemProfileStore: {
                 systemProfile: {
                     ...initialState.systemProfileStore.systemProfile,
-                    cpu_flags: [ 'one' ]
+                    cpu_flags: ['one']
                 }
             }
         });
-        const wrapper = mount(<BiosCard store={ store } />);
-        wrapper.find('a').first().simulate('click', {
-            preventDefault: () => undefined
-        });
+        const wrapper = mount(<BiosCard store={store} />);
+        wrapper
+            .find('a')
+            .first()
+            .simulate('click', {
+                preventDefault: () => undefined
+            });
         expect(onClick).not.toHaveBeenCalled();
     });
 });

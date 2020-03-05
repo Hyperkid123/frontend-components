@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import Skeleton, { SkeletonSize } from './Skeleton';
 
 describe('Skeleton component', () => {
-    Object.values(SkeletonSize).forEach(size => {
+    Object.values(SkeletonSize).forEach((size) => {
         it(`should render correctly - ${size}`, () => {
             const wrapper = shallow(<Skeleton size={size} />);
             expect(toJson(wrapper)).toMatchSnapshot();

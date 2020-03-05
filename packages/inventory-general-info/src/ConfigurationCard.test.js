@@ -24,13 +24,13 @@ describe('ConfigurationCard', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<ConfigurationCard store={ store } />);
+        const wrapper = render(<ConfigurationCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<ConfigurationCard store={ store } />);
+        const wrapper = render(<ConfigurationCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -41,17 +41,13 @@ describe('ConfigurationCard', () => {
                     loaded: true,
                     ...configTest,
                     repositories: {
-                        enabled: [{
-
-                        }],
-                        disabled: [{
-
-                        }]
+                        enabled: [{}],
+                        disabled: [{}]
                     }
                 }
             }
         });
-        const wrapper = render(<ConfigurationCard store={ store } />);
+        const wrapper = render(<ConfigurationCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -59,8 +55,11 @@ describe('ConfigurationCard', () => {
         it('should NOT call handleClick', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<ConfigurationCard store={ store } />);
-            wrapper.find('TextListItem a').first().simulate('click');
+            const wrapper = mount(<ConfigurationCard store={store} />);
+            wrapper
+                .find('TextListItem a')
+                .first()
+                .simulate('click');
             expect(onClick).not.toHaveBeenCalled();
             expect(toJson(wrapper)).toMatchSnapshot();
         });
@@ -68,32 +67,44 @@ describe('ConfigurationCard', () => {
         it('should call handleClick on packages', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<ConfigurationCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').first().simulate('click');
+            const wrapper = mount(<ConfigurationCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .first()
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
 
         it('should call handleClick on services', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<ConfigurationCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').at(1).simulate('click');
+            const wrapper = mount(<ConfigurationCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .at(1)
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
 
         it('should call handleClick on services', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<ConfigurationCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').at(2).simulate('click');
+            const wrapper = mount(<ConfigurationCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .at(2)
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
 
         it('should call handleClick on services', () => {
             const store = mockStore(initialState);
             const onClick = jest.fn();
-            const wrapper = mount(<ConfigurationCard handleClick={ onClick } store={ store } />);
-            wrapper.find('dd a').at(3).simulate('click');
+            const wrapper = mount(<ConfigurationCard handleClick={onClick} store={store} />);
+            wrapper
+                .find('dd a')
+                .at(3)
+                .simulate('click');
             expect(onClick).toHaveBeenCalled();
         });
     });

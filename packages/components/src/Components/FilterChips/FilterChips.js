@@ -3,53 +3,61 @@ import PropTypes from 'prop-types';
 import { Badge, Chip, ChipGroup, ChipGroupToolbarItem, Button } from '@patternfly/react-core';
 
 const FilterChips = ({ filters, onDelete }) => {
-    const groupedFilters = filters.filter(group => group.category).map(group => (
-        <ChipGroupToolbarItem
-            key={ `group_${group.category}` }
-            categoryName={ group.category }
-        >
-            { group.chips.map(chip => (
-                <Chip
-                    key={ `group_${group.category}_chip_${chip.name}` }
-                    onClick={ (event) => {
-                        event.stopPropagation();
-                        onDelete(event, [{ ...group, chips: [ chip ] }]);
-                    }}
-                >
-                    { chip.name }
-                    { chip.count && <Badge key={ `chip_badge_${chip.id}` } isRead={ chip.isRead }>{ chip.count }</Badge> }
-                </Chip>
-            )) }
-        </ChipGroupToolbarItem>
-    ));
+    const groupedFilters = filters
+        .filter((group) => group.category)
+        .map((group) => (
+            <ChipGroupToolbarItem key={`group_${group.category}`} categoryName={group.category}>
+                {group.chips.map((chip) => (
+                    <Chip
+                        key={`group_${group.category}_chip_${chip.name}`}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            onDelete(event, [{ ...group, chips: [chip] }]);
+                        }}
+                    >
+                        {chip.name}
+                        {chip.count && (
+                            <Badge key={`chip_badge_${chip.id}`} isRead={chip.isRead}>
+                                {chip.count}
+                            </Badge>
+                        )}
+                    </Chip>
+                ))}
+            </ChipGroupToolbarItem>
+        ));
 
-    const plainFilters = filters.filter(group => !(group.category));
+    const plainFilters = filters.filter((group) => !group.category);
 
     return (
         <span className="ins-c-chip-filters">
-            <ChipGroup withToolbar numChips={ Infinity }>
-                { groupedFilters }
-                { plainFilters &&
-                    <ChipGroupToolbarItem
-                        key="group_plain"
-                        className="ins-c-chip-group__plain"
-                    >
-                        { plainFilters.map(chip => (
+            <ChipGroup withToolbar numChips={Infinity}>
+                {groupedFilters}
+                {plainFilters && (
+                    <ChipGroupToolbarItem key="group_plain" className="ins-c-chip-group__plain">
+                        {plainFilters.map((chip) => (
                             <Chip
-                                key={ `group_plain_chip_${chip.name}` }
-                                onClick={ (event) => {
+                                key={`group_plain_chip_${chip.name}`}
+                                onClick={(event) => {
                                     event.stopPropagation();
-                                    onDelete(event, [ chip ]);
+                                    onDelete(event, [chip]);
                                 }}
                             >
-                                { chip.name }
-                                { chip.count && <Badge key={ `chip_badge_${chip.id}` } isRead={ chip.isRead }>{ chip.count }</Badge> }
+                                {chip.name}
+                                {chip.count && (
+                                    <Badge key={`chip_badge_${chip.id}`} isRead={chip.isRead}>
+                                        {chip.count}
+                                    </Badge>
+                                )}
                             </Chip>
-                        )) }
+                        ))}
                     </ChipGroupToolbarItem>
-                }
+                )}
             </ChipGroup>
-            { filters.length > 0 && <Button variant="link" onClick={ (event) => onDelete(event, filters, true) }>Clear filters</Button> }
+            {filters.length > 0 && (
+                <Button variant="link" onClick={(event) => onDelete(event, filters, true)}>
+                    Clear filters
+                </Button>
+            )}
         </span>
     );
 };

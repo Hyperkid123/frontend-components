@@ -27,10 +27,7 @@ describe('appDeployment', () => {
     const enabledPlugins = plugins({ appDeployment: '/test/folder' });
 
     it('should replace correct string', () => {
-        enabledPlugins[REPLACE].replace(
-            { html: 'string @@env' },
-            (_, { html }) => expect(html).toBe('string /test/folder')
-        );
+        enabledPlugins[REPLACE].replace({ html: 'string @@env' }, (_, { html }) => expect(html).toBe('string /test/folder'));
     });
 });
 
@@ -40,14 +37,13 @@ it('htmlPlugin should update', () => {
 });
 
 it('replacePlugin should update', () => {
-    const enabledPlugins = plugins({ replacePlugin: [
-        {
-            pattern: '@@another',
-            replacement: 'test-string'
-        }
-    ] });
-    enabledPlugins[REPLACE].replace(
-        { html: '@@another string @@env' },
-        (_, { html }) => expect(html).toBe('test-string string ')
-    );
+    const enabledPlugins = plugins({
+        replacePlugin: [
+            {
+                pattern: '@@another',
+                replacement: 'test-string'
+            }
+        ]
+    });
+    enabledPlugins[REPLACE].replace({ html: '@@another string @@env' }, (_, { html }) => expect(html).toBe('test-string string '));
 });

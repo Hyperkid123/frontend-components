@@ -28,14 +28,12 @@ const filters = [
 
 describe('FilterChips component', () => {
     it('should render - no data', () => {
-        const wrapper = shallow(<FilterChips/>);
+        const wrapper = shallow(<FilterChips />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render', () => {
-        const wrapper = shallow(
-            <FilterChips filters={ filters } />
-        );
+        const wrapper = shallow(<FilterChips filters={filters} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -48,41 +46,52 @@ describe('FilterChips component', () => {
 
         it('should call onDelete when deleting a single chip', () => {
             const onDelete = jest.fn();
-            const wrapper = mount(<FilterChips filters={ filters } onDelete={ onDelete } />);
-            wrapper.find('.pf-c-chip button').last().simulate('click');
+            const wrapper = mount(<FilterChips filters={filters} onDelete={onDelete} />);
+            wrapper
+                .find('.pf-c-chip button')
+                .last()
+                .simulate('click');
             expect(onDelete).toHaveBeenCalledWith(expect.anything(), [{ name: 'Chip 4' }]);
             expect(onDelete).toHaveBeenCalledTimes(1);
         });
 
         it('should call onDelete when deleting a single chip in group', () => {
             const onDelete = jest.fn();
-            const wrapper = mount(<FilterChips filters={ filters } onDelete={ onDelete } />);
-            wrapper.find('.pf-c-chip button').first().simulate('click');
-            expect(onDelete).toHaveBeenCalledWith(expect.anything(), [{
-                category: 'Group 1',
-                chips: [
-                    {
-                        name: 'Chip 1',
-                        isRead: true
-                    }
-                ]
-            }]);
+            const wrapper = mount(<FilterChips filters={filters} onDelete={onDelete} />);
+            wrapper
+                .find('.pf-c-chip button')
+                .first()
+                .simulate('click');
+            expect(onDelete).toHaveBeenCalledWith(expect.anything(), [
+                {
+                    category: 'Group 1',
+                    chips: [
+                        {
+                            name: 'Chip 1',
+                            isRead: true
+                        }
+                    ]
+                }
+            ]);
             expect(onDelete).toHaveBeenCalledTimes(1);
         });
 
         it('should call onDelete when deleting all chips', () => {
             const onDelete = jest.fn();
-            const wrapper = mount(<FilterChips filters={ filters } onDelete={ onDelete } />);
-            wrapper.find('button').last().simulate('click');
+            const wrapper = mount(<FilterChips filters={filters} onDelete={onDelete} />);
+            wrapper
+                .find('button')
+                .last()
+                .simulate('click');
             expect(onDelete).toHaveBeenCalledWith(expect.anything(), filters, true);
             expect(onDelete).toHaveBeenCalledTimes(1);
         });
 
         it('should not call onDelete when clicking on any ChipGroupToolbarItem', () => {
             const onDelete = jest.fn();
-            const wrapper = mount(<FilterChips filters={ filters } onDelete={ onDelete } />);
+            const wrapper = mount(<FilterChips filters={filters} onDelete={onDelete} />);
 
-            wrapper.find(ChipGroupToolbarItem).forEach(group => group.simulate('click'));
+            wrapper.find(ChipGroupToolbarItem).forEach((group) => group.simulate('click'));
             expect(onDelete).not.toHaveBeenCalled();
         });
     });

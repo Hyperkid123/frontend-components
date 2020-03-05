@@ -1,4 +1,3 @@
-import React from 'react';
 import configureStore from 'redux-mock-store';
 import promiseMiddleware from 'redux-promise-middleware';
 import { notificationsMiddleware } from './';
@@ -20,15 +19,12 @@ describe('Notifications middleware', () => {
 
     const requestMock = (shouldFail, rejectBody = defaultReject) => ({
         type: 'FOO',
-        payload: new Promise((resolve, reject) =>
-            setTimeout(() =>
-                shouldFail ? reject(rejectBody) : resolve({ sucess: true }), 500
-            ))
+        payload: new Promise((resolve, reject) => setTimeout(() => (shouldFail ? reject(rejectBody) : resolve({ sucess: true })), 500))
     });
 
     beforeEach(() => {
         initialProps = {};
-        middlewares = [ promiseMiddleware(), notificationsMiddleware() ];
+        middlewares = [promiseMiddleware(), notificationsMiddleware()];
         mockStore = configureStore(middlewares);
         initialProps = {
             store: mockStore({})
@@ -39,7 +35,8 @@ describe('Notifications middleware', () => {
         const expectedActions = [
             expect.objectContaining({
                 type: 'FOO_PENDING'
-            }), {
+            }),
+            {
                 type: ADD_NOTIFICATION,
                 payload: {
                     description: 'Longer detailed description of error message',
@@ -58,12 +55,15 @@ describe('Notifications middleware', () => {
     });
 
     it('should not dispatch any default notification on promise success', () => {
-        const expectedActions = [{
-            type: 'FOO_PENDING'
-        }, {
-            type: 'FOO_FULFILLED',
-            payload: { sucess: true }
-        }];
+        const expectedActions = [
+            {
+                type: 'FOO_PENDING'
+            },
+            {
+                type: 'FOO_FULFILLED',
+                payload: { sucess: true }
+            }
+        ];
         return initialProps.store.dispatch(requestMock(false)).then(() => {
             expect(initialProps.store.getActions()).toEqual(expectedActions);
         });
@@ -92,7 +92,8 @@ describe('Notifications middleware', () => {
             expect.objectContaining({
                 type: 'FOO_FULFILLED',
                 payload: { sucess: true }
-            }) ];
+            })
+        ];
 
         const action = {
             ...requestMock(false),
@@ -116,9 +117,12 @@ describe('Notifications middleware', () => {
     });
 
     it('should dispatch pending and success notifications with custom configuration', () => {
-        middlewares = [ promiseMiddleware(), notificationsMiddleware({
-            autoDismiss: false
-        }) ];
+        middlewares = [
+            promiseMiddleware(),
+            notificationsMiddleware({
+                autoDismiss: false
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
 
@@ -146,7 +150,8 @@ describe('Notifications middleware', () => {
             expect.objectContaining({
                 type: 'FOO_FULFILLED',
                 payload: { sucess: true }
-            }) ];
+            })
+        ];
 
         const action = {
             ...requestMock(false),
@@ -173,7 +178,8 @@ describe('Notifications middleware', () => {
         const expectedActions = [
             expect.objectContaining({
                 type: 'FOO_PENDING'
-            }), {
+            }),
+            {
                 type: ADD_NOTIFICATION,
                 payload: {
                     description: 'Longer detailed description of error message',
@@ -192,9 +198,12 @@ describe('Notifications middleware', () => {
     });
 
     it('should not dispatch error notification automatically', () => {
-        middlewares = [ promiseMiddleware(), notificationsMiddleware({
-            dispatchDefaultFailure: false
-        }) ];
+        middlewares = [
+            promiseMiddleware(),
+            notificationsMiddleware({
+                dispatchDefaultFailure: false
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
         const expectedActions = [
@@ -211,16 +220,20 @@ describe('Notifications middleware', () => {
     });
 
     it('should dispatch error notification automatically with custom error message structure', () => {
-        middlewares = [ promiseMiddleware(), notificationsMiddleware({
-            errorTitleKey: 'body.title',
-            errorDescriptionKey: 'body.description'
-        }) ];
+        middlewares = [
+            promiseMiddleware(),
+            notificationsMiddleware({
+                errorTitleKey: 'body.title',
+                errorDescriptionKey: 'body.description'
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
         const expectedActions = [
             expect.objectContaining({
                 type: 'FOO_PENDING'
-            }), {
+            }),
+            {
                 type: ADD_NOTIFICATION,
                 payload: {
                     description: 'Custom error descriptio path',
@@ -239,14 +252,17 @@ describe('Notifications middleware', () => {
     });
 
     it('should dispatch notifications with custom suffixes', () => {
-        const customSuffixes = [ 'FETCHING', 'SUCCESS', 'FAILED' ];
-        middlewares = [ promiseMiddleware({
-            promiseTypeSuffixes: customSuffixes
-        }), notificationsMiddleware({
-            pendingSuffix: 'FETCHING',
-            fulfilledSuffix: 'SUCCESS',
-            rejectedSuffix: 'FAILED'
-        }) ];
+        const customSuffixes = ['FETCHING', 'SUCCESS', 'FAILED'];
+        middlewares = [
+            promiseMiddleware({
+                promiseTypeSuffixes: customSuffixes
+            }),
+            notificationsMiddleware({
+                pendingSuffix: 'FETCHING',
+                fulfilledSuffix: 'SUCCESS',
+                rejectedSuffix: 'FAILED'
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
 
@@ -313,7 +329,8 @@ describe('Notifications middleware', () => {
         const expectedActions = [
             expect.objectContaining({
                 type: 'FOO_PENDING'
-            }), {
+            }),
+            {
                 type: ADD_NOTIFICATION,
                 payload: {
                     title: 'custom error notification',
@@ -349,7 +366,8 @@ describe('Notifications middleware', () => {
         const expectedActions = [
             expect.objectContaining({
                 type: 'FOO_PENDING'
-            }), {
+            }),
+            {
                 type: ADD_NOTIFICATION,
                 payload: {
                     title: 'Title',
@@ -370,10 +388,13 @@ describe('Notifications middleware', () => {
     });
 
     it('should select second message key from configuration', () => {
-        middlewares = [ promiseMiddleware(), notificationsMiddleware({
-            errorTitleKey: [ 'body.title', 'fooKey' ],
-            errorDescriptionKey: [ 'body.description', 'barKey' ]
-        }) ];
+        middlewares = [
+            promiseMiddleware(),
+            notificationsMiddleware({
+                errorTitleKey: ['body.title', 'fooKey'],
+                errorDescriptionKey: ['body.description', 'barKey']
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
         const expectedActions = expect.arrayContaining([
@@ -389,19 +410,26 @@ describe('Notifications middleware', () => {
             expect.any(Object)
         ]);
 
-        return store.dispatch(requestMock(true, {
-            fooKey: 'Second title option',
-            barKey: 'Second description option'
-        })).catch(() => {
-            expect(store.getActions()).toEqual(expectedActions);
-        });
+        return store
+            .dispatch(
+                requestMock(true, {
+                    fooKey: 'Second title option',
+                    barKey: 'Second description option'
+                })
+            )
+            .catch(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
     });
 
     it('should send sentryId if encountered', () => {
-        middlewares = [ promiseMiddleware(), notificationsMiddleware({
-            errorTitleKey: [ 'title' ],
-            errorDescriptionKey: [ 'description' ]
-        }) ];
+        middlewares = [
+            promiseMiddleware(),
+            notificationsMiddleware({
+                errorTitleKey: ['title'],
+                errorDescriptionKey: ['description']
+            })
+        ];
         mockStore = configureStore(middlewares);
         const store = mockStore({});
         const expectedActions = expect.arrayContaining([
@@ -418,12 +446,16 @@ describe('Notifications middleware', () => {
             expect.any(Object)
         ]);
 
-        return store.dispatch(requestMock(true, {
-            title: 'Title',
-            description: 'Description',
-            sentryId: 'some-sentry-UUID'
-        })).catch(() => {
-            expect(store.getActions()).toEqual(expectedActions);
-        });
+        return store
+            .dispatch(
+                requestMock(true, {
+                    title: 'Title',
+                    description: 'Description',
+                    sentryId: 'some-sentry-UUID'
+                })
+            )
+            .catch(() => {
+                expect(store.getActions()).toEqual(expectedActions);
+            });
     });
 });

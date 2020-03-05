@@ -12,7 +12,7 @@ const mockedMessages = {
 };
 
 describe('default messages', () => {
-    Object.keys(mockedMessages).map(oneMsg => {
+    Object.keys(mockedMessages).map((oneMsg) => {
         test(`${oneMsg}`, () => {
             expect(mockedMessages[oneMsg]).toEqual(messages[oneMsg]);
         });

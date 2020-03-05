@@ -10,18 +10,18 @@ describe('FilterInput component', () => {
                 aria-label="label"
                 id="id"
                 label="label"
-                addRemoveFilters={ jest.fn() }
+                addRemoveFilters={jest.fn()}
                 param="param"
                 type="radio"
                 value="value"
-                filters={ { param: 'value' } }
+                filters={{ param: 'value' }}
             />
         );
         expect(toJson(wrapper)).toMatchSnapshot();
     });
     it('should render a checkbox input', () => {
         const wrapper = shallow(
-            <FilterInput aria-label="label" id="id" label="label" addRemoveFilters={ jest.fn() } param="param" type="checkbox" value="value" />
+            <FilterInput aria-label="label" id="id" label="label" addRemoveFilters={jest.fn()} param="param" type="checkbox" value="value" />
         );
         expect(toJson(wrapper)).toMatchSnapshot();
     });

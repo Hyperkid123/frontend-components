@@ -8,8 +8,8 @@ import { operatingSystem } from './selectors';
 const OperatingSystemCard = ({ systemInfo, detailLoaded, handleClick }) => (
     <LoadingCard
         title="Operating System"
-        isLoading={ !detailLoaded }
-        items={ [
+        isLoading={!detailLoaded}
+        items={[
             { title: 'Release', value: systemInfo.release },
             { title: 'Kernel release', value: systemInfo.kernelRelease },
             { title: 'Architecture', value: systemInfo.architecture },
@@ -19,13 +19,10 @@ const OperatingSystemCard = ({ systemInfo, detailLoaded, handleClick }) => (
                 value: systemInfo.kernelModules ? `${systemInfo.kernelModules.length} modules` : 0,
                 target: 'kernel_modules',
                 onClick: () => {
-                    handleClick(
-                        'Kernel modules',
-                        generalMapper(systemInfo.kernelModules, 'Module')
-                    );
+                    handleClick('Kernel modules', generalMapper(systemInfo.kernelModules, 'Module'));
                 }
             }
-        ] }
+        ]}
     />
 );
 
@@ -45,11 +42,7 @@ OperatingSystemCard.defaultProps = {
     handleClick: () => undefined
 };
 
-export default connect(({
-    systemProfileStore: {
-        systemProfile
-    }
-}) => ({
+export default connect(({ systemProfileStore: { systemProfile } }) => ({
     detailLoaded: systemProfile && systemProfile.loaded,
     systemInfo: operatingSystem(systemProfile)
 }))(OperatingSystemCard);

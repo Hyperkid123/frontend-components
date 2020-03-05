@@ -9,15 +9,8 @@ export function flipDirection(direction) {
 }
 
 const SortBy = ({ direction, onSortChange }) => (
-    <Button
-        variant="plain"
-        onClick={ e => onSortChange(e, flipDirection(direction)) }
-    >
-        {
-            direction === SortByDirection.asc ?
-                <SortAmountUpIcon size="sm" /> :
-                <SortAmountDownIcon size="sm" />
-        }
+    <Button variant="plain" onClick={(e) => onSortChange(e, flipDirection(direction))}>
+        {direction === SortByDirection.asc ? <SortAmountUpIcon size="sm" /> : <SortAmountDownIcon size="sm" />}
     </Button>
 );
 

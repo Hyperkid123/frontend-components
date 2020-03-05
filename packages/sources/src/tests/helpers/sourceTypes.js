@@ -6,24 +6,26 @@ const sourceTypes = [
         name: 'openshift',
         product_name: 'OpenShift Container Platform',
         schema: {
-            authentication: [{
-                type: 'token',
-                name: 'Token',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.authtype',
-                        hideField: true,
-                        initialValue: 'token'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'Token',
-                        type: 'password'
-                    }
-                ]
-            }],
+            authentication: [
+                {
+                    type: 'token',
+                    name: 'Token',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.authtype',
+                            hideField: true,
+                            initialValue: 'token'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'Token',
+                            type: 'password'
+                        }
+                    ]
+                }
+            ],
             endpoint: {
                 title: 'Configure OpenShift endpoint',
                 fields: [
@@ -97,33 +99,34 @@ const sourceTypes = [
                 {
                     type: 'arn',
                     name: 'ARN',
-                    fields: [{
-                        component: 'text-field',
-                        name: 'authentication.authtype',
-                        hideField: true,
-                        initialValue: 'arn'
-                    },  {
-                        name: 'billing_source.bucket',
-                        component: 'text-field',
-                        label: 'S3 bucket name',
-                        stepKey: 'amazon-arn-additional-step',
-                        isRequired: true,
-                        validate: [
-                            { type: 'required-validator' },
-                            { type: 'pattern-validator', pattern: '^[A-Za-z0-9]+[A-Za-z0-9_-]*$' }
-                        ]
-                    }, {
-                        name: 'authentication.password',
-                        component: 'text-field',
-                        label: 'ARN',
-                        stepKey: 'arn',
-                        isRequired: true,
-                        validate: [
-                            { type: 'required-validator' },
-                            { type: 'pattern-validator', pattern: '^arn:aws:.*' },
-                            { type: 'length-validator', threshold: 10 }
-                        ]
-                    }]
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.authtype',
+                            hideField: true,
+                            initialValue: 'arn'
+                        },
+                        {
+                            name: 'billing_source.bucket',
+                            component: 'text-field',
+                            label: 'S3 bucket name',
+                            stepKey: 'amazon-arn-additional-step',
+                            isRequired: true,
+                            validate: [{ type: 'required-validator' }, { type: 'pattern-validator', pattern: '^[A-Za-z0-9]+[A-Za-z0-9_-]*$' }]
+                        },
+                        {
+                            name: 'authentication.password',
+                            component: 'text-field',
+                            label: 'ARN',
+                            stepKey: 'arn',
+                            isRequired: true,
+                            validate: [
+                                { type: 'required-validator' },
+                                { type: 'pattern-validator', pattern: '^arn:aws:.*' },
+                                { type: 'length-validator', threshold: 10 }
+                            ]
+                        }
+                    ]
                 }
             ],
             endpoint: {
@@ -147,30 +150,31 @@ const sourceTypes = [
         name: 'ansible-tower',
         product_name: 'Ansible Tower',
         schema: {
-            authentication: [{
-                type: 'username_password',
-                name: 'Username and password',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.authtype',
-                        hideField: true,
-                        initialValue: 'username_password'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.username',
-                        label: 'User name'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'Secret Key',
-                        type: 'password'
-                    }
-                ]
-
-            }],
+            authentication: [
+                {
+                    type: 'username_password',
+                    name: 'Username and password',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.authtype',
+                            hideField: true,
+                            initialValue: 'username_password'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.username',
+                            label: 'User name'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'Secret Key',
+                            type: 'password'
+                        }
+                    ]
+                }
+            ],
             endpoint: {
                 title: 'Configure Ansible Tower endpoint',
                 fields: [
@@ -249,35 +253,36 @@ const sourceTypes = [
         name: 'azure',
         product_name: 'Microsoft Azure',
         schema: {
-            authentication: [{
-                type: 'tenant_id_client_id_client_secret',
-                name: 'Tenant ID, Client ID, Client Secret',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.authtype',
-                        hideField: true,
-                        initialValue: 'tenant_id_client_id_client_secret'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.extra.azure.tenant_id',
-                        label: 'Tenant ID'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.username',
-                        label: 'Client ID'
-                    },
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'Client Secret',
-                        type: 'password'
-                    }
-                ]
-
-            }],
+            authentication: [
+                {
+                    type: 'tenant_id_client_id_client_secret',
+                    name: 'Tenant ID, Client ID, Client Secret',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.authtype',
+                            hideField: true,
+                            initialValue: 'tenant_id_client_id_client_secret'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.extra.azure.tenant_id',
+                            label: 'Tenant ID'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.username',
+                            label: 'Client ID'
+                        },
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'Client Secret',
+                            type: 'password'
+                        }
+                    ]
+                }
+            ],
             endpoint: {
                 hidden: true,
                 fields: [

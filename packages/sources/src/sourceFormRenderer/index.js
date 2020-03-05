@@ -15,15 +15,15 @@ export const mapperExtension = {
     summary: SourceWizardSummary
 };
 
-const SourcesFormRenderer = props => (
+const SourcesFormRenderer = (props) => (
     <FormRenderer
-        layoutMapper={ layoutMapper }
-        formFieldsMapper={ {
+        layoutMapper={layoutMapper}
+        formFieldsMapper={{
             ...formFieldsMapper,
             ...mapperExtension
-        } }
-        subscription={ { values: true } }
-        { ...props }
+        }}
+        subscription={{ values: true }}
+        {...props}
     />
 );
 

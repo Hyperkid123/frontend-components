@@ -28,21 +28,21 @@ describe('AuthSelect component', () => {
     });
 
     it('renders correctly', () => {
-        const wrapper = mount(<AuthSelect { ...initialProps }/>);
+        const wrapper = mount(<AuthSelect {...initialProps} />);
 
         expect(wrapper.find(Radio)).toHaveLength(1);
         expect(wrapper.find(FormHelperText)).toHaveLength(0);
     });
 
     it('renders correctly when disableAuthType', () => {
-        const wrapper = mount(<AuthSelect { ...initialProps } disableAuthType/>);
+        const wrapper = mount(<AuthSelect {...initialProps} disableAuthType />);
 
         expect(wrapper.find(Radio)).toHaveLength(1);
         expect(wrapper.find(FormHelperText)).toHaveLength(1);
     });
 
     it('calls onChange correctly', () => {
-        const wrapper = mount(<AuthSelect { ...initialProps }/>);
+        const wrapper = mount(<AuthSelect {...initialProps} />);
 
         expect(spyOnChange).not.toHaveBeenCalled();
 
@@ -56,7 +56,7 @@ describe('AuthSelect component', () => {
             ...initialProps,
             disableAuthType: true
         };
-        const wrapper = mount(<AuthSelect { ...initialProps }/>);
+        const wrapper = mount(<AuthSelect {...initialProps} />);
 
         expect(wrapper.find(Radio)).toHaveLength(1);
         expect(wrapper.find(FormHelperText)).toHaveLength(1);
@@ -69,9 +69,9 @@ describe('AuthSelect component', () => {
                 ...initialProps.input,
                 value: 'access_key_secret_key'
             },
-            supportedAuthTypes: [ 'arn' ]
+            supportedAuthTypes: ['arn']
         };
-        mount(<AuthSelect { ...initialProps }/>);
+        mount(<AuthSelect {...initialProps} />);
 
         expect(spyOnChange).toHaveBeenCalledWith(undefined);
     });

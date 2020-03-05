@@ -6,44 +6,43 @@ import PropTypes from 'prop-types';
 class DownloadButton extends Component {
     state = {
         isOpen: false
-    }
+    };
 
     onToggle = (isOpen) => {
         this.setState({
             isOpen
         });
-    }
+    };
 
     onSelect = () => {
         this.setState({
             isOpen: !this.state.isOpen
         });
-    }
+    };
 
     render() {
         const { isOpen } = this.state;
         const { extraItems, onSelect, isDisabled, ...props } = this.props;
         return (
             <Dropdown
-                { ...props }
+                {...props}
                 isPlain
-                onSelect={ this.onSelect }
+                onSelect={this.onSelect}
                 toggle={
-                    <DropdownToggle
-                        iconComponent={null}
-                        onToggle={ this.onToggle }
-                    >
+                    <DropdownToggle iconComponent={null} onToggle={this.onToggle}>
                         <ExportIcon size="sm" />
                     </DropdownToggle>
                 }
-                isOpen={ isOpen }
-                dropdownItems={ [
-                    <DropdownItem key="download-csv" component="button" onClick={ event => onSelect(event, 'csv') } isDisabled={isDisabled}>
-                        Export to CSV</DropdownItem>,
-                    <DropdownItem key="download-json" component="button" onClick={ event => onSelect(event, 'json') } isDisabled={isDisabled}>
-                        Export to JSON</DropdownItem>,
+                isOpen={isOpen}
+                dropdownItems={[
+                    <DropdownItem key="download-csv" component="button" onClick={(event) => onSelect(event, 'csv')} isDisabled={isDisabled}>
+                        Export to CSV
+                    </DropdownItem>,
+                    <DropdownItem key="download-json" component="button" onClick={(event) => onSelect(event, 'json')} isDisabled={isDisabled}>
+                        Export to JSON
+                    </DropdownItem>,
                     ...extraItems
-                ] }
+                ]}
             />
         );
     }

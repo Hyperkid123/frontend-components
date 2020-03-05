@@ -1,11 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    Popover,
-    ClipboardCopy
-} from '@patternfly/react-core';
+import { TextContent, Text, ClipboardCopy } from '@patternfly/react-core';
 
 import * as Cm from '../../../addSourceWizard/hardcodedComponents/azure/costManagement';
 

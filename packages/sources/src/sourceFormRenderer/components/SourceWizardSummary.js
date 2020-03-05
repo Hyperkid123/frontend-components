@@ -30,22 +30,23 @@ export const createItem = (formField, values, stepKeys) => {
         value = value ? 'Yes' : 'No';
     }
 
-    return ({ label: formField.label,  value: value || '-' });
+    return { label: formField.label, value: value || '-' };
 };
 
 export const getAllFieldsValues = (fields, values, stepKeys) => fields.map((field) => createItem(field, values, stepKeys)).filter(Boolean);
 
-export const getStepKeys = (typeName, authName, appName = 'generic', appId) => [
-    ...get(hardcodedSchemas, [ typeName, 'authentication', authName, appName, 'includeStepKeyFields' ], []),
-    ...get(hardcodedSchemas, [ typeName, 'authentication', authName, appName, 'additionalSteps' ], []).map(({ stepKey }) => stepKey),
-    `${typeName}-${authName}-${appName}-additional-step`,
-    `${typeName}-${authName}-additional-step`,
-    appId ? `${typeName}-${appId}` : undefined
-].filter(Boolean);
+export const getStepKeys = (typeName, authName, appName = 'generic', appId) =>
+    [
+        ...get(hardcodedSchemas, [typeName, 'authentication', authName, appName, 'includeStepKeyFields'], []),
+        ...get(hardcodedSchemas, [typeName, 'authentication', authName, appName, 'additionalSteps'], []).map(({ stepKey }) => stepKey),
+        `${typeName}-${authName}-${appName}-additional-step`,
+        `${typeName}-${authName}-additional-step`,
+        appId ? `${typeName}-${appId}` : undefined
+    ].filter(Boolean);
 
 const SourceWizardSummary = ({ sourceTypes, formOptions, applicationTypes, showApp, showAuthType }) => {
     const values = formOptions.getState().values;
-    const type = sourceTypes.find(type => type.name === values.source_type || type.id === values.source.source_type_id);
+    const type = sourceTypes.find((type) => type.name === values.source_type || type.id === values.source.source_type_id);
 
     const hasAuthentication = values.authentication && values.authentication.authtype ? values.authentication.authtype : values.auth_select;
 
@@ -66,9 +67,9 @@ const SourceWizardSummary = ({ sourceTypes, formOptions, applicationTypes, showA
         authTypeFields = authTypeFields.filter(({ name }) => !name.includes('authentication.'));
     }
 
-    const fields = [ ...authTypeFields, ...endpointFields ];
+    const fields = [...authTypeFields, ...endpointFields];
 
-    const application = values.application ? applicationTypes.find(type => type.id === values.application.application_type_id) : undefined;
+    const application = values.application ? applicationTypes.find((type) => type.id === values.application.application_type_id) : undefined;
 
     const { display_name = 'Not selected', name, id } = application ? application : {};
 
@@ -77,28 +78,32 @@ const SourceWizardSummary = ({ sourceTypes, formOptions, applicationTypes, showA
     const valuesInfo = getAllFieldsValues(fields, values, availableStepKeys);
 
     const valuesList = valuesInfo.map(({ label, value }) => (
-        <React.Fragment key={ `${label}--${value}` }>
-            <TextListItem component={ TextListItemVariants.dt }>{ label }</TextListItem>
-            <TextListItem component={ TextListItemVariants.dd }>{ value }</TextListItem>
+        <React.Fragment key={`${label}--${value}`}>
+            <TextListItem component={TextListItemVariants.dt}>{label}</TextListItem>
+            <TextListItem component={TextListItemVariants.dd}>{value}</TextListItem>
         </React.Fragment>
     ));
 
     return (
         <TextContent>
-            <TextList component={ TextListVariants.dl }>
-                <TextListItem component={ TextListItemVariants.dt }>{ 'Name' }</TextListItem>
-                <TextListItem component={ TextListItemVariants.dd }>{ values.source.name }</TextListItem>
-                { showApp && <React.Fragment>
-                    <TextListItem component={ TextListItemVariants.dt }>{ 'Application' }</TextListItem>
-                    <TextListItem component={ TextListItemVariants.dd }>{ display_name }</TextListItem>
-                </React.Fragment> }
-                <TextListItem component={ TextListItemVariants.dt }>{ 'Source type' }</TextListItem>
-                <TextListItem component={ TextListItemVariants.dd }>{ type.product_name }</TextListItem>
-                { !skipEndpoint && authType && showAuthType && <React.Fragment>
-                    <TextListItem component={ TextListItemVariants.dt }>{ 'Authentication type' }</TextListItem>
-                    <TextListItem component={ TextListItemVariants.dd }>{ authType.name }</TextListItem>
-                </React.Fragment> }
-                { valuesList }
+            <TextList component={TextListVariants.dl}>
+                <TextListItem component={TextListItemVariants.dt}>{'Name'}</TextListItem>
+                <TextListItem component={TextListItemVariants.dd}>{values.source.name}</TextListItem>
+                {showApp && (
+                    <React.Fragment>
+                        <TextListItem component={TextListItemVariants.dt}>{'Application'}</TextListItem>
+                        <TextListItem component={TextListItemVariants.dd}>{display_name}</TextListItem>
+                    </React.Fragment>
+                )}
+                <TextListItem component={TextListItemVariants.dt}>{'Source type'}</TextListItem>
+                <TextListItem component={TextListItemVariants.dd}>{type.product_name}</TextListItem>
+                {!skipEndpoint && authType && showAuthType && (
+                    <React.Fragment>
+                        <TextListItem component={TextListItemVariants.dt}>{'Authentication type'}</TextListItem>
+                        <TextListItem component={TextListItemVariants.dd}>{authType.name}</TextListItem>
+                    </React.Fragment>
+                )}
+                {valuesList}
             </TextList>
         </TextContent>
     );
@@ -106,20 +111,24 @@ const SourceWizardSummary = ({ sourceTypes, formOptions, applicationTypes, showA
 
 SourceWizardSummary.propTypes = {
     formOptions: PropTypes.any.isRequired,
-    sourceTypes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        product_name: PropTypes.string.isRequired,
-        schema: PropTypes.shape({
-            authentication: PropTypes.array,
-            endpoint: PropTypes.object
+    sourceTypes: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            product_name: PropTypes.string.isRequired,
+            schema: PropTypes.shape({
+                authentication: PropTypes.array,
+                endpoint: PropTypes.object
+            })
         })
-    })).isRequired,
-    applicationTypes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        display_name: PropTypes.string.isRequired
-    })).isRequired,
+    ).isRequired,
+    applicationTypes: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            display_name: PropTypes.string.isRequired
+        })
+    ).isRequired,
     showApp: PropTypes.bool,
     showAuthType: PropTypes.bool
 };

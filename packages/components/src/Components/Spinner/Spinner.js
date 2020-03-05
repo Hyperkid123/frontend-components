@@ -5,15 +5,10 @@ import classNames from 'classnames';
 import './spinner.scss';
 
 const Spinner = ({ centered, className, ...props }) => {
-
-    let spinnerClasses = classNames(
-        'ins-c-spinner',
-        { [`ins-m-center`]: centered },
-        className
-    );
+    let spinnerClasses = classNames('ins-c-spinner', { [`ins-m-center`]: centered }, className);
 
     return (
-        <div role='status' className={ spinnerClasses } { ...props }>
+        <div role="status" className={spinnerClasses} {...props}>
             <span className="pf-u-screen-reader">Loading...</span>
         </div>
     );

@@ -17,26 +17,32 @@ const FinalWizard = ({
     hideSourcesButton,
     returnButtonTitle,
     errorMessage
-}) =>
+}) => (
     <Wizard
-        isOpen={ true }
-        onClose={ isFinished ? afterSubmit : afterError }
+        isOpen={true}
+        onClose={isFinished ? afterSubmit : afterError}
         title={WIZARD_TITLE}
         description={WIZARD_DESCRIPTION}
-        steps={ [{
-            name: 'Finish',
-            component: isFinished ?
-                <FinishedStep
-                    onClose={ afterSubmit }
-                    successfulMessage={ successfulMessage }
-                    hideSourcesButton={ hideSourcesButton }
-                    returnButtonTitle={ returnButtonTitle }
-                /> :
-                isErrored ?
-                    <ErroredStep onRetry={ onRetry } onClose={ afterError } returnButtonTitle={ returnButtonTitle } message={errorMessage}/>
-                    : <LoadingStep customText='Source is being created'/>,
-            isFinishedStep: true
-        }] } />;
+        steps={[
+            {
+                name: 'Finish',
+                component: isFinished ? (
+                    <FinishedStep
+                        onClose={afterSubmit}
+                        successfulMessage={successfulMessage}
+                        hideSourcesButton={hideSourcesButton}
+                        returnButtonTitle={returnButtonTitle}
+                    />
+                ) : isErrored ? (
+                    <ErroredStep onRetry={onRetry} onClose={afterError} returnButtonTitle={returnButtonTitle} message={errorMessage} />
+                ) : (
+                    <LoadingStep customText="Source is being created" />
+                ),
+                isFinishedStep: true
+            }
+        ]}
+    />
+);
 
 FinalWizard.propTypes = {
     afterSubmit: PropTypes.func.isRequired,

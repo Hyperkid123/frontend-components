@@ -1,44 +1,40 @@
 import React from 'react';
-import {
-    Text,
-    View
-} from '@react-pdf/renderer';
+import { Text, View } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
 import { styleProps } from '../utils/propTypes';
 import styles from '../utils/styles';
 
 const appliedStyles = styles();
 
-const Section = ({
-    title,
-    titleProps,
-    contentStyle,
-    style,
-    children,
-    withColumn,
-    ...props
-}) => (<View style={{
-    ...appliedStyles.smallSpacing,
-    ...style
-}} {...props}>
-    <Text
-        {...titleProps}
+const Section = ({ title, titleProps, contentStyle, style, children, withColumn, ...props }) => (
+    <View
         style={{
-            ...appliedStyles.firstTitle,
             ...appliedStyles.smallSpacing,
-            ...titleProps && titleProps.style
+            ...style
         }}
+        {...props}
     >
-        {title}
-    </Text>
-    <View style={{
-        ...withColumn && appliedStyles.flexRow,
-        ...appliedStyles.section,
-        ...contentStyle
-    }}>
-        {children}
+        <Text
+            {...titleProps}
+            style={{
+                ...appliedStyles.firstTitle,
+                ...appliedStyles.smallSpacing,
+                ...(titleProps && titleProps.style)
+            }}
+        >
+            {title}
+        </Text>
+        <View
+            style={{
+                ...(withColumn && appliedStyles.flexRow),
+                ...appliedStyles.section,
+                ...contentStyle
+            }}
+        >
+            {children}
+        </View>
     </View>
-</View>);
+);
 
 Section.propTypes = {
     title: PropTypes.string,

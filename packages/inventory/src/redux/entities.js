@@ -8,8 +8,7 @@ import {
     UPDATE_ENTITIES,
     ENTITIES_LOADING,
     CLEAR_FILTERS,
-    TOGGLE_TAG_MODAL,
-    TAGS_SELECTED
+    TOGGLE_TAG_MODAL
 } from './action-types';
 import { mergeArraysByKey } from '@redhat-cloud-services/frontend-components-utilities/files/helpers';
 import { DateFormat, CullingInformation } from '@redhat-cloud-services/frontend-components';
@@ -19,7 +18,7 @@ import groupBy from 'lodash/groupBy';
 export const defaultState = { loaded: false, tagsLoaded: false, allTagsLoaded: false };
 
 const defaultColumns = [
-    { key: 'display_name', title: 'Name', composed: [ 'facts.os_release', 'display_name' ] },
+    { key: 'display_name', title: 'Name', composed: ['facts.os_release', 'display_name'] },
     {
         key: 'tags',
         title: 'Tags',
@@ -31,20 +30,15 @@ const defaultColumns = [
         key: 'updated',
         title: 'Last seen',
         // eslint-disable-next-line react/display-name
-        renderFunc: (
-            value,
-            _id,
-            {
-                culled_timestamp: culled, stale_warning_timestamp: staleWarn, stale_timestamp: stale
-            }) => {
+        renderFunc: (value, _id, { culled_timestamp: culled, stale_warning_timestamp: staleWarn, stale_timestamp: stale }) => {
             const time = DateFormat ? <DateFormat date={value} type="exact" /> : new Date(value).toLocaleString();
-            return CullingInformation ? <CullingInformation
-                culled={culled}
-                staleWarning={staleWarn}
-                stale={stale}
-            >
-                { time }
-            </CullingInformation> : time;
+            return CullingInformation ? (
+                <CullingInformation culled={culled} staleWarning={staleWarn} stale={stale}>
+                    {time}
+                </CullingInformation>
+            ) : (
+                time
+            );
         },
         props: { width: 25 }
     }
@@ -53,7 +47,7 @@ const defaultColumns = [
 function entitiesPending(state) {
     return {
         ...state,
-        columns: mergeArraysByKey([ defaultColumns, state.columns ], 'key'),
+        columns: mergeArraysByKey([defaultColumns, state.columns], 'key'),
         rows: [],
         loaded: false
     };
@@ -78,7 +72,7 @@ function entitiesLoaded(state, { payload: { results, per_page: perPage, page, co
         activeFilters: filters || [],
         loaded: loaded === undefined || loaded,
         // filter data only if we are loaded
-        rows: mergeArraysByKey([ state.rows, results ]).filter(item => !loaded ? true : item.created),
+        rows: mergeArraysByKey([state.rows, results]).filter((item) => (!loaded ? true : item.created)),
         perPage: perPage !== undefined ? perPage : state.perPage,
         page: page !== undefined ? page : state.page,
         count: count !== undefined ? count : state.count,
@@ -87,12 +81,12 @@ function entitiesLoaded(state, { payload: { results, per_page: perPage, page, co
 }
 
 function selectEntity(state, { payload: { id, selected } }) {
-    const rows = [ ...state.rows ];
-    const entity = rows.find(entity => entity.id === id);
+    const rows = [...state.rows];
+    const entity = rows.find((entity) => entity.id === id);
     if (entity) {
         entity.selected = selected;
     } else {
-        rows.forEach(item => item.selected = selected);
+        rows.forEach((item) => (item.selected = selected));
     }
 
     return {
@@ -111,21 +105,25 @@ function changeSort(state, { payload: { key, direction } }) {
     };
 }
 
-function selectFilter(state, { payload: { item: { items, ...item }, selected } }) {
+function selectFilter(
+    state,
+    {
+        payload: {
+            item: { items, ...item },
+            selected
+        }
+    }
+) {
     let { activeFilters = [] } = state;
     if (selected) {
-        activeFilters = [
-            ...activeFilters,
-            item,
-            ...items ? items : []
-        ];
-        const values = activeFilters.map(active => active.value);
+        activeFilters = [...activeFilters, item, ...(items ? items : [])];
+        const values = activeFilters.map((active) => active.value);
         activeFilters = activeFilters.filter((filter, key) => values.lastIndexOf(filter.value) === key);
     } else {
-        activeFilters.splice(activeFilters.map(active => active.value).indexOf(item.value), 1);
+        activeFilters.splice(activeFilters.map((active) => active.value).indexOf(item.value), 1);
         if (items) {
-            items.forEach(subItem => {
-                activeFilters.splice(activeFilters.map(active => active.value).indexOf(subItem.value), 1);
+            items.forEach((subItem) => {
+                activeFilters.splice(activeFilters.map((active) => active.value).indexOf(subItem.value), 1);
             });
         }
     }
@@ -156,7 +154,7 @@ export function toggleTagModal(state, { payload: { isOpen } }) {
 export function allTags(state, { payload: { results, total, per_page: perPage } }) {
     return {
         ...state,
-        allTags: Object.entries(groupBy(results, ({ tag: { namespace } }) => namespace)).map(([ key, value ]) => ({
+        allTags: Object.entries(groupBy(results, ({ tag: { namespace } }) => namespace)).map(([key, value]) => ({
             name: key,
             tags: value
         })),
@@ -172,12 +170,13 @@ export default {
     [ACTION_TYPES.LOAD_ENTITIES_FULFILLED]: entitiesLoaded,
     [ACTION_TYPES.LOAD_TAGS]: showTags,
     [UPDATE_ENTITIES]: entitiesLoaded,
-    [SHOW_ENTITIES]: (state, action) => entitiesLoaded(state, {
-        payload: {
-            ...action.payload,
-            loaded: false
-        }
-    }),
+    [SHOW_ENTITIES]: (state, action) =>
+        entitiesLoaded(state, {
+            payload: {
+                ...action.payload,
+                loaded: false
+            }
+        }),
     [FILTER_SELECT]: selectFilter,
     [SELECT_ENTITY]: selectEntity,
     [CHANGE_SORT]: changeSort,

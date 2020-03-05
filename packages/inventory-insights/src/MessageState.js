@@ -1,6 +1,6 @@
 import { EmptyState, EmptyStateVariant } from '@patternfly/react-core/dist/js/components/EmptyState/EmptyState';
 
-import  CubesIcon  from '@patternfly/react-icons/dist/js/icons/cubes-icon';
+import CubesIcon from '@patternfly/react-icons/dist/js/icons/cubes-icon';
 import { EmptyStateBody } from '@patternfly/react-core/dist/js/components/EmptyState/EmptyStateBody';
 import { EmptyStateIcon } from '@patternfly/react-core/dist/js/components/EmptyState/EmptyStateIcon';
 import PropTypes from 'prop-types';
@@ -10,12 +10,10 @@ import { Title } from '@patternfly/react-core/dist/js/components/Title/Title';
 const MessageState = ({ children, icon, iconClass, iconStyle, size, text, title, variant }) => (
     <EmptyState variant={variant}>
         {icon !== 'none' && <EmptyStateIcon className={iconClass} style={iconStyle} icon={icon} size={size} />}
-        <Title headingLevel='h5' size='lg'>
+        <Title headingLevel="h5" size="lg">
             {title}
         </Title>
-        <EmptyStateBody style={{ marginBottom: '16px' }}>
-            {text}
-        </EmptyStateBody>
+        <EmptyStateBody style={{ marginBottom: '16px' }}>{text}</EmptyStateBody>
         {children}
     </EmptyState>
 );

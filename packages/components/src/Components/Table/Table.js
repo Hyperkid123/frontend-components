@@ -38,47 +38,40 @@ const Table = ({
 
     return (
         <table
-            { ...props }
-            className={
-                classnames(
-                    'pf-c-table',
-                    'ins-c-table',
-                    props.variant !== TableVariant.large && 'pf-m-compact',
-                    className
-                )
-            }
-            widget-type='InsightsTable'
+            {...props}
+            className={classnames('pf-c-table', 'ins-c-table', props.variant !== TableVariant.large && 'pf-m-compact', className)}
+            widget-type="InsightsTable"
         >
-            <caption className="pf-c-table__caption">
-            </caption>
-            { header &&
-        <THead
-            expandable={ expandable }
-            onSelectAll={ onAllRowsSelect }
-            hasIcon={ hasIcon }
-            hasCheckbox={ hasCheckbox }
-            sortBy={ sortBy }
-            cols={ header }
-            onSort={ onSort }
-        />
-            }
-            { rows &&
-        <TBody
-            onExpandClick={ onExpandClick }
-            cols={ header }
-            expandable={ expandable }
-            hasCheckbox={ hasCheckbox }
-            rows={ rows }
-            onItemSelect={ onItemSelect }
-            onRowClick={ onRowClick }
-            onColClick={ onColClick }
-        />
-            }
-            { footer && <TFooter
-                hasCheckbox={ hasCheckbox }
-                expandable={ expandable }
-                hasIcon={ hasIcon }
-                colspan={ header.length }> { footer } </TFooter> }
+            <caption className="pf-c-table__caption"></caption>
+            {header && (
+                <THead
+                    expandable={expandable}
+                    onSelectAll={onAllRowsSelect}
+                    hasIcon={hasIcon}
+                    hasCheckbox={hasCheckbox}
+                    sortBy={sortBy}
+                    cols={header}
+                    onSort={onSort}
+                />
+            )}
+            {rows && (
+                <TBody
+                    onExpandClick={onExpandClick}
+                    cols={header}
+                    expandable={expandable}
+                    hasCheckbox={hasCheckbox}
+                    rows={rows}
+                    onItemSelect={onItemSelect}
+                    onRowClick={onRowClick}
+                    onColClick={onColClick}
+                />
+            )}
+            {footer && (
+                <TFooter hasCheckbox={hasCheckbox} expandable={expandable} hasIcon={hasIcon} colspan={header.length}>
+                    {' '}
+                    {footer}{' '}
+                </TFooter>
+            )}
         </table>
     );
 };

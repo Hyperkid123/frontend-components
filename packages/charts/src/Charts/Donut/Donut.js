@@ -19,11 +19,10 @@ export const LegendPosition = {
  * Donut used for displaying statuses
  */
 
-const ConditionalLink = ({ condition, wrap, children }) => condition ? wrap(children) : children;
+const ConditionalLink = ({ condition, wrap, children }) => (condition ? wrap(children) : children);
 
 class Donut extends Component {
-
-    componentDidMount () {
+    componentDidMount() {
         this._updateChart();
     }
 
@@ -39,21 +38,22 @@ class Donut extends Component {
     updateLabels(donut) {
         if (this.props.withLegend) {
             select(this.legend)
-            .selectAll('div.ins-l-donut__legend--item')
-            .each(function() {
-                select(this)
-                .select('span').style('background-color', donut.color(this.getAttribute('data-id')));
-            })
-            .on('mouseover', function () {
-                donut.focus(this.getAttribute('data-id'));
-            })
-            .on('mouseout', function () {
-                donut.revert();
-            });
+                .selectAll('div.ins-l-donut__legend--item')
+                .each(function() {
+                    select(this)
+                        .select('span')
+                        .style('background-color', donut.color(this.getAttribute('data-id')));
+                })
+                .on('mouseover', function() {
+                    donut.focus(this.getAttribute('data-id'));
+                })
+                .on('mouseout', function() {
+                    donut.revert();
+                });
         }
     }
 
-    _updateChart () {
+    _updateChart() {
         let data = {
             type: 'donut',
             columns: this.props.values
@@ -82,12 +82,8 @@ class Donut extends Component {
         this.updateLabels(this.donut);
     }
 
-    render () {
-
-        const donutClasses = classNames(
-            this.props.className,
-            'ins-c-donut'
-        );
+    render() {
+        const donutClasses = classNames(this.props.className, 'ins-c-donut');
 
         const wrapperClasses = classNames({
             'ins-l-donut-wrapper': true,
@@ -104,40 +100,44 @@ class Donut extends Component {
 
         let donutLegend;
         if (this.props.withLegend) {
-            donutLegend =
-            <div className='ins-l-donut__legend' ref={ ref => {this.legend = ref;} }>
-                { this.props.values && this.props.values.map(oneItem => (
-                    <div key={ oneItem }  data-id={ oneItem[0] } className="donut ins-l-donut__legend--item">
-                        <div className="badge-wrapper">
-                            { /* if this.props.link has a value, wrap the spans in a Link tag */ }
-                            <ConditionalLink
-                                key={ oneItem[0] }
-                                condition={ this.props.link }
-                                wrap={ children =>
-                                    <Link to={ `${this.props.link}${oneItem[0].toLowerCase()}` }>
-                                        { children }
-                                    </Link>
-                                }>
-                                <span className="badge"></span>
-                                <span className="badge__label">{ oneItem[0] }</span>
-                                <span className="badge__number">({ oneItem[1] })</span>
-                            </ConditionalLink>
-                        </div>
-                    </div>
-                )) }
-            </div>;
+            donutLegend = (
+                <div
+                    className="ins-l-donut__legend"
+                    ref={(ref) => {
+                        this.legend = ref;
+                    }}
+                >
+                    {this.props.values &&
+                        this.props.values.map((oneItem) => (
+                            <div key={oneItem} data-id={oneItem[0]} className="donut ins-l-donut__legend--item">
+                                <div className="badge-wrapper">
+                                    {/* if this.props.link has a value, wrap the spans in a Link tag */}
+                                    <ConditionalLink
+                                        key={oneItem[0]}
+                                        condition={this.props.link}
+                                        wrap={(children) => <Link to={`${this.props.link}${oneItem[0].toLowerCase()}`}>{children}</Link>}
+                                    >
+                                        <span className="badge"></span>
+                                        <span className="badge__label">{oneItem[0]}</span>
+                                        <span className="badge__number">({oneItem[1]})</span>
+                                    </ConditionalLink>
+                                </div>
+                            </div>
+                        ))}
+                </div>
+            );
         }
 
         return (
-            <div className={ wrapperClasses } widget-type='InsightsDonut' widget-id={ this.props.identifier }>
-                <div className='ins-l-donut'>
-                    <div id={ this.props.identifier } className={ donutClasses }></div>
-                    <div className='ins-c-donut-hole'>
-                        <span className='ins-c-donut-hole--total__number'>{ total }</span>
-                        <span className='ins-c-donut-hole--total__label'>{ this.props.totalLabel }</span>
+            <div className={wrapperClasses} widget-type="InsightsDonut" widget-id={this.props.identifier}>
+                <div className="ins-l-donut">
+                    <div id={this.props.identifier} className={donutClasses}></div>
+                    <div className="ins-c-donut-hole">
+                        <span className="ins-c-donut-hole--total__number">{total}</span>
+                        <span className="ins-c-donut-hole--total__label">{this.props.totalLabel}</span>
                     </div>
                 </div>
-                { donutLegend }
+                {donutLegend}
             </div>
         );
     }

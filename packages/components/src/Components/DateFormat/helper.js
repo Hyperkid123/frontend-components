@@ -10,33 +10,36 @@ const year = day * 365;
 const formatTime = (number, unit) => `${number} ${number > 1 ? `${unit}s` : unit} ago`;
 
 const relativeTimeTable = [
-    { rightBound: Infinity, description: date => formatTime(Math.round(date / (year)), 'year') },
-    { rightBound: year, description: date => formatTime(Math.round(date / (month)), 'month') },
-    { rightBound: month, description: date => formatTime(Math.round(date / (day)), 'day') },
-    { rightBound: day, description: date => formatTime(Math.round(date / (hour)), 'hour') },
-    { rightBound: hour, description: date => formatTime(Math.round(date / (minute)), 'minute') },
+    { rightBound: Infinity, description: (date) => formatTime(Math.round(date / year), 'year') },
+    { rightBound: year, description: (date) => formatTime(Math.round(date / month), 'month') },
+    { rightBound: month, description: (date) => formatTime(Math.round(date / day), 'day') },
+    { rightBound: day, description: (date) => formatTime(Math.round(date / hour), 'hour') },
+    { rightBound: hour, description: (date) => formatTime(Math.round(date / minute), 'minute') },
     { rightBound: minute, description: () => 'Just now' }
 ];
 
-const exact = (value) => value.toUTCString().split(',')[1].slice(0, -4).trim();
+const exact = (value) =>
+    value
+        .toUTCString()
+        .split(',')[1]
+        .slice(0, -4)
+        .trim();
 
-export const addTooltip = (date, element) => (
-    <Tooltip
-        content={<div>{date}</div>}
-    >
-        {element}
-    </Tooltip>);
+export const addTooltip = (date, element) => <Tooltip content={<div>{date}</div>}>{element}</Tooltip>;
 
-export const dateStringByType = (type) => ({
-    exact: date => exact(date) + ' UTC',
-    onlyDate: date => exact(date).slice(0, -9),
-    relative: date => relativeTimeTable.reduce((acc, i) => (i.rightBound > Date.now() - date ? i.description(Date.now() - date) : acc), exact(date)),
-    invalid: () => 'Invalid Date'
-})[type];
+export const dateStringByType = (type) =>
+    ({
+        exact: (date) => exact(date) + ' UTC',
+        onlyDate: (date) => exact(date).slice(0, -9),
+        relative: (date) =>
+            relativeTimeTable.reduce((acc, i) => (i.rightBound > Date.now() - date ? i.description(Date.now() - date) : acc), exact(date)),
+        invalid: () => 'Invalid Date'
+    }[type]);
 
-export const dateByType = (type) => ({
-    exact: date => dateStringByType(type)(date),
-    onlyDate: date => dateStringByType(type)(date),
-    relative: date => addTooltip(dateStringByType('exact')(date), <span>{dateStringByType(type)(date)}</span>),
-    invalid: () => 'Invalid Date'
-})[type];
+export const dateByType = (type) =>
+    ({
+        exact: (date) => dateStringByType(type)(date),
+        onlyDate: (date) => dateStringByType(type)(date),
+        relative: (date) => addTooltip(dateStringByType('exact')(date), <span>{dateStringByType(type)(date)}</span>),
+        invalid: () => 'Invalid Date'
+    }[type]);

@@ -7,12 +7,13 @@ import { Instagram } from 'react-content-loader';
 class SystemPolicyCards extends React.Component {
     systemPolicyCards() {
         const { policies } = this.props;
-        return policies.filter((policy) => (policy.rulesFailed + policy.rulesPassed) > 0).map(
-            (policy, i) =>
-                <GridItem sm={ 12 } md={ 12 } lg={ 6 } xl={ 4 } key={ i }>
-                    <SystemPolicyCard policy={ policy } />
+        return policies
+            .filter((policy) => policy.rulesFailed + policy.rulesPassed > 0)
+            .map((policy, i) => (
+                <GridItem sm={12} md={12} lg={6} xl={4} key={i}>
+                    <SystemPolicyCard policy={policy} />
                 </GridItem>
-        );
+            ));
     }
 
     render() {
@@ -20,17 +21,18 @@ class SystemPolicyCards extends React.Component {
 
         return (
             <React.Fragment>
-                <Grid gutter='md'>
-                    { this.systemPolicyCards() }
-                    { loading && [ ...Array(3) ].map((_item, i) => (
-                        <GridItem span={ 4 } key={ i }>
-                            <Card>
-                                <CardBody>
-                                    <Instagram />
-                                </CardBody>
-                            </Card>
-                        </GridItem>
-                    )) }
+                <Grid gutter="md">
+                    {this.systemPolicyCards()}
+                    {loading &&
+                        [...Array(3)].map((_item, i) => (
+                            <GridItem span={4} key={i}>
+                                <Card>
+                                    <CardBody>
+                                        <Instagram />
+                                    </CardBody>
+                                </Card>
+                            </GridItem>
+                        ))}
                 </Grid>
             </React.Fragment>
         );

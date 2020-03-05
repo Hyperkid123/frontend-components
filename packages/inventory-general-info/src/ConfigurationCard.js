@@ -10,62 +10,54 @@ export function enabledRepos(repositories) {
         return [
             repositories.enabled && repositories.enabled.length > 0 && `${repositories.enabled.length} enabled`,
             repositories.disabled && repositories.disabled.length > 0 && `${repositories.disabled.length} disabled`
-        ].filter(Boolean).join(' / ');
+        ]
+            .filter(Boolean)
+            .join(' / ');
     }
 
     return 0;
 }
 
-const ConfigurationCard = ({ detailLoaded, configuration, handleClick }) => (<LoadingCard
-    title="Configuration"
-    isLoading={ !detailLoaded }
-    items={ [
-        {
-            title: 'Installed packages',
-            value: configuration.packages ? `${configuration.packages.length} packages` : 0,
-            target: 'installed_packages',
-            onClick: () => {
-                handleClick(
-                    'Installed packages',
-                    generalMapper(configuration.packages, 'Package name')
-                );
+const ConfigurationCard = ({ detailLoaded, configuration, handleClick }) => (
+    <LoadingCard
+        title="Configuration"
+        isLoading={!detailLoaded}
+        items={[
+            {
+                title: 'Installed packages',
+                value: configuration.packages ? `${configuration.packages.length} packages` : 0,
+                target: 'installed_packages',
+                onClick: () => {
+                    handleClick('Installed packages', generalMapper(configuration.packages, 'Package name'));
+                }
+            },
+            {
+                title: 'Services',
+                value: configuration.services ? `${configuration.services.length} services` : 0,
+                target: 'services',
+                onClick: () => {
+                    handleClick('Services', generalMapper(configuration.services, 'Service name'));
+                }
+            },
+            {
+                title: 'Running processes',
+                value: configuration.processes ? `${configuration.processes.length} processes` : 0,
+                target: 'running_processes',
+                onClick: () => {
+                    handleClick('Running processes', generalMapper(configuration.processes, 'Process name'));
+                }
+            },
+            {
+                title: 'Repositories',
+                value: enabledRepos(configuration.repositories),
+                target: 'repositories',
+                onClick: () => {
+                    handleClick('Repositories', repositoriesMapper(configuration.repositories));
+                }
             }
-        },
-        {
-            title: 'Services',
-            value: configuration.services ? `${configuration.services.length} services` : 0,
-            target: 'services',
-            onClick: () => {
-                handleClick(
-                    'Services',
-                    generalMapper(configuration.services, 'Service name')
-                );
-            }
-        },
-        {
-            title: 'Running processes',
-            value: configuration.processes ? `${configuration.processes.length} processes` : 0,
-            target: 'running_processes',
-            onClick: () => {
-                handleClick(
-                    'Running processes',
-                    generalMapper(configuration.processes, 'Process name')
-                );
-            }
-        },
-        {
-            title: 'Repositories',
-            value: enabledRepos(configuration.repositories),
-            target: 'repositories',
-            onClick: () => {
-                handleClick(
-                    'Repositories',
-                    repositoriesMapper(configuration.repositories)
-                );
-            }
-        }
-    ] }
-/>);
+        ]}
+    />
+);
 
 ConfigurationCard.propTypes = {
     detailLoaded: PropTypes.bool,
@@ -75,20 +67,24 @@ ConfigurationCard.propTypes = {
         services: PropTypes.arrayOf(PropTypes.string),
         processes: PropTypes.arrayOf(PropTypes.string),
         repositories: PropTypes.shape({
-            enabled: PropTypes.arrayOf(PropTypes.shape({
-                // eslint-disable-next-line camelcase
-                base_url: PropTypes.string,
-                name: PropTypes.string,
-                enabled: PropTypes.bool,
-                gpgcheck: PropTypes.bool
-            })),
-            disabled: PropTypes.arrayOf(PropTypes.shape({
-                // eslint-disable-next-line camelcase
-                base_url: PropTypes.string,
-                name: PropTypes.string,
-                enabled: PropTypes.bool,
-                gpgcheck: PropTypes.bool
-            }))
+            enabled: PropTypes.arrayOf(
+                PropTypes.shape({
+                    // eslint-disable-next-line camelcase
+                    base_url: PropTypes.string,
+                    name: PropTypes.string,
+                    enabled: PropTypes.bool,
+                    gpgcheck: PropTypes.bool
+                })
+            ),
+            disabled: PropTypes.arrayOf(
+                PropTypes.shape({
+                    // eslint-disable-next-line camelcase
+                    base_url: PropTypes.string,
+                    name: PropTypes.string,
+                    enabled: PropTypes.bool,
+                    gpgcheck: PropTypes.bool
+                })
+            )
         })
     })
 };
@@ -97,11 +93,7 @@ ConfigurationCard.defaultProps = {
     handleClick: () => undefined
 };
 
-export default connect(({
-    systemProfileStore: {
-        systemProfile
-    }
-}) => ({
+export default connect(({ systemProfileStore: { systemProfile } }) => ({
     detailLoaded: systemProfile && systemProfile.loaded,
     configuration: configurationSelector(systemProfile)
 }))(ConfigurationCard);

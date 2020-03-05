@@ -21,7 +21,7 @@ const headers = Object.freeze({
     'Content-Type': 'application/json; charset=utf-8'
 });
 
-export function createRemediation(data, base = API_BASE) {
+export function createRemediation(data) {
     const uri = new URI(API_BASE).segment('remediations').toString();
     return fetch(uri, {
         headers,
@@ -31,8 +31,11 @@ export function createRemediation(data, base = API_BASE) {
     }).then(json);
 }
 
-export function patchRemediation(id, data, base = API_BASE) {
-    const uri = new URI(API_BASE).segment('remediations').segment(id).toString();
+export function patchRemediation(id, data) {
+    const uri = new URI(API_BASE)
+        .segment('remediations')
+        .segment(id)
+        .toString();
     return fetch(uri, {
         headers,
         credentials: 'include',
@@ -41,17 +44,23 @@ export function patchRemediation(id, data, base = API_BASE) {
     }).then(checkResponse);
 }
 
-export function getRemediations(basePath = API_BASE) {
-    const uri = new URI(API_BASE).segment('remediations').query({ limit: 200 }).toString();
+export function getRemediations() {
+    const uri = new URI(API_BASE)
+        .segment('remediations')
+        .query({ limit: 200 })
+        .toString();
     return fetch(uri, { credentials: 'include' }).then(json);
 }
 
-export function getRemediation(id, basePath = API_BASE) {
-    const uri = new URI(API_BASE).segment('remediations').segment(id).toString();
+export function getRemediation(id) {
+    const uri = new URI(API_BASE)
+        .segment('remediations')
+        .segment(id)
+        .toString();
     return fetch(uri, { credentials: 'include' }).then(json);
 }
 
-export function getResolutionsBatch(issues, basePath = API_BASE) {
+export function getResolutionsBatch(issues) {
     const uri = new URI(API_BASE).segment('resolutions').toString();
     return fetch(uri, {
         headers,

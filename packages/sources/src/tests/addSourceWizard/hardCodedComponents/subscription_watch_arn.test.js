@@ -1,12 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    TextList,
-    TextListItem,
-    ClipboardCopy
-} from '@patternfly/react-core';
+import { TextContent, Text, TextList, TextListItem, ClipboardCopy } from '@patternfly/react-core';
 
 import * as SubsAwsArn from '../../../addSourceWizard/hardcodedComponents/aws/subscriptionWatch';
 
@@ -39,6 +33,11 @@ describe('AWS-ARN hardcoded schemas', () => {
         expect(wrapper.find(TextList)).toHaveLength(1);
         expect(wrapper.find(TextListItem)).toHaveLength(4);
         expect(wrapper.find(ClipboardCopy)).toHaveLength(1);
-        expect(wrapper.find(ClipboardCopy).html().includes(CM_ID)).toEqual(true);
+        expect(
+            wrapper
+                .find(ClipboardCopy)
+                .html()
+                .includes(CM_ID)
+        ).toEqual(true);
     });
 });

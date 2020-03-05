@@ -18,15 +18,23 @@ export const getSourcesApi = () => ({
 });
 
 export const doLoadSourceTypes = () =>
-    getSourcesApi().listSourceTypes().then(data => ({ sourceTypes: data.data }));
+    getSourcesApi()
+        .listSourceTypes()
+        .then((data) => ({ sourceTypes: data.data }));
 
 export const doLoadApplicationTypes = () =>
-    getSourcesApi().listApplicationTypes().then(data => ({ applicationTypes: data.data }));
+    getSourcesApi()
+        .listApplicationTypes()
+        .then((data) => ({ applicationTypes: data.data }));
 
-export const doLoadAllApplications = () => getSourcesApi().listApplicationTypes().then(data => data.data);
+export const doLoadAllApplications = () =>
+    getSourcesApi()
+        .listApplicationTypes()
+        .then((data) => data.data);
 
-export const findSource = (name) => getSourcesApi().postGraphQL({
-    query: `{ sources(filter: {name: "${name}"})
+export const findSource = (name) =>
+    getSourcesApi().postGraphQL({
+        query: `{ sources(filter: {name: "${name}"})
         { id, name }
     }`
-});
+    });

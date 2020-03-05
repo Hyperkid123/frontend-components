@@ -3,9 +3,10 @@ import { authInterceptor, responseDataInterceptor, interceptor401, errorIntercep
 global.insights = {
     chrome: {
         auth: {
-            getUser: () => new Promise((resolve) => {
-                setTimeout(resolve, 1);
-            }),
+            getUser: () =>
+                new Promise((resolve) => {
+                    setTimeout(resolve, 1);
+                }),
             logout: jest.fn()
         }
     }
@@ -46,4 +47,3 @@ describe('errorInterceptor', () => {
         expect(() => errorInterceptor('')).toThrow();
     });
 });
-

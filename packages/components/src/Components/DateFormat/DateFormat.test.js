@@ -28,12 +28,12 @@ describe('DateFormat component', () => {
     });
 
     it('DateFormat renders with date integer', () => {
-        const wrapper = shallow(<DateFormat date={10}/>);
+        const wrapper = shallow(<DateFormat date={10} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('DateFormat renders with date string', () => {
-        const wrapper = shallow(<DateFormat date='Dec 31 2019 00:00:00 UTC' />);
+        const wrapper = shallow(<DateFormat date="Dec 31 2019 00:00:00 UTC" />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -43,12 +43,12 @@ describe('DateFormat component', () => {
     });
 
     it('DateFormat renders with date integer', () => {
-        const wrapper = shallow(<DateFormat date={10} type='exact'/>);
+        const wrapper = shallow(<DateFormat date={10} type="exact" />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('DateFormat renders with date integer', () => {
-        const wrapper = shallow(<DateFormat date={10} type='onlyDate'/>);
+        const wrapper = shallow(<DateFormat date={10} type="onlyDate" />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

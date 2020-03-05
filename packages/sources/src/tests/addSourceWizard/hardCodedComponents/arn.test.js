@@ -1,12 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    TextList,
-    TextListItem,
-    ClipboardCopy
-} from '@patternfly/react-core';
+import { TextContent, Text, TextList, TextListItem, ClipboardCopy } from '@patternfly/react-core';
 
 import * as AwsArn from '../../../addSourceWizard/hardcodedComponents/aws/arn';
 
@@ -32,14 +26,19 @@ describe('AWS-ARN hardcoded schemas', () => {
             })
         };
 
-        const wrapper = mount(<AwsArn.IAMPolicyDescription formOptions={FORM_OPTIONS}/>);
+        const wrapper = mount(<AwsArn.IAMPolicyDescription formOptions={FORM_OPTIONS} />);
 
         expect(wrapper.find(TextContent)).toHaveLength(1);
         expect(wrapper.find(Text)).toHaveLength(2);
         expect(wrapper.find(TextList)).toHaveLength(1);
         expect(wrapper.find(TextListItem)).toHaveLength(3);
         expect(wrapper.find(ClipboardCopy)).toHaveLength(1);
-        expect(wrapper.find(ClipboardCopy).html().includes(S3_BUCKET_NAME)).toEqual(true);
+        expect(
+            wrapper
+                .find(ClipboardCopy)
+                .html()
+                .includes(S3_BUCKET_NAME)
+        ).toEqual(true);
     });
 
     it('IAM POLICY returns error message when there is no S3_bucket value', () => {
@@ -54,10 +53,15 @@ describe('AWS-ARN hardcoded schemas', () => {
             })
         };
 
-        const wrapper = mount(<AwsArn.IAMPolicyDescription formOptions={FORM_OPTIONS}/>);
+        const wrapper = mount(<AwsArn.IAMPolicyDescription formOptions={FORM_OPTIONS} />);
 
         expect(wrapper.find(Text)).toHaveLength(1);
-        expect(wrapper.find(Text).text().includes('wrong')).toEqual(true);
+        expect(
+            wrapper
+                .find(Text)
+                .text()
+                .includes('wrong')
+        ).toEqual(true);
     });
 
     it('IAM ROLE is rendered correctly', () => {
@@ -69,7 +73,12 @@ describe('AWS-ARN hardcoded schemas', () => {
         expect(wrapper.find(TextList)).toHaveLength(1);
         expect(wrapper.find(TextListItem)).toHaveLength(4);
         expect(wrapper.find(ClipboardCopy)).toHaveLength(1);
-        expect(wrapper.find(ClipboardCopy).html().includes(CM_ID)).toEqual(true);
+        expect(
+            wrapper
+                .find(ClipboardCopy)
+                .html()
+                .includes(CM_ID)
+        ).toEqual(true);
     });
 
     it('TAGS DESCRIPTION is rendered correctly', () => {

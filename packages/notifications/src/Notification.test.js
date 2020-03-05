@@ -17,52 +17,52 @@ describe('Notification component', () => {
     });
 
     it('should render correctly', () => {
-        const wrapper = shallow(<Notification { ...initialProps }/>);
+        const wrapper = shallow(<Notification {...initialProps} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('pagination should render correctly', () => {
-        const wrapper = shallow(<Notification { ...initialProps } />);
+        const wrapper = shallow(<Notification {...initialProps} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly withouth description', () => {
-        const wrapper = shallow(<Notification { ...initialProps } description={ undefined }/>);
+        const wrapper = shallow(<Notification {...initialProps} description={undefined} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with sentryId', () => {
-        const wrapper = shallow(<Notification { ...initialProps } sentryId={ 'some-UUID' } />);
+        const wrapper = shallow(<Notification {...initialProps} sentryId={'some-UUID'} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with HTML description', () => {
         const description = '<html><body><h1>Some text</h1><div>another</div></body><img src="some" /></html>';
-        const wrapper = shallow(<Notification { ...initialProps } description={ description } />);
+        const wrapper = shallow(<Notification {...initialProps} description={description} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with HTML title', () => {
         const title = '<html><body><h1>Some text</h1><div>another</div></body><img src="some" /></html>';
-        const wrapper = shallow(<Notification { ...initialProps } title={ title } />);
+        const wrapper = shallow(<Notification {...initialProps} title={title} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with dismiss button', () => {
-        const wrapper = shallow(<Notification { ...initialProps } description={ undefined } dismissable/>);
+        const wrapper = shallow(<Notification {...initialProps} description={undefined} dismissable />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should call dismiss function on action click', () => {
         const onDismiss = jest.fn();
-        const wrapper = mount(<Notification { ...initialProps } onDismiss={ onDismiss } description={ undefined } dismissable/>);
+        const wrapper = mount(<Notification {...initialProps} onDismiss={onDismiss} description={undefined} dismissable />);
         wrapper.find('button').simulate('click');
         expect(onDismiss).toHaveBeenCalledWith(initialProps.id);
     });
 
     it('should call dismiss function when timer runs out', (done) => {
         const onDismiss = jest.fn();
-        const wrapper = mount(<Notification dismissDelay={ 100 } { ...initialProps } onDismiss={ onDismiss } description={ undefined }/>);
+        const wrapper = mount(<Notification dismissDelay={100} {...initialProps} onDismiss={onDismiss} description={undefined} />);
         setTimeout(() => {
             wrapper.update();
             expect(onDismiss).toHaveBeenCalledWith('Foo');
@@ -72,18 +72,18 @@ describe('Notification component', () => {
 
     it('should clear interval on notification unmout', () => {
         const timeoutSpy = jest.spyOn(global, 'clearTimeout');
-        let wrapper = mount(<Notification dismissDelay={ 100 } { ...initialProps } description={ undefined }/>);
+        let wrapper = mount(<Notification dismissDelay={100} {...initialProps} description={undefined} />);
         wrapper.unmount();
         expect(timeoutSpy).toHaveBeenCalledTimes(1);
         timeoutSpy.mockRestore();
 
-        wrapper = mount(<Notification dismissDelay={ 100 } { ...initialProps } dismissable description={ undefined }/>);
+        wrapper = mount(<Notification dismissDelay={100} {...initialProps} dismissable description={undefined} />);
         expect(timeoutSpy).not.toHaveBeenCalled();
     });
 
     it('should clear timeout on notification mouse enter', () => {
         const timeoutSpy = jest.spyOn(global, 'clearTimeout');
-        let wrapper = mount(<Notification dismissDelay={ 100 } { ...initialProps } description={ undefined }/>);
+        let wrapper = mount(<Notification dismissDelay={100} {...initialProps} description={undefined} />);
         wrapper.find('.pf-c-alert').simulate('mouseEnter');
         expect(timeoutSpy).toHaveBeenCalledTimes(1);
         timeoutSpy.mockRestore();
@@ -91,7 +91,7 @@ describe('Notification component', () => {
 
     it('should set timeout on notification mouse leave', () => {
         const timeoutSpy = jest.spyOn(global, 'setTimeout');
-        let wrapper = mount(<Notification dismissDelay={ 100 } { ...initialProps } description={ undefined }/>);
+        let wrapper = mount(<Notification dismissDelay={100} {...initialProps} description={undefined} />);
         wrapper.find('.pf-c-alert').simulate('mouseLeave');
         expect(timeoutSpy).toHaveBeenCalledTimes(2);
         timeoutSpy.mockRestore();

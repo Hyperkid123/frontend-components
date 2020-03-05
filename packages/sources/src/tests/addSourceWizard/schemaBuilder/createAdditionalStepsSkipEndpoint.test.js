@@ -13,45 +13,35 @@ jest.mock('../../../addSourceWizard/hardcodedSchemas', () => ({
 }));
 
 describe('createAdditionalStepsSkipEndpoint', () => {
-    const ADDITIONAL_STEPS = [
-        { name: 'step-1', fields: [ 'a' ] }
-    ];
+    const ADDITIONAL_STEPS = [{ name: 'step-1', fields: ['a'] }];
 
     const TYPES_FIELDS = [];
 
     it('assigns summary as a next step when has endpoint', () => {
         const HAS_ENDPOINT = true;
 
-        const result = createAdditionalSteps(
-            ADDITIONAL_STEPS,
-            'red',
-            'hat',
-            HAS_ENDPOINT,
-            TYPES_FIELDS
-        );
+        const result = createAdditionalSteps(ADDITIONAL_STEPS, 'red', 'hat', HAS_ENDPOINT, TYPES_FIELDS);
 
-        expect(result).toEqual([{
-            ...ADDITIONAL_STEPS[0],
-            stepKey: 'red-hat-generic-additional-step',
-            nextStep: 'summary'
-        }]);
+        expect(result).toEqual([
+            {
+                ...ADDITIONAL_STEPS[0],
+                stepKey: 'red-hat-generic-additional-step',
+                nextStep: 'summary'
+            }
+        ]);
     });
 
     it('assigns summary as a next step when has no endpoint', () => {
         const HAS_ENDPOINT = false;
 
-        const result = createAdditionalSteps(
-            ADDITIONAL_STEPS,
-            'red',
-            'hat',
-            HAS_ENDPOINT,
-            TYPES_FIELDS
-        );
+        const result = createAdditionalSteps(ADDITIONAL_STEPS, 'red', 'hat', HAS_ENDPOINT, TYPES_FIELDS);
 
-        expect(result).toEqual([{
-            ...ADDITIONAL_STEPS[0],
-            stepKey: 'red-hat-generic-additional-step',
-            nextStep: 'summary'
-        }]);
+        expect(result).toEqual([
+            {
+                ...ADDITIONAL_STEPS[0],
+                stepKey: 'red-hat-generic-additional-step',
+                nextStep: 'summary'
+            }
+        ]);
     });
 });

@@ -3,15 +3,15 @@ export let registry;
 
 function init(initialState = {}, middleware = [], composeEnhancersDefault) {
     if (!registry) {
-        registry = new ReducerRegistry(initialState, [ ...middleware ], composeEnhancersDefault);
+        registry = new ReducerRegistry(initialState, [...middleware], composeEnhancersDefault);
     }
 
     registry.register({
         routerData: (state, { type, payload }) => {
-            return ({
+            return {
                 ...state,
-                ...type === '@@INSIGHTS-CORE/NAVIGATION' ? payload : {}
-            });
+                ...(type === '@@INSIGHTS-CORE/NAVIGATION' ? payload : {})
+            };
         }
     });
     return registry;

@@ -7,29 +7,32 @@ import { Stack, StackItem } from '@patternfly/react-core';
 import './LoadingStep.scss';
 
 export default class LoadingStep extends PureComponent {
-
     componentDidMount() {
         this.props.onValidChange(false);
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.props.onValidChange(true);
     }
 
-    render () {
+    render() {
         return (
-            <Stack gutter='sm' className='ins-c-remediations-loading-step'>
-                <StackItem><h1><Skeleton size={ SkeletonSize.sm } /></h1></StackItem>
+            <Stack gutter="sm" className="ins-c-remediations-loading-step">
                 <StackItem>
-                    <Skeleton size={ SkeletonSize.lg } className='ins-c-remediations-loading-step-main' />
+                    <h1>
+                        <Skeleton size={SkeletonSize.sm} />
+                    </h1>
                 </StackItem>
                 <StackItem>
-                    <Stack gutter='sm'>
+                    <Skeleton size={SkeletonSize.lg} className="ins-c-remediations-loading-step-main" />
+                </StackItem>
+                <StackItem>
+                    <Stack gutter="sm">
                         <StackItem>
-                            <Skeleton size={ SkeletonSize.sm } />
+                            <Skeleton size={SkeletonSize.sm} />
                         </StackItem>
                         <StackItem>
-                            <Skeleton size={ SkeletonSize.xs } />
+                            <Skeleton size={SkeletonSize.xs} />
                         </StackItem>
                     </Stack>
                 </StackItem>
@@ -41,4 +44,3 @@ export default class LoadingStep extends PureComponent {
 LoadingStep.propTypes = {
     onValidChange: propTypes.func.isRequired
 };
-

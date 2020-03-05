@@ -5,7 +5,7 @@ import SkeletonTable from './SkeletonTable';
 
 describe('SkeletonTable component', () => {
     it('should render correctly', () => {
-        const wrapper = shallow(<SkeletonTable colSize={5} rowSize={15}/>);
+        const wrapper = shallow(<SkeletonTable colSize={5} rowSize={15} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -15,7 +15,7 @@ describe('SkeletonTable component', () => {
     });
 
     it('should render correctly with static columns', () => {
-        const wrapper = shallow(<SkeletonTable columns={[ 'first', 'second' ]} rowSize={15} />);
+        const wrapper = shallow(<SkeletonTable columns={['first', 'second']} rowSize={15} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

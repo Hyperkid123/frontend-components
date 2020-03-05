@@ -8,10 +8,13 @@ env:
   amd: true
   node: true
   jest: true
+plugins:
+  - prettier
 extends:
   - 'eslint:recommended'
-  - 'prettier'
   - 'plugin:react/recommended'
+  - 'plugin:prettier/recommended'
+  - 'prettier/react'
 parserOptions:
   ecmaVersion: 7
   sourceType: module
@@ -30,10 +33,6 @@ globals:
 rules:
   react/jsx-uses-vars: 2
   react/jsx-uses-react: 2
-  array-bracket-spacing:
-    - error
-    - always
-    - objectsInArrays: false
   comma-dangle: 2
   comma-spacing:
     - 2
@@ -49,13 +48,6 @@ rules:
   func-names:
     - error
     - never
-  indent:
-    - error
-    - 4
-    - SwitchCase: 1
-      MemberExpression: 0
-      ImportDeclaration: 1
-      ObjectExpression: 1
   key-spacing: 2
   keyword-spacing: 2
   linebreak-style:
@@ -102,20 +94,12 @@ rules:
   quote-props:
     - error
     - as-needed
-  quotes:
-    - error
-    - single
-    - allowTemplateLiterals: true
   semi:
     - error
     - always
   space-before-blocks: 2
   space-in-parens: 2
   space-infix-ops: 2
-  space-unary-ops:
-    - error
-    - words: false
-      nonwords: false
   vars-on-top: 2
   wrap-iife: 2
   yoda:

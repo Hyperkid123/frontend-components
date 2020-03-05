@@ -3,50 +3,52 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import LoadingCard, { Clickable } from './LoadingCard';
 
-[ true, false ].map(isLoading => {
+[true, false].map((isLoading) => {
     it(`Loading card render - isLoading: ${isLoading}`, () => {
-        const wrapper = shallow(<LoadingCard isLoading={ isLoading } title={ `Card that is ${isLoading ? 'loading' : 'loaded'}` } />);
+        const wrapper = shallow(<LoadingCard isLoading={isLoading} title={`Card that is ${isLoading ? 'loading' : 'loaded'}`} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });
 
 it('should render loading bars', () => {
-    const wrapper = shallow(<LoadingCard
-        isLoading={ true }
-        title="Some title"
-        items={
-            [
+    const wrapper = shallow(
+        <LoadingCard
+            isLoading={true}
+            title="Some title"
+            items={[
                 {
                     onClick: jest.fn(),
                     title: 'test-title',
                     size: 'md',
                     value: 'some value'
-                }, {
+                },
+                {
                     title: 'just title'
                 }
-            ]
-        }
-    />);
+            ]}
+        />
+    );
     expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 it(`Loading card render`, () => {
-    const wrapper = shallow(<LoadingCard
-        isLoading={ false }
-        title="Some title"
-        items={
-            [
+    const wrapper = shallow(
+        <LoadingCard
+            isLoading={false}
+            title="Some title"
+            items={[
                 {
                     onClick: jest.fn(),
                     title: 'test-title',
                     size: 'md',
                     value: 'some value'
-                }, {
+                },
+                {
                     title: 'just title'
                 }
-            ]
-        }
-    />);
+            ]}
+        />
+    );
     expect(toJson(wrapper)).toMatchSnapshot();
 });
 
@@ -57,26 +59,36 @@ it('Clickable should render - no data', () => {
 
 it('Clickable should render', () => {
     const onClick = jest.fn();
-    const wrapper = shallow(<Clickable item={ {
-        onClick,
-        value: 15,
-        target: 'some-target'
-    } } />);
-    wrapper.find('a').first().simulate('click', {
-        preventDefault: () => {
-        }
-    });
+    const wrapper = shallow(
+        <Clickable
+            item={{
+                onClick,
+                value: 15,
+                target: 'some-target'
+            }}
+        />
+    );
+    wrapper
+        .find('a')
+        .first()
+        .simulate('click', {
+            preventDefault: () => {}
+        });
     expect(onClick).toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
 });
 
 it('Clickable should render - 0 value', () => {
     const onClick = jest.fn();
-    const wrapper = shallow(<Clickable item={ {
-        onClick,
-        value: 0,
-        target: 'some-target'
-    } } />);
+    const wrapper = shallow(
+        <Clickable
+            item={{
+                onClick,
+                value: 0,
+                target: 'some-target'
+            }}
+        />
+    );
     expect(onClick).not.toHaveBeenCalled();
     expect(toJson(wrapper)).toMatchSnapshot();
 });

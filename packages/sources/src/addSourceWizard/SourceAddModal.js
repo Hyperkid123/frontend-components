@@ -26,7 +26,12 @@ class SourceAddModal extends React.Component {
 
         if (sourceTypes && applicationTypes) {
             this.setState({
-                schema: createSchema(sourceTypes.filter(type => type.schema), applicationTypes.filter(filterApps), disableAppSelection, disableHardcodedSchemas),
+                schema: createSchema(
+                    sourceTypes.filter((type) => type.schema),
+                    applicationTypes.filter(filterApps),
+                    disableAppSelection,
+                    disableHardcodedSchemas
+                ),
                 isLoading: false,
                 sourceTypes,
                 applicationTypes
@@ -42,8 +47,8 @@ class SourceAddModal extends React.Component {
             }
 
             return Promise.all(promises).then((data) => {
-                const sourceTypesOut = data.find(types => types.hasOwnProperty('sourceTypes'));
-                const applicationTypesOut = data.find(types => types.hasOwnProperty('applicationTypes'));
+                const sourceTypesOut = data.find((types) => types.hasOwnProperty('sourceTypes'));
+                const applicationTypesOut = data.find((types) => types.hasOwnProperty('applicationTypes'));
 
                 const sourceTypesFinal = sourceTypes || sourceTypesOut.sourceTypes;
                 const applicationTypesFinal = applicationTypes || applicationTypesOut.applicationTypes;
@@ -52,7 +57,7 @@ class SourceAddModal extends React.Component {
                     this.setState({
                         sourceTypes: sourceTypesFinal,
                         schema: createSchema(
-                            sourceTypesFinal.filter(type => type.schema),
+                            sourceTypesFinal.filter((type) => type.schema),
                             applicationTypesFinal.filter(filterApps),
                             disableAppSelection,
                             disableHardcodedSchemas
@@ -74,26 +79,30 @@ class SourceAddModal extends React.Component {
         const { schema, sourceTypes, isLoading } = this.state;
 
         if (isLoading) {
-            return <Wizard
-                isOpen={ true }
-                onClose={ onCancel }
-                title={WIZARD_TITLE}
-                description={WIZARD_DESCRIPTION}
-                steps={ [{
-                    name: 'Loading',
-                    component: <LoadingStep onClose={ () => onCancel() }/>,
-                    isFinishedStep: true
-                }] }
-            />;
+            return (
+                <Wizard
+                    isOpen={true}
+                    onClose={onCancel}
+                    title={WIZARD_TITLE}
+                    description={WIZARD_DESCRIPTION}
+                    steps={[
+                        {
+                            name: 'Loading',
+                            component: <LoadingStep onClose={() => onCancel()} />,
+                            isFinishedStep: true
+                        }
+                    ]}
+                />
+            );
         }
 
         return (
             <SourcesFormRenderer
-                initialValues={ values }
-                schema={ schema }
-                showFormControls={ false }
-                onSubmit={ (values) => onSubmit(values, sourceTypes) }
-                onCancel={ onCancel }
+                initialValues={values}
+                schema={schema}
+                showFormControls={false}
+                onSubmit={(values) => onSubmit(values, sourceTypes)}
+                onCancel={onCancel}
             />
         );
     }
@@ -102,20 +111,24 @@ class SourceAddModal extends React.Component {
 SourceAddModal.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    sourceTypes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        product_name: PropTypes.string.isRequired,
-        schema: PropTypes.shape({
-            authentication: PropTypes.array,
-            endpoint: PropTypes.object
+    sourceTypes: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            product_name: PropTypes.string.isRequired,
+            schema: PropTypes.shape({
+                authentication: PropTypes.array,
+                endpoint: PropTypes.object
+            })
         })
-    })),
-    applicationTypes: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        display_name: PropTypes.string.isRequired
-    })),
+    ),
+    applicationTypes: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            display_name: PropTypes.string.isRequired
+        })
+    ),
     values: PropTypes.object,
     disableAppSelection: PropTypes.bool,
     disableHardcodedSchemas: PropTypes.bool

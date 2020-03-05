@@ -11,30 +11,29 @@ class ApplicationDetails extends Component {
     }
 
     onTabClick = (_event, item) => {
-        const { history, match: { url }, onDetailSelect, items } = this.props;
-        const activeItem = items.find(oneApp => oneApp.name === item);
+        const {
+            history,
+            match: { url },
+            onDetailSelect,
+            items
+        } = this.props;
+        const activeItem = items.find((oneApp) => oneApp.name === item);
         history.push(`${url}/${activeItem.name}`);
         onDetailSelect && onDetailSelect(activeItem.name);
-    }
+    };
 
     render() {
         const { activeApp, items } = this.props;
-        const defaultApp = (activeApp && activeApp.appName) || items && items[0] && items[0].name;
+        const defaultApp = (activeApp && activeApp.appName) || (items && items[0] && items[0].name);
         return (
             <React.Fragment>
-                {
-                    items && items.length > 1 &&
-                    <Tabs
-                        activeKey={ defaultApp }
-                        onSelect={ this.onTabClick }
-                        isFilled
-                        className="ins-c-inventory-detail__app-tabs"
-                    >
-                        { items.map((item, key) => (
-                            <Tab key={ key } eventKey={ item.name } title={ item.title }></Tab>
-                        )) }
+                {items && items.length > 1 && (
+                    <Tabs activeKey={defaultApp} onSelect={this.onTabClick} isFilled className="ins-c-inventory-detail__app-tabs">
+                        {items.map((item, key) => (
+                            <Tab key={key} eventKey={item.name} title={item.title}></Tab>
+                        ))}
                     </Tabs>
-                }
+                )}
             </React.Fragment>
         );
     }
@@ -43,10 +42,12 @@ class ApplicationDetails extends Component {
 ApplicationDetails.propTypes = {
     history: PropTypes.any,
     match: PropTypes.any,
-    items: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string,
-        title: PropTypes.string
-    })),
+    items: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            title: PropTypes.string
+        })
+    ),
     activeApp: PropTypes.shape({
         name: PropTypes.string
     }),

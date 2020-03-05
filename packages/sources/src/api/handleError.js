@@ -16,11 +16,12 @@ export const handleError = (error, sourceId = undefined) => {
         return detail;
     }
 
-    return getSourcesApi().deleteSource(sourceId)
-    .then(() => detail)
-    .catch((errorDelete) => {
-        const errorDeleteDetail = get(errorDelete, 'errors[0].detail', JSON.stringify(errorDelete, null, 2));
+    return getSourcesApi()
+        .deleteSource(sourceId)
+        .then(() => detail)
+        .catch((errorDelete) => {
+            const errorDeleteDetail = get(errorDelete, 'errors[0].detail', JSON.stringify(errorDelete, null, 2));
 
-        return `${detail}. The source was not removed, try remove it later: ${errorDeleteDetail}`; }
-    );
+            return `${detail}. The source was not removed, try remove it later: ${errorDeleteDetail}`;
+        });
 };

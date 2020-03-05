@@ -32,13 +32,13 @@ class EntityDetails extends Component {
     getFact = (path) => {
         const { entity } = this.props;
         return get(entity, path, undefined);
-    }
+    };
 
     toggleActions = (collapsed) => {
         this.setState({
             isOpen: collapsed
         });
-    }
+    };
 
     onSelect = () => {
         this.setState({
@@ -52,107 +52,98 @@ class EntityDetails extends Component {
         return (
             <Split className="ins-c-inventory__detail--header">
                 <SplitItem isFilled>
-                    {
-                        loaded ?
-                            <Title size='2xl'>{ entity && entity.display_name }</Title> :
-                            <Skeleton size={ SkeletonSize.md } />
-                    }
+                    {loaded ? <Title size="2xl">{entity && entity.display_name}</Title> : <Skeleton size={SkeletonSize.md} />}
                 </SplitItem>
                 {
                     <SplitItem>
-                        {
-                            loaded ?
-                                actions && actions.length > 0 && <Dropdown
-                                    onSelect={ this.onSelect }
-                                    toggle={ <DropdownToggle onToggle={ this.toggleActions }>Actions</DropdownToggle> }
-                                    isOpen={ isOpen }
-                                    position={ DropdownPosition.right }
-                                    dropdownItems={ [ ...(actions ?
-                                        actions.map((action, key) => (
-                                            <DropdownItem
-                                                key={ action.key || key }
-                                                component="button"
-                                                onClick={ (event) => action.onClick(event, action, action.key || key) }
-                                            >
-                                                { action.title }
-                                            </DropdownItem>)
-                                        ) : []) ] }
-                                /> :
-                                <Skeleton size={ SkeletonSize.xl } />
-                        }
+                        {loaded ? (
+                            actions &&
+                            actions.length > 0 && (
+                                <Dropdown
+                                    onSelect={this.onSelect}
+                                    toggle={<DropdownToggle onToggle={this.toggleActions}>Actions</DropdownToggle>}
+                                    isOpen={isOpen}
+                                    position={DropdownPosition.right}
+                                    dropdownItems={[
+                                        ...(actions
+                                            ? actions.map((action, key) => (
+                                                  <DropdownItem
+                                                      key={action.key || key}
+                                                      component="button"
+                                                      onClick={(event) => action.onClick(event, action, action.key || key)}
+                                                  >
+                                                      {action.title}
+                                                  </DropdownItem>
+                                              ))
+                                            : [])
+                                    ]}
+                                />
+                            )
+                        ) : (
+                            <Skeleton size={SkeletonSize.xl} />
+                        )}
                     </SplitItem>
                 }
             </Split>
         );
-    }
+    };
 
     generateFacts = () => {
         const { loaded } = this.props;
         return (
             <Grid className="ins-entity-facts">
-                <GridItem md={ 6 }>
+                <GridItem md={6}>
                     <div>
-                        <span>
-                            UUID:
-                        </span>
-                        <span>
-                            {
-                                loaded ?
-                                    this.getFact(`id`) || ' ' :
-                                    <Skeleton size={ SkeletonSize.md } />
-                            }
-                        </span>
+                        <span>UUID:</span>
+                        <span>{loaded ? this.getFact(`id`) || ' ' : <Skeleton size={SkeletonSize.md} />}</span>
                     </div>
                     <div>
+                        <span>Last seen:</span>
                         <span>
-                            Last seen:
-                        </span>
-                        <span>
-                            {
-                                loaded ?
-                                    (
-                                        CullingInformation ? <CullingInformation
-                                            culled={this.getFact('culled_timestamp')}
-                                            staleWarning={this.getFact('stale_warning_timestamp')}
-                                            stale={this.getFact('stale_timestamp')}
-                                        >
-                                            <DateFormat date={this.getFact('updated')} type="exact" />
-                                        </CullingInformation> : <DateFormat date={this.getFact('updated')} type="exact" />
-                                    ) :
-                                    <Skeleton size={ SkeletonSize.sm } />
-                            }
+                            {loaded ? (
+                                CullingInformation ? (
+                                    <CullingInformation
+                                        culled={this.getFact('culled_timestamp')}
+                                        staleWarning={this.getFact('stale_warning_timestamp')}
+                                        stale={this.getFact('stale_timestamp')}
+                                    >
+                                        <DateFormat date={this.getFact('updated')} type="exact" />
+                                    </CullingInformation>
+                                ) : (
+                                    <DateFormat date={this.getFact('updated')} type="exact" />
+                                )
+                            ) : (
+                                <Skeleton size={SkeletonSize.sm} />
+                            )}
                         </span>
                     </div>
                 </GridItem>
             </Grid>
         );
-    }
+    };
 
     render() {
         const { useCard, loaded, entity } = this.props;
 
         return (
             <div className="ins-entity-detail">
-                { useCard ?
+                {useCard ? (
                     <Card>
-                        <CardHeader>
-                            { this.generateTop() }
-                        </CardHeader>
-                        <CardBody>
-                            { this.generateFacts() }
-                        </CardBody>
-                    </Card> :
+                        <CardHeader>{this.generateTop()}</CardHeader>
+                        <CardBody>{this.generateFacts()}</CardBody>
+                    </Card>
+                ) : (
                     <Fragment>
-                        { this.generateTop() }
-                        { this.generateFacts() }
-                        {
-                            loaded ?
-                                <TagWithDialog count={ entity.tags && entity.tags.length } systemId={ entity.id } /> :
-                                <Skeleton size={ SkeletonSize.sm }>&nbsp;</Skeleton>
-                        }
+                        {this.generateTop()}
+                        {this.generateFacts()}
+                        {loaded ? (
+                            <TagWithDialog count={entity.tags && entity.tags.length} systemId={entity.id} />
+                        ) : (
+                            <Skeleton size={SkeletonSize.sm}>&nbsp;</Skeleton>
+                        )}
                         <TagsModal />
                     </Fragment>
-                }
+                )}
                 <ApplicationDetails />
             </div>
         );
@@ -166,11 +157,13 @@ EntityDetails.propTypes = {
     tagCount: PropTypes.number,
     setDisplayName: PropTypes.func,
     setAnsibleHost: PropTypes.func,
-    actions: PropTypes.arrayOf(PropTypes.shape({
-        title: PropTypes.node,
-        onClick: PropTypes.func,
-        key: PropTypes.string
-    }))
+    actions: PropTypes.arrayOf(
+        PropTypes.shape({
+            title: PropTypes.node,
+            onClick: PropTypes.func,
+            key: PropTypes.string
+        })
+    )
 };
 
 EntityDetails.defualtProps = {
@@ -183,7 +176,7 @@ EntityDetails.defualtProps = {
 
 function mapDispatchToProps(dispatch) {
     const reloadWrapper = (id, event) => {
-        event.payload.then(data => {
+        event.payload.then((data) => {
             dispatch(loadEntity(id, { hasItems: true }));
             return data;
         });

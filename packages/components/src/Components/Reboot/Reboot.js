@@ -8,16 +8,11 @@ import { RebootingIcon } from '@patternfly/react-icons';
 import './reboot.scss';
 
 const Reboot = ({ red, className, ...props }) => {
-
-    const rebootIconClasses = classNames(
-        'ins-c-reboot',
-        { [`ins-m-red`]: red },
-        className
-    );
+    const rebootIconClasses = classNames('ins-c-reboot', { [`ins-m-red`]: red }, className);
 
     return (
-        <span className={ rebootIconClasses } { ...props }>
-            <RebootingIcon/>
+        <span className={rebootIconClasses} {...props}>
+            <RebootingIcon />
             <span>Reboot Required</span>
         </span>
     );

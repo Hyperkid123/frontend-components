@@ -6,13 +6,13 @@ import { SearchIcon } from '@patternfly/react-icons';
 class Text extends Component {
     state = {
         stateValue: ''
-    }
+    };
 
     onChangeValue = (e, value) => {
         this.setState({
             stateValue: value
         });
-    }
+    };
 
     render() {
         const { value, onChange, onSubmit, id, icon, className, ...props } = this.props;
@@ -21,17 +21,17 @@ class Text extends Component {
         const changeCallback = onChange ? onChange : this.onChangeValue;
         return (
             <Fragment>
-                <TextInput { ...props }
+                <TextInput
+                    {...props}
                     className={`ins-c-conditional-filter ${className || ''}`}
-                    id={ id }
-                    value={ onChange ? value : stateValue }
-                    onChange={ (_inputValue, e) => changeCallback(e, e.target.value) }
+                    id={id}
+                    value={onChange ? value : stateValue}
+                    onChange={(_inputValue, e) => changeCallback(e, e.target.value)}
                     widget-type="InsightsInput"
-                    onKeyDown={ e => e.key === 'Enter' && onSubmit(e, value || stateValue) }
+                    onKeyDown={(e) => e.key === 'Enter' && onSubmit(e, value || stateValue)}
                 />
                 <Icon size="sm" className="ins-c-search-icon" />
             </Fragment>
-
         );
     }
 }

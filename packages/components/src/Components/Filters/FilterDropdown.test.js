@@ -8,22 +8,16 @@ describe('FilterDropdown component', () => {
         filters: {},
         addFilter: jest.fn(),
         removeFilter: jest.fn(),
-        filterCategories: [
-            { title: '', type: '', urlParam: '', values: [{ label: '', value: '' }] }
-        ]
+        filterCategories: [{ title: '', type: '', urlParam: '', values: [{ label: '', value: '' }] }]
     };
 
     it('should render', () => {
-        const wrapper = shallow(
-            <FilterDropdown { ...defaultProps }/>
-        );
+        const wrapper = shallow(<FilterDropdown {...defaultProps} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render with a component as label', () => {
-        const wrapper = shallow(
-            <FilterDropdown { ...defaultProps } label={ <React.Fragment /> }/>
-        );
+        const wrapper = shallow(<FilterDropdown {...defaultProps} label={<React.Fragment />} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

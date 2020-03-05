@@ -10,27 +10,22 @@ import './gauge.scss';
  */
 
 class Gauge extends Component {
-
-    componentDidMount () {
+    componentDidMount() {
         this._updateChart();
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.value !== prevProps.value) {
             this.gauge.load({
-                columns: [
-                    [ this.props.label, this.props.value ]
-                ]
+                columns: [[this.props.label, this.props.value]]
             });
         }
     }
 
-    _updateChart () {
+    _updateChart() {
         let data = {
             type: 'gauge',
-            columns: [
-                [ this.props.label, this.props.value ]
-            ]
+            columns: [[this.props.label, this.props.value]]
         };
 
         let gaugeConfig = {
@@ -47,7 +42,7 @@ class Gauge extends Component {
                 fullCircle: true,
                 label: {
                     // hides value in center of gauge
-                    format () {
+                    format() {
                         return;
                     },
                     // hides min/max values of gauge
@@ -60,7 +55,7 @@ class Gauge extends Component {
             // actually control the thresholds or the colors. It's more of a flag for us
             color: {
                 threshold: {
-                    values: [ 25, 50, 75, 100 ]
+                    values: [25, 50, 75, 100]
                 }
             },
             tooltip: {
@@ -71,7 +66,7 @@ class Gauge extends Component {
         this.gauge = generate(gaugeConfig);
     }
 
-    render () {
+    render() {
         // this sets the color of the arc based on the value of props.value
         const threshold = 25;
         let colors = {
@@ -89,9 +84,7 @@ class Gauge extends Component {
             colors[Math.floor(this.props.value / threshold)]
         );
 
-        return (
-            <div id={ this.props.identifier } className={ gaugeClasses }  widget-type='InsightsGauge' widget-id={ this.props.identifier } ></div>
-        );
+        return <div id={this.props.identifier} className={gaugeClasses} widget-type="InsightsGauge" widget-id={this.props.identifier}></div>;
     }
 }
 

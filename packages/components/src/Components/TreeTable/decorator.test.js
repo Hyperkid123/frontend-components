@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import decorator from './decorator';
@@ -34,7 +33,10 @@ describe('TreeTable decorator', () => {
         const callback = jest.fn();
         const { children } = decorator()('value', { rowData: { level: 0, isTreeOpen: true } });
         const wrapper = mount(children);
-        wrapper.find('Button').first().simulate('click');
+        wrapper
+            .find('Button')
+            .first()
+            .simulate('click');
         expect(callback).not.toHaveBeenCalled();
     });
 
@@ -42,7 +44,10 @@ describe('TreeTable decorator', () => {
         const callback = jest.fn();
         const { children } = decorator(callback)('value', { rowData: { level: 0, isTreeOpen: true } });
         const wrapper = mount(children);
-        wrapper.find('Button').first().simulate('click');
+        wrapper
+            .find('Button')
+            .first()
+            .simulate('click');
         expect(callback).toHaveBeenCalled();
     });
 });

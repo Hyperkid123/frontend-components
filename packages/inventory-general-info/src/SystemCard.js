@@ -25,7 +25,7 @@ class SystemCard extends Component {
         const { entity } = this.props;
         fn(entity.id, value);
         this.onCancel();
-    }
+    };
 
     onShowDisplayModal = (event) => {
         event.preventDefault();
@@ -53,60 +53,66 @@ class SystemCard extends Component {
             <Fragment>
                 <LoadingCard
                     title="System properties"
-                    isLoading={ !detailLoaded }
-                    items={ [
+                    isLoading={!detailLoaded}
+                    items={[
                         {
-                            title: 'Host name', value: entity.fqdn, size: 'md'
+                            title: 'Host name',
+                            value: entity.fqdn,
+                            size: 'md'
                         },
                         {
-                            title: 'Display name', value: (
+                            title: 'Display name',
+                            value: (
                                 <Fragment>
-                                    { entity.display_name }
+                                    {entity.display_name}
                                     <a
                                         className="ins-c-inventory__detail--action"
-                                        href={ `${window.location.href}/display_name` }
-                                        onClick={ this.onShowDisplayModal }
+                                        href={`${window.location.href}/display_name`}
+                                        onClick={this.onShowDisplayModal}
                                     >
                                         <PencilAltIcon />
                                     </a>
                                 </Fragment>
-                            ), size: 'md'
+                            ),
+                            size: 'md'
                         },
                         {
-                            title: 'Ansible hostname', value: (
+                            title: 'Ansible hostname',
+                            value: (
                                 <Fragment>
-                                    { this.getAnsibleHost() }
+                                    {this.getAnsibleHost()}
                                     <a
                                         className="ins-c-inventory__detail--action"
-                                        href={ `${window.location.href}/ansible_name` }
-                                        onClick={ this.onShowAnsibleModal }
+                                        href={`${window.location.href}/ansible_name`}
+                                        onClick={this.onShowAnsibleModal}
                                     >
                                         <PencilAltIcon />
                                     </a>
                                 </Fragment>
-                            ), size: 'md'
+                            ),
+                            size: 'md'
                         },
                         { title: 'Number of CPUs', value: properties.cpuNumber },
                         { title: 'Sockets', value: properties.sockets },
                         { title: 'Cores per socket', value: properties.coresPerSocket },
                         { title: 'RAM', value: properties.ramSize }
-                    ] }
+                    ]}
                 />
                 <TextInputModal
-                    isOpen={ isDisplayNameModalOpen }
-                    title='Edit name'
-                    value={ entity && entity.display_name }
-                    ariaLabel='Host inventory display name'
-                    onCancel={ this.onCancel }
-                    onSubmit={ this.onSubmit(setDisplayName) }
+                    isOpen={isDisplayNameModalOpen}
+                    title="Edit name"
+                    value={entity && entity.display_name}
+                    ariaLabel="Host inventory display name"
+                    onCancel={this.onCancel}
+                    onSubmit={this.onSubmit(setDisplayName)}
                 />
                 <TextInputModal
-                    isOpen={ isAnsibleHostModalOpen }
-                    title='Edit Ansible host'
-                    value={ entity && this.getAnsibleHost() }
-                    ariaLabel='Ansible host'
-                    onCancel={ this.onCancel }
-                    onSubmit={ this.onSubmit(setAnsibleHost) }
+                    isOpen={isAnsibleHostModalOpen}
+                    title="Edit Ansible host"
+                    value={entity && this.getAnsibleHost()}
+                    ariaLabel="Ansible host"
+                    onCancel={this.onCancel}
+                    onSubmit={this.onSubmit(setAnsibleHost)}
                 />
             </Fragment>
         );
@@ -128,13 +134,15 @@ SystemCard.propTypes = {
         sockets: PropTypes.number,
         coresPerSocket: PropTypes.number,
         ramSize: PropTypes.string,
-        storage: PropTypes.arrayOf(PropTypes.shape({
-            device: PropTypes.string,
-            // eslint-disable-next-line camelcase
-            mount_point: PropTypes.string,
-            options: PropTypes.shape({}),
-            type: PropTypes.string
-        }))
+        storage: PropTypes.arrayOf(
+            PropTypes.shape({
+                device: PropTypes.string,
+                // eslint-disable-next-line camelcase
+                mount_point: PropTypes.string,
+                options: PropTypes.shape({}),
+                type: PropTypes.string
+            })
+        )
     }),
     setDisplayName: PropTypes.func,
     setAnsibleHost: PropTypes.func
@@ -147,7 +155,7 @@ SystemCard.defaultProps = {
 
 function mapDispatchToProps(dispatch) {
     const reloadWrapper = (id, event) => {
-        event.payload.then(data => {
+        event.payload.then((data) => {
             dispatch(systemProfile(id, { hasItems: true }));
             dispatch(loadEntity(id, { hasItems: true }));
             return data;
@@ -167,15 +175,11 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(({
-    entityDetails: {
-        entity
-    },
-    systemProfileStore: {
-        systemProfile
-    }
-}) => ({
-    entity,
-    detailLoaded: systemProfile && systemProfile.loaded,
-    properties: propertiesSelector(systemProfile)
-}), mapDispatchToProps)(SystemCard);
+export default connect(
+    ({ entityDetails: { entity }, systemProfileStore: { systemProfile } }) => ({
+        entity,
+        detailLoaded: systemProfile && systemProfile.loaded,
+        properties: propertiesSelector(systemProfile)
+    }),
+    mapDispatchToProps
+)(SystemCard);

@@ -5,40 +5,55 @@ import isEqual from 'lodash/isEqual';
 
 export default function(Component) {
     class RouterParams extends React.Component {
-        componentDidMount () {
-            const { match: { params, path, url }, onPathChange, location } = this.props;
+        componentDidMount() {
+            const {
+                match: { params, path, url },
+                onPathChange,
+                location
+            } = this.props;
             if (matchPath(location.pathname, { path: url, exact: true })) {
-                onPathChange && onPathChange({
-                    params,
-                    path
-                });
-            }
-        }
-
-        componentDidUpdate () {
-            const { match: { params, path, url }, onPathChange, location, routerData } = this.props;
-            if (routerData && (!isEqual(params, routerData.params) || path !== routerData.path)) {
-                if (matchPath(location.pathname, { path: url, exact: true })) {
-                    onPathChange && onPathChange({
+                onPathChange &&
+                    onPathChange({
                         params,
                         path
                     });
+            }
+        }
+
+        componentDidUpdate() {
+            const {
+                match: { params, path, url },
+                onPathChange,
+                location,
+                routerData
+            } = this.props;
+            if (routerData && (!isEqual(params, routerData.params) || path !== routerData.path)) {
+                if (matchPath(location.pathname, { path: url, exact: true })) {
+                    onPathChange &&
+                        onPathChange({
+                            params,
+                            path
+                        });
                 }
             }
         }
 
-        render () {
+        render() {
             const { onPathChange, routerData, staticContext, ...props } = this.props;
-            return <Component { ...props }/>;
+            return <Component {...props} />;
         }
-    };
+    }
 
-    return withRouter(connect(({ routerData }) => ({ routerData }), (dispatch) => (
-        {
-            onPathChange: (data) => dispatch({
-                type: '@@INSIGHTS-CORE/NAVIGATION',
-                payload: data
+    return withRouter(
+        connect(
+            ({ routerData }) => ({ routerData }),
+            (dispatch) => ({
+                onPathChange: (data) =>
+                    dispatch({
+                        type: '@@INSIGHTS-CORE/NAVIGATION',
+                        payload: data
+                    })
             })
-        }
-    ))(RouterParams));
+        )(RouterParams)
+    );
 }

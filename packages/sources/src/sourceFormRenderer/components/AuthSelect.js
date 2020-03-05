@@ -21,9 +21,11 @@ const AuthRadio = ({ label, input, authName, supportedAuthTypes, disableAuthType
                 id={`${input.name}-${authName}`}
                 isDisabled={isDisabled}
             />
-            {disableAuthType && !isSelected && <FormHelperText isHidden={false} className="pf-m-disabled">
-                You cannot change the authtype, when editing.
-            </FormHelperText>}
+            {disableAuthType && !isSelected && (
+                <FormHelperText isHidden={false} className="pf-m-disabled">
+                    You cannot change the authtype, when editing.
+                </FormHelperText>
+            )}
         </React.Fragment>
     );
 };
@@ -44,11 +46,8 @@ AuthRadio.defaultProps = {
     disableAuthType: false
 };
 
-const AuthSelectProvider = ({ FieldProvider, ...rest }) =>
-    (
-        <FieldProvider { ...rest }>
-            { (props) =>  <AuthRadio  { ...props } name={ props.input.name }/> }
-        </FieldProvider>
-    );
+const AuthSelectProvider = ({ FieldProvider, ...rest }) => (
+    <FieldProvider {...rest}>{(props) => <AuthRadio {...props} name={props.input.name} />}</FieldProvider>
+);
 
 export default AuthSelectProvider;

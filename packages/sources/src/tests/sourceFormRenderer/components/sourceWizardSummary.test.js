@@ -49,55 +49,85 @@ describe('SourceWizardSummary component', () => {
         });
 
         it('openshift', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('openshift', 'token') }/>);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('openshift', 'token')} />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('name is first', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('openshift', 'token') }/>);
-            expect(wrapper.find(TextListItem).at(1).children().first().text()).toEqual('openshift');
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('openshift', 'token')} />);
+            expect(
+                wrapper
+                    .find(TextListItem)
+                    .at(1)
+                    .children()
+                    .first()
+                    .text()
+            ).toEqual('openshift');
         });
 
         it('type is third', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('openshift', 'token') }/>);
-            expect(wrapper.find(TextListItem).at(5).children().first().text()).toEqual('OpenShift Container Platform');
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('openshift', 'token')} />);
+            expect(
+                wrapper
+                    .find(TextListItem)
+                    .at(5)
+                    .children()
+                    .first()
+                    .text()
+            ).toEqual('OpenShift Container Platform');
         });
 
         it('amazon', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('amazon', 'access_key_secret_key') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('amazon', 'access_key_secret_key')} />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('amazon - ARN', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('amazon', 'arn') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('amazon', 'arn')} />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('ansible-tower', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password')} />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
 
         it('selected Catalog application, is second', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password', '1') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password', '1')} />);
             expect(toJson(wrapper)).toMatchSnapshot();
-            expect(wrapper.find(TextListItem).at(3).children().first().text()).toEqual('Catalog');
+            expect(
+                wrapper
+                    .find(TextListItem)
+                    .at(3)
+                    .children()
+                    .first()
+                    .text()
+            ).toEqual('Catalog');
         });
 
         it('hide application', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password', '1') } showApp={ false }/>);
+            const wrapper = shallow(
+                <SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password', '1')} showApp={false} />
+            );
             expect(toJson(wrapper)).toMatchSnapshot();
-            expect(wrapper.find(TextListItem).at(3).children().first().text()).not.toEqual('Catalog');
+            expect(
+                wrapper
+                    .find(TextListItem)
+                    .at(3)
+                    .children()
+                    .first()
+                    .text()
+            ).not.toEqual('Catalog');
             expect(wrapper.contains('Catalog')).toEqual(false);
         });
 
         it('do not contain hidden field', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password')} />);
             expect(wrapper.contains('kubernetes')).toEqual(false);
         });
 
         it('do not contain hidden field', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password')} />);
             expect(wrapper.contains('kubernetes')).toEqual(false);
         });
 
@@ -121,7 +151,7 @@ describe('SourceWizardSummary component', () => {
                 })
             };
 
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions} />);
             expect(wrapper.contains('authority')).toEqual(true);
         });
 
@@ -144,25 +174,27 @@ describe('SourceWizardSummary component', () => {
                 })
             };
 
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions} />);
             expect(wrapper.contains('authority')).toEqual(false);
             expect(wrapper.contains('token')).toEqual(false);
         });
 
         it('render boolean as Yes', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('openshift', 'token') } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('openshift', 'token')} />);
             expect(wrapper.contains('Yes')).toEqual(true);
             expect(wrapper.contains('No')).toEqual(false);
         });
 
         it('render boolean as No', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('openshift', 'token', '1', false) } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions('openshift', 'token', '1', false)} />);
             expect(wrapper.contains('No')).toEqual(true);
             expect(wrapper.contains('Yes')).toEqual(false);
         });
 
         it('render password as dots', () => {
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions('ansible-tower', 'username_password', '1', false) } />);
+            const wrapper = shallow(
+                <SourceWizardSummary {...initialProps} formOptions={formOptions('ansible-tower', 'username_password', '1', false)} />
+            );
             expect(wrapper.contains('●●●●●●●●●●●●')).toEqual(true);
             expect(wrapper.contains('123456')).toEqual(false);
         });
@@ -180,7 +212,7 @@ describe('SourceWizardSummary component', () => {
                 })
             };
 
-            const wrapper = shallow(<SourceWizardSummary { ...initialProps } formOptions={ formOptions } />);
+            const wrapper = shallow(<SourceWizardSummary {...initialProps} formOptions={formOptions} />);
             expect(wrapper.contains('OpenShift Container Platform')).toEqual(true);
         });
     });
@@ -265,7 +297,7 @@ describe('SourceWizardSummary component', () => {
                 name: 'authentication.password',
                 stepKey: 'in'
             };
-            availableStepKeys = [ 'in' ];
+            availableStepKeys = ['in'];
 
             expect(createItem(field, values, availableStepKeys)).toEqual({
                 label: 'Label 1',
@@ -279,7 +311,7 @@ describe('SourceWizardSummary component', () => {
                 name: 'authentication.password',
                 stepKey: 'notint'
             };
-            availableStepKeys = [ 'in' ];
+            availableStepKeys = ['in'];
 
             expect(createItem(field, values, availableStepKeys)).toEqual(undefined);
         });

@@ -5,24 +5,24 @@ import LoadingCard from './LoadingCard';
 import { collectionInformationSelector } from './selectors';
 import { DateFormat } from '@redhat-cloud-services/frontend-components';
 
-const CollectionCard = ({ detailLoaded, collectionInformation, entity }) => (<LoadingCard
-    title="Collection information"
-    isLoading={ !detailLoaded }
-    items={ [
-        { title: 'Insights client', value: collectionInformation.client },
-        { title: 'Egg', value: collectionInformation.egg },
-        { title: 'Last check-in', value: entity && (
-            DateFormat ?
-                <DateFormat date={ entity.updated } type="onlyDate" /> :
-                new Date(entity.updated).toLocaleString()
-        ) },
-        { title: 'Registered', value: entity && (
-            DateFormat ?
-                <DateFormat date={entity.created} type="onlyDate" /> :
-                new Date(entity.created).toLocaleString()
-        ) }
-    ] }
-/>);
+const CollectionCard = ({ detailLoaded, collectionInformation, entity }) => (
+    <LoadingCard
+        title="Collection information"
+        isLoading={!detailLoaded}
+        items={[
+            { title: 'Insights client', value: collectionInformation.client },
+            { title: 'Egg', value: collectionInformation.egg },
+            {
+                title: 'Last check-in',
+                value: entity && (DateFormat ? <DateFormat date={entity.updated} type="onlyDate" /> : new Date(entity.updated).toLocaleString())
+            },
+            {
+                title: 'Registered',
+                value: entity && (DateFormat ? <DateFormat date={entity.created} type="onlyDate" /> : new Date(entity.created).toLocaleString())
+            }
+        ]}
+    />
+);
 
 CollectionCard.propTypes = {
     detailLoaded: PropTypes.bool,
@@ -39,14 +39,7 @@ CollectionCard.defaultProps = {
     detailLoaded: false
 };
 
-export default connect(({
-    entityDetails: {
-        entity
-    },
-    systemProfileStore: {
-        systemProfile
-    }
-}) => ({
+export default connect(({ entityDetails: { entity }, systemProfileStore: { systemProfile } }) => ({
     entity,
     detailLoaded: systemProfile && systemProfile.loaded,
     collectionInformation: collectionInformationSelector(systemProfile)

@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-    Button,
-    Modal,
-    TextInput
-} from '@patternfly/react-core';
+import { Button, Modal, TextInput } from '@patternfly/react-core';
 
 export default class TextInputModal extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {};
     }
 
-    static getDerivedStateFromProps (props, state) {
+    static getDerivedStateFromProps(props, state) {
         if (!props.isOpen) {
             return { value: undefined };
         }
@@ -25,34 +21,29 @@ export default class TextInputModal extends Component {
         return {
             value: props.value || ''
         };
-    };
+    }
 
-    render () {
+    render() {
         const { title, isOpen, onCancel, onSubmit, ariaLabel } = this.props;
         const { value } = this.state;
 
         return (
             <Modal
                 isSmall
-                title={ title }
+                title={title}
                 className="ins-c-inventory__detail--edit"
-                isOpen={ isOpen }
-                onClose={ event => onCancel(event) }
-                actions={ [
-                    <Button key="cancel" data-action="cancel" variant="secondary" onClick={ onCancel }>
+                isOpen={isOpen}
+                onClose={(event) => onCancel(event)}
+                actions={[
+                    <Button key="cancel" data-action="cancel" variant="secondary" onClick={onCancel}>
                         Cancel
                     </Button>,
-                    <Button key="confirm" data-action="confirm" variant="primary" onClick={ () => onSubmit(this.state.value) }>
+                    <Button key="confirm" data-action="confirm" variant="primary" onClick={() => onSubmit(this.state.value)}>
                         Save
                     </Button>
-                ] }
+                ]}
             >
-                <TextInput
-                    value={ value }
-                    type="text"
-                    onChange={ value => this.setState({ value }) }
-                    aria-label={ ariaLabel  }
-                />
+                <TextInput value={value} type="text" onChange={(value) => this.setState({ value })} aria-label={ariaLabel} />
             </Modal>
         );
     }
@@ -73,4 +64,3 @@ TextInputModal.defaultProps = {
     title: '',
     ariaLabel: 'input text'
 };
-

@@ -41,9 +41,12 @@ describe('applyReducerHash', () => {
     });
 
     it('should NOT apply changes', () => {
-        const changedState = applyReducerHash({
-            one: (state = {}) => ({ ...state, changed: 'f' })
-        }, {})({ default: 'not changed' }, { type: 'two' });
+        const changedState = applyReducerHash(
+            {
+                one: (state = {}) => ({ ...state, changed: 'f' })
+            },
+            {}
+        )({ default: 'not changed' }, { type: 'two' });
         expect(changedState).toMatchObject({ default: 'not changed' });
     });
 });
@@ -51,21 +54,28 @@ describe('applyReducerHash', () => {
 describe('dispatchActionsToStore', () => {
     const dispatch = jest.fn();
     it('basic action', () => {
-        const actions = dispatchActionsToStore({
-            one: () => ({ type: 'test' })
-        }, { dispatch });
+        const actions = dispatchActionsToStore(
+            {
+                one: () => ({ type: 'test' })
+            },
+            { dispatch }
+        );
         actions.one();
         expect(dispatch).toHaveBeenLastCalledWith({ type: 'test' });
     });
 
     it('action with payload', () => {
-        const actions = dispatchActionsToStore({
-            one: () => ({ type: 'test' }),
-            two: (data) => ({ type: 'another', payload: data })
-        }, { dispatch });
+        const actions = dispatchActionsToStore(
+            {
+                one: () => ({ type: 'test' }),
+                two: (data) => ({ type: 'another', payload: data })
+            },
+            { dispatch }
+        );
         actions.two({ rows: [] });
         expect(dispatch).toHaveBeenLastCalledWith({
-            type: 'another', payload: {
+            type: 'another',
+            payload: {
                 rows: []
             }
         });

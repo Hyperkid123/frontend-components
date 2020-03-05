@@ -8,7 +8,7 @@ it('should be called once', async () => {
     debounced();
     expect(apiCall).toHaveBeenCalledTimes(0);
 
-    [ ...new Array(5) ].forEach(() => {
+    [...new Array(5)].forEach(() => {
         debounced();
     });
     jest.runAllTimers();
@@ -33,5 +33,5 @@ it('accumulated', () => {
     debounced('second');
     jest.runAllTimers();
     expect(apiCall).toHaveBeenCalledTimes(1);
-    expect(apiCall.mock.calls[0][0]).toEqual(expect.arrayContaining([ [ 'first' ], [ 'second' ] ]));
+    expect(apiCall.mock.calls[0][0]).toEqual(expect.arrayContaining([['first'], ['second']]));
 });

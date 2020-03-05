@@ -3,25 +3,11 @@ import PropTypes from 'prop-types';
 import './tagModal.scss';
 import { Modal } from '@patternfly/react-core';
 import classNames from 'classnames';
-import {
-    Table,
-    TableHeader,
-    TableBody
-} from '@patternfly/react-table';
+import { Table, TableHeader, TableBody } from '@patternfly/react-table';
 
 export default class TagModal extends React.Component {
     render() {
-        const {
-            className,
-            systemName,
-            toggleModal,
-            isOpen,
-            rows,
-            columns,
-            children,
-            tableProps,
-            ...props
-        } = this.props;
+        const { className, systemName, toggleModal, isOpen, rows, columns, children, tableProps, ...props } = this.props;
         return (
             <Modal
                 {...props}
@@ -38,7 +24,7 @@ export default class TagModal extends React.Component {
                     className="ins-c-tag-modal__table"
                     cells={columns}
                     rows={rows}
-                    { ...tableProps }
+                    {...tableProps}
                 >
                     <TableHeader />
                     <TableBody />
@@ -63,10 +49,7 @@ TagModal.propTypes = {
 TagModal.defaultProps = {
     isOpen: false,
     toggleModal: () => undefined,
-    columns: [
-        { title: 'Name' },
-        { title: 'Tag Source' }
-    ],
+    columns: [{ title: 'Name' }, { title: 'Tag Source' }],
     rows: [],
     tableProps: {}
 };

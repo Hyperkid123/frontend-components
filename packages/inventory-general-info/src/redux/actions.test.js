@@ -15,7 +15,7 @@ describe('editDisplayName', () => {
     it('should call correct endpoint', async () => {
         mock.onPatch('/api/inventory/v1/hosts/4').reply(({ data }) => {
             expect(data).toEqual(JSON.stringify({ display_name: 'test-value' })); // eslint-disable-line camelcase
-            return [ 200, mockedData ];
+            return [200, mockedData];
         });
         const { type, meta } = await editDisplayName('4', 'test-value');
         expect(type).toBe('SET_DISPLAY_NAME');
@@ -35,7 +35,7 @@ describe('editAnsibleHost', () => {
     it('should call correct endpoint', async () => {
         mock.onPatch('/api/inventory/v1/hosts/4').reply(({ data }) => {
             expect(data).toEqual(JSON.stringify({ ansible_host: 'test-value' })); // eslint-disable-line camelcase
-            return [ 200, mockedData ];
+            return [200, mockedData];
         });
         const { type, meta } = await editAnsibleHost('4', 'test-value');
         expect(type).toBe('SET_ANSIBLE_HOST');

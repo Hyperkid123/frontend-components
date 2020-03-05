@@ -11,7 +11,7 @@ laborum.`;
 
 describe('Truncate component', () => {
     describe('should render correctly', () => {
-        [ true, false ].forEach(isInline => {
+        [true, false].forEach((isInline) => {
             describe(isInline ? 'inline' : 'block', () => {
                 it('without length specified', () => {
                     const wrapper = shallow(<Truncate text={text} inline={isInline} />);
@@ -25,7 +25,10 @@ describe('Truncate component', () => {
 
                 it('clicking on expand toggles to collapse', () => {
                     const wrapper = shallow(<Truncate text={text} inline={isInline} expandText="Custom expand" collapseText="Custom collapse" />);
-                    wrapper.find('.ins-c-expand-button').first().simulate('click');
+                    wrapper
+                        .find('.ins-c-expand-button')
+                        .first()
+                        .simulate('click');
                     expect(toJson(wrapper)).toMatchSnapshot();
                 });
 
@@ -36,13 +39,19 @@ describe('Truncate component', () => {
 
                 it('custom button titles', () => {
                     const wrapper = shallow(<Truncate text={text} inline={isInline} expandText="Custom expand" collapseText="Custom collapse" />);
-                    wrapper.find('.ins-c-expand-button').first().simulate('click');
+                    wrapper
+                        .find('.ins-c-expand-button')
+                        .first()
+                        .simulate('click');
                     expect(toJson(wrapper)).toMatchSnapshot();
                 });
 
                 it('clicking on expand toggles to collapse', () => {
                     const wrapper = shallow(<Truncate text={text} inline={isInline} expandText="Custom expand" collapseText="Custom collapse" />);
-                    wrapper.find('.ins-c-expand-button').first().simulate('click');
+                    wrapper
+                        .find('.ins-c-expand-button')
+                        .first()
+                        .simulate('click');
                     expect(toJson(wrapper)).toMatchSnapshot();
                 });
 
@@ -53,7 +62,10 @@ describe('Truncate component', () => {
 
                 it('custom button titles', () => {
                     const wrapper = shallow(<Truncate text={text} inline={isInline} expandText="Custom expand" collapseText="Custom collapse" />);
-                    wrapper.find('.ins-c-expand-button').first().simulate('click');
+                    wrapper
+                        .find('.ins-c-expand-button')
+                        .first()
+                        .simulate('click');
                     expect(toJson(wrapper)).toMatchSnapshot();
                 });
 

@@ -26,23 +26,25 @@ export const infraTest = {
     infrastructure_type: 'test-type',
     infrastructure_vendor: 'test-vendor',
     network: {
-        ipv4: [ '1' ],
-        ipv6: [ '6' ],
-        interfaces: [ 'test' ]
+        ipv4: ['1'],
+        ipv6: ['6'],
+        interfaces: ['test']
     }
 };
 
 export const configTest = {
-    installed_packages: [ 'packages' ],
-    enabled_services: [ 'services' ],
-    running_processes: [ 'processes' ],
+    installed_packages: ['packages'],
+    enabled_services: ['services'],
+    running_processes: ['processes'],
     repositories: {
-        enabled: [{
-            base_url: 'test-url',
-            name: 'test-name',
-            enabled: true,
-            gpgcheck: true
-        }],
+        enabled: [
+            {
+                base_url: 'test-url',
+                name: 'test-name',
+                enabled: true,
+                gpgcheck: true
+            }
+        ],
         disabled: []
     }
 };

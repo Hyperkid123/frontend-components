@@ -15,7 +15,7 @@ import { getEntities, getEntitySystemProfile, hosts, getAllTags } from '../api';
 
 export const loadEntities = (items = [], config) => ({
     type: ACTION_TYPES.LOAD_ENTITIES,
-    payload: getEntities(items, config).then(results => ({
+    payload: getEntities(items, config).then((results) => ({
         ...results,
         page: config.itemsPage || (results && results.page)
     }))

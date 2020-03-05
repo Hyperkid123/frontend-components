@@ -5,7 +5,7 @@ import PageHeaderTitle from './PageHeaderTitle';
 
 describe('PageHeader component', () => {
     it('should render', () => {
-        const wrapper = mount(<PageHeaderTitle title='Something'/>);
+        const wrapper = mount(<PageHeaderTitle title="Something" />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

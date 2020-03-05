@@ -7,7 +7,7 @@ export const dropDirection = {
     down: 'down'
 };
 
-const pager = [ 10, 15, 20, 25, 50 ];
+const pager = [10, 15, 20, 25, 50];
 
 class Pagination extends Component {
     setPage = (page, debounce) => {
@@ -17,7 +17,7 @@ class Pagination extends Component {
         page = isNaN(page) ? currPage : page;
         page = page > maxPage ? maxPage : page < 0 ? 0 : page;
         this.props.hasOwnProperty('onSetPage') && this.props.onSetPage(page, debounce);
-    }
+    };
 
     render() {
         let {
@@ -40,25 +40,26 @@ class Pagination extends Component {
         let firstIndex = numberOfItems === 0 ? 0 : (page - 1) * perPage + 1;
 
         return (
-            <PaginationNext { ...props }
-                itemCount={ this.props.numberOfItems }
+            <PaginationNext
+                {...props}
+                itemCount={this.props.numberOfItems}
                 className="ins-c-pagination-next"
-                itemsStart={ firstIndex }
-                itemsEnd={ lastIndex }
-                lastPage={ lastPage || 1 }
-                dropDirection={ this.props.direction }
-                onFirstPage={ onFirstPage }
-                onLastPage={ onLastPage }
-                onPreviousPage={ onPreviousPage }
-                onNextPage={ onNextPage }
-                perPage={ perPage }
-                onSetPerPage={ (_event, value) => this.props.onPerPageSelect(value) }
-                page={ this.props.page }
-                setPage={ (event, page) => this.setPage(page, event.currentTarget.tagName === 'INPUT') }
-                perPageOptions={ pagerOptions.map(value => ({
+                itemsStart={firstIndex}
+                itemsEnd={lastIndex}
+                lastPage={lastPage || 1}
+                dropDirection={this.props.direction}
+                onFirstPage={onFirstPage}
+                onLastPage={onLastPage}
+                onPreviousPage={onPreviousPage}
+                onNextPage={onNextPage}
+                perPage={perPage}
+                onSetPerPage={(_event, value) => this.props.onPerPageSelect(value)}
+                page={this.props.page}
+                setPage={(event, page) => this.setPage(page, event.currentTarget.tagName === 'INPUT')}
+                perPageOptions={pagerOptions.map((value) => ({
                     title: value,
                     value
-                })) }
+                }))}
             />
         );
     }

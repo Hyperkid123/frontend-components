@@ -1,16 +1,11 @@
-import {
-    createEndpointFlagger,
-    createGenericAuthTypeSelection
-} from '../../../addSourceWizard/schemaBuilder';
+import { createEndpointFlagger, createGenericAuthTypeSelection } from '../../../addSourceWizard/schemaBuilder';
 
 jest.mock('../../../addSourceWizard/hardcodedSchemas', () => ({
     openshiftAdditionalStep: {
         authentication: {
             token: {
                 generic: {
-                    additionalSteps: [
-                        {}
-                    ]
+                    additionalSteps: [{}]
                 }
             }
         }
@@ -19,8 +14,8 @@ jest.mock('../../../addSourceWizard/hardcodedSchemas', () => ({
 
 describe('generate auth selection pages', () => {
     let expectedSchema;
-    const APPEND_ENDPOINT_FIELDS = [ true ];
-    const EMPTY_APPEND_ENDPOINT = [ ];
+    const APPEND_ENDPOINT_FIELDS = [true];
+    const EMPTY_APPEND_ENDPOINT = [];
     const NOT_EDITING = false;
 
     const ONE_SINGLE_SELECTION_TYPE = {
@@ -28,17 +23,19 @@ describe('generate auth selection pages', () => {
         name: 'openshift',
         product_name: 'OpenShift Container Platform',
         schema: {
-            authentication: [{
-                type: 'token',
-                name: 'Token',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'Token'
-                    }
-                ]
-            }],
+            authentication: [
+                {
+                    type: 'token',
+                    name: 'Token',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'Token'
+                        }
+                    ]
+                }
+            ],
             endpoint: {
                 title: 'Configure OpenShift endpoint',
                 fields: [
@@ -57,27 +54,30 @@ describe('generate auth selection pages', () => {
         name: 'openshift',
         product_name: 'OpenShift Container Platform',
         schema: {
-            authentication: [{
-                type: 'token',
-                name: 'Token',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'Token'
-                    }
-                ]
-            }, {
-                type: 'arn',
-                name: 'ARN',
-                fields: [
-                    {
-                        component: 'text-field',
-                        name: 'authentication.password',
-                        label: 'ARN'
-                    }
-                ]
-            }],
+            authentication: [
+                {
+                    type: 'token',
+                    name: 'Token',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'Token'
+                        }
+                    ]
+                },
+                {
+                    type: 'arn',
+                    name: 'ARN',
+                    fields: [
+                        {
+                            component: 'text-field',
+                            name: 'authentication.password',
+                            label: 'ARN'
+                        }
+                    ]
+                }
+            ],
             endpoint: {
                 title: 'Configure OpenShift endpoint',
                 fields: [
@@ -154,10 +154,7 @@ describe('generate auth selection pages', () => {
 
             it('no endpoint', () => {
                 expectedSchema = expect.objectContaining({
-                    fields: expect.arrayContaining([
-                        firstAuth,
-                        secondAuth
-                    ]),
+                    fields: expect.arrayContaining([firstAuth, secondAuth]),
                     title: expect.any(String),
                     stepKey: MULTIPLE_SELECTION_TYPE.name,
                     name: MULTIPLE_SELECTION_TYPE.name,
@@ -177,10 +174,7 @@ describe('generate auth selection pages', () => {
                 const ENDPOINT_STEP_NAME = `${MULTIPLE_SELECTION_TYPE.name}-endpoint`;
 
                 expectedSchema = expect.objectContaining({
-                    fields: expect.arrayContaining([
-                        firstAuth,
-                        secondAuth
-                    ]),
+                    fields: expect.arrayContaining([firstAuth, secondAuth]),
                     title: expect.any(String),
                     stepKey: MULTIPLE_SELECTION_TYPE.name,
                     name: MULTIPLE_SELECTION_TYPE.name,

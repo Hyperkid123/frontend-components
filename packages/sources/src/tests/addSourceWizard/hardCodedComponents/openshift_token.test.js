@@ -1,11 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import {
-    TextContent,
-    Text,
-    TextList,
-    TextListItem
-} from '@patternfly/react-core';
+import { TextContent, Text, TextList, TextListItem } from '@patternfly/react-core';
 
 import * as OpToken from '../../../addSourceWizard/hardcodedComponents/openshift/token';
 

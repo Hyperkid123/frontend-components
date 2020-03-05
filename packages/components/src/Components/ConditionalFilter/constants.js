@@ -1,5 +1,4 @@
-/* eslint-disable react/display-name */
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import Text from './Text';
 import Checkbox from './Checkbox';
 import Radio from './Radio';
@@ -26,4 +25,3 @@ export const groupType = {
     radio: 'radio',
     plain: 'plain'
 };
-

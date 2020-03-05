@@ -30,13 +30,13 @@ describe('CollectionCard', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<CollectionCard store={ store } />);
+        const wrapper = render(<CollectionCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly with data', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<CollectionCard store={ store } />);
+        const wrapper = render(<CollectionCard store={store} />);
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 });

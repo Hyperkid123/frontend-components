@@ -28,46 +28,50 @@ import './compliance.scss';
 const COMPLIANCE_API_ROOT = '/api/compliance';
 
 const QUERY = gql`
-query System($systemId: String!){
-    system(id: $systemId) {
-        id
-        name
-        profiles {
+    query System($systemId: String!) {
+        system(id: $systemId) {
+            id
             name
-            refId
-            compliant
-            rulesFailed
-            rulesPassed
-            lastScanned
-            rules {
-                title
-                severity
-                rationale
+            profiles {
+                name
                 refId
-                description
                 compliant
-                remediationAvailable
-                references
-                identifier
+                rulesFailed
+                rulesPassed
+                lastScanned
+                rules {
+                    title
+                    severity
+                    rationale
+                    refId
+                    description
+                    compliant
+                    remediationAvailable
+                    references
+                    identifier
+                }
             }
         }
     }
-}
 `;
 
 const SystemQuery = ({ data, loading, hidePassed }) => (
     <React.Fragment>
-        <SystemPolicyCards policies={ data.system && data.system.profiles } loading={ loading } />
-        <br/>
-        <SystemRulesTable hidePassed={ hidePassed }
-            system={ data.system }
-            columns={ columns }
-            profileRules={ data.system && data.system.profiles.map((profile) => ({
-                system: data.system.id,
-                profile: { refId: profile.refId, name: profile.name },
-                rules: profile.rules
-            })) }
-            loading={ loading }
+        <SystemPolicyCards policies={data.system && data.system.profiles} loading={loading} />
+        <br />
+        <SystemRulesTable
+            hidePassed={hidePassed}
+            system={data.system}
+            columns={columns}
+            profileRules={
+                data.system &&
+                data.system.profiles.map((profile) => ({
+                    system: data.system.id,
+                    profile: { refId: profile.refId, name: profile.name },
+                    rules: profile.rules
+                }))
+            }
+            loading={loading}
         />
     </React.Fragment>
 );
@@ -80,58 +84,52 @@ class SystemDetails extends Component {
 
     renderError = (error) => {
         const errorMsg = `Oops! Error loading System data: ${error}`;
-        return (error.networkError && error.networkError.statusCode === 404) ?
+        return error.networkError && error.networkError.statusCode === 404 ? (
             <Bullseye>
                 <EmptyState>
-                    <EmptyStateIcon size="xl" title="Compliance" icon={ ClipboardCheckIcon } />
-                    <br/>
+                    <EmptyStateIcon size="xl" title="Compliance" icon={ClipboardCheckIcon} />
+                    <br />
                     <Title size="lg">Welcome to Compliance</Title>
                     <EmptyStateBody>
                         <TextContent>
-                            You have not uploaded any reports yet. Please generate a report using
-                            OpenSCAP:
-                            <Text component={ TextVariants.blockquote }>
-                                oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_standard
-                                --results scan.xml /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
+                            You have not uploaded any reports yet. Please generate a report using OpenSCAP:
+                            <Text component={TextVariants.blockquote}>
+                                oscap xccdf eval --profile xccdf_org.ssgproject.content_profile_standard --results scan.xml
+                                /usr/share/xml/scap/ssg/content/ssg-rhel7-ds.xml
                             </Text>
                             and upload it using the following command:
-                            <Text component={ TextVariants.blockquote }>
-                                sudo insights-client --verbose --payload scan.xml
-                                --content-type application/vnd.redhat.compliance.something+tgz
+                            <Text component={TextVariants.blockquote}>
+                                sudo insights-client --verbose --payload scan.xml --content-type application/vnd.redhat.compliance.something+tgz
                             </Text>
                         </TextContent>
                     </EmptyStateBody>
 
-                    <Button
-                        variant="primary"
-                        component="a"
-                        target="_blank"
-                        href="https://www.open-scap.org/getting-started/">
+                    <Button variant="primary" component="a" target="_blank" href="https://www.open-scap.org/getting-started/">
                         Get started with OpenSCAP
                     </Button>
                 </EmptyState>
-            </Bullseye> :
+            </Bullseye>
+        ) : (
             <Card className="ins-error-card">
                 <CardHeader>
                     <NotEqualIcon />
                 </CardHeader>
                 <CardBody>
-                    <div>{ errorMsg }</div>
+                    <div>{errorMsg}</div>
                 </CardBody>
-            </Card>;
-    }
+            </Card>
+        );
+    };
 
     render() {
         const { inventoryId, hidePassed, client } = this.props;
 
         return (
-            <ApolloProvider client={ client }>
-                <Query query={ QUERY } variables={ { systemId: inventoryId } }>
-                    { ({ data, error, loading }) => (
-                        error ?
-                            this.renderError(error) :
-                            <SystemQuery hidePassed={ hidePassed } data={ data } error={ error } loading={ loading } />
-                    ) }
+            <ApolloProvider client={client}>
+                <Query query={QUERY} variables={{ systemId: inventoryId }}>
+                    {({ data, error, loading }) =>
+                        error ? this.renderError(error) : <SystemQuery hidePassed={hidePassed} data={data} error={error} loading={loading} />
+                    }
                 </Query>
             </ApolloProvider>
         );
@@ -142,7 +140,7 @@ SystemDetails.propTypes = {
     inventoryId: propTypes.string,
     columns: propTypes.shape([
         {
-            title: propTypes.oneOfType([ propTypes.string, propTypes.object ]).isRequired,
+            title: propTypes.oneOfType([propTypes.string, propTypes.object]).isRequired,
             transforms: propTypes.array.isRequired,
             original: propTypes.string
         }

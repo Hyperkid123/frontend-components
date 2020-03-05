@@ -1,11 +1,4 @@
-import {
-    formatBytes,
-    sizes,
-    calculateRepos,
-    calculateInterfaces,
-    systemProfilePending,
-    onSystemProfile
-} from './reducers';
+import { formatBytes, sizes, calculateRepos, calculateInterfaces, systemProfilePending, onSystemProfile } from './reducers';
 import mockedData from '../__mock__/mockedData.json';
 
 describe('formatBytes', () => {
@@ -24,24 +17,32 @@ describe('formatBytes', () => {
 });
 
 it('should calculate repos', () => {
-    const repos = calculateRepos([{}, {
-        enabled: true
-    }, {
-        enabled: false
-    }]);
+    const repos = calculateRepos([
+        {},
+        {
+            enabled: true
+        },
+        {
+            enabled: false
+        }
+    ]);
     expect(repos.disabled.length).toBe(2);
     expect(repos.enabled.length).toBe(1);
 });
 
 it('should calculate NIC', () => {
-    const interfaces = calculateInterfaces([{
-        ipv4_addresses: [ '1' ] // eslint-disable-line camelcase
-    }, {
-        ipv4_addresses: [ '1' ], // eslint-disable-line camelcase
-        ipv6_addresses: [ '1' ] // eslint-disable-line camelcase
-    }, {
-        ipv6_addresses: [ '1' ] // eslint-disable-line camelcase
-    }]);
+    const interfaces = calculateInterfaces([
+        {
+            ipv4_addresses: ['1'] // eslint-disable-line camelcase
+        },
+        {
+            ipv4_addresses: ['1'], // eslint-disable-line camelcase
+            ipv6_addresses: ['1'] // eslint-disable-line camelcase
+        },
+        {
+            ipv6_addresses: ['1'] // eslint-disable-line camelcase
+        }
+    ]);
     expect(interfaces.interfaces.length).toBe(3);
     expect(interfaces.ipv4.length).toBe(2);
     expect(interfaces.ipv6.length).toBe(2);
@@ -56,10 +57,12 @@ describe('systemProfilePending', () => {
         });
     });
 
-    it('should\'t rewrite state', () => {
-        expect(systemProfilePending({
-            test: 'data'
-        })).toEqual({
+    it("should't rewrite state", () => {
+        expect(
+            systemProfilePending({
+                test: 'data'
+            })
+        ).toEqual({
             test: 'data',
             systemProfile: {
                 loaded: false
@@ -76,10 +79,13 @@ describe('onSystemProfile', () => {
                 network: undefined,
                 ramSize: '0 B',
                 repositories: undefined
-            } });
+            }
+        });
     });
     describe('correct data', () => {
-        const { systemProfile: { network, repositories, ramSize, ...rest } } = onSystemProfile(undefined, { payload: mockedData });
+        const {
+            systemProfile: { network, repositories, ramSize, ...rest }
+        } = onSystemProfile(undefined, { payload: mockedData });
 
         it('network', () => {
             expect(network.interfaces.length).toBe(1);

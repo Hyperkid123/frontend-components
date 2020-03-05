@@ -23,7 +23,7 @@ describe('patch cost management source', () => {
         spyPatch.mockReset();
     });
 
-    it('resolve', done => {
+    it('resolve', (done) => {
         spyGet = jest.fn(() => Promise.resolve('OK1'));
         spyPatch = jest.fn(() => Promise.resolve('OK2'));
         api.axiosInstance = {
@@ -31,15 +31,17 @@ describe('patch cost management source', () => {
             patch: spyPatch
         };
 
-        patchSource({ id: ID, ...DATA }, TIMEOUT, INTERVAL).then(() => {
-            expect(spyGet.mock.calls.length).toBe(1);
-            expect(spyPatch.mock.calls.length).toBe(1);
-            expect(spyGet.mock.calls[0]).toEqual([ URL ]);
-            expect(spyPatch.mock.calls[0]).toEqual([ URL, DATA ]);
-            done();
-        }).catch((err) => done.fail(new Error(`should not be here: ${err}`)));
+        patchSource({ id: ID, ...DATA }, TIMEOUT, INTERVAL)
+            .then(() => {
+                expect(spyGet.mock.calls.length).toBe(1);
+                expect(spyPatch.mock.calls.length).toBe(1);
+                expect(spyGet.mock.calls[0]).toEqual([URL]);
+                expect(spyPatch.mock.calls[0]).toEqual([URL, DATA]);
+                done();
+            })
+            .catch((err) => done.fail(new Error(`should not be here: ${err}`)));
     });
-    it('reject on check', done => {
+    it('reject on check', (done) => {
         spyGet = jest.fn(() => Promise.reject('NO'));
         spyPatch = jest.fn(() => Promise.resolve('OK'));
         api.axiosInstance = {
@@ -47,15 +49,14 @@ describe('patch cost management source', () => {
             patch: spyPatch
         };
 
-        patchSource({ id: ID, ...DATA }, TIMEOUT, INTERVAL)
-        .catch(err => {
+        patchSource({ id: ID, ...DATA }, TIMEOUT, INTERVAL).catch(() => {
             expect(spyGet.mock.calls.length).toBeGreaterThan(1);
             expect(spyPatch.mock.calls.length).toBe(0);
             done();
         });
     });
 
-    it('reject on update', done => {
+    it('reject on update', (done) => {
         spyGet = jest.fn(() => Promise.resolve('OK'));
         spyPatch = jest.fn(() => Promise.reject('NO'));
         api.axiosInstance = {
@@ -63,19 +64,19 @@ describe('patch cost management source', () => {
             patch: spyPatch
         };
 
-        patchSource({ id: ID, ...DATA })
-        .catch(err => {
+        patchSource({ id: ID, ...DATA }).catch(() => {
             expect(spyGet.mock.calls.length).toBe(1);
             expect(spyPatch.mock.calls.length).toBe(1);
             done();
         });
     });
 
-    it('two failures on checking', done => {
-        spyGet = jest.fn()
-        .mockImplementationOnce(() => Promise.reject('error'))
-        .mockImplementationOnce(() => Promise.reject('error'))
-        .mockImplementationOnce(() => Promise.resolve('ok'));
+    it('two failures on checking', (done) => {
+        spyGet = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject('error'))
+            .mockImplementationOnce(() => Promise.reject('error'))
+            .mockImplementationOnce(() => Promise.resolve('ok'));
         spyPatch = jest.fn(() => Promise.resolve('ok'));
         api.axiosInstance = {
             get: spyGet,
@@ -83,11 +84,11 @@ describe('patch cost management source', () => {
         };
 
         patchSource({ id: ID, ...DATA }, TIMEOUT, INTERVAL)
-        .then(() => {
-            expect(spyGet.mock.calls.length).toBe(3);
-            expect(spyPatch.mock.calls.length).toBe(1);
-            done();
-        })
-        .catch(err => done.fail(`should not be here: ${err}`));
+            .then(() => {
+                expect(spyGet.mock.calls.length).toBe(3);
+                expect(spyPatch.mock.calls.length).toBe(1);
+                done();
+            })
+            .catch((err) => done.fail(`should not be here: ${err}`));
     });
 });

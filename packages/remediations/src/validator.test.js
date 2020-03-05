@@ -1,26 +1,26 @@
 import validate from './validator';
 
-function validData () {
+function validData() {
     return {
-        issues: [{
-            id: 'advisor:network_bond_opts_config_issue|NETWORK_BONDING_OPTS_DOUBLE_QUOTES_ISSUE',
-            description: 'Bonding will not fail over to the backup link when bonding options are partially read'
-        }, {
-            id: 'vulnerabilities:CVE_2017_6074_kernel|KERNEL_CVE_2017_6074',
-            description: 'Kernel vulnerable to local privilege escalation via DCCP module (CVE-2017-6074)'
-        }, {
-            id: 'vulnerabilities:CVE-2017-17713',
-            description: 'CVE-2017-17713'
-        }],
-        systems: [
-            '8e7d7f5f-160c-40cc-859c-a3e479007dce',
-            '1fb1e94d-aa02-4824-9307-b2aff9d788a3',
-            '3c3d725e-cbf0-4dac-a40f-4e7f027bcdc9'
-        ]
+        issues: [
+            {
+                id: 'advisor:network_bond_opts_config_issue|NETWORK_BONDING_OPTS_DOUBLE_QUOTES_ISSUE',
+                description: 'Bonding will not fail over to the backup link when bonding options are partially read'
+            },
+            {
+                id: 'vulnerabilities:CVE_2017_6074_kernel|KERNEL_CVE_2017_6074',
+                description: 'Kernel vulnerable to local privilege escalation via DCCP module (CVE-2017-6074)'
+            },
+            {
+                id: 'vulnerabilities:CVE-2017-17713',
+                description: 'CVE-2017-17713'
+            }
+        ],
+        systems: ['8e7d7f5f-160c-40cc-859c-a3e479007dce', '1fb1e94d-aa02-4824-9307-b2aff9d788a3', '3c3d725e-cbf0-4dac-a40f-4e7f027bcdc9']
     };
 }
 
-describe('validator', function () {
+describe('validator', function() {
     it('passed on valid data', () => {
         validate(validData());
     });
@@ -88,38 +88,44 @@ describe('validator', function () {
         expect(() => validate(data)).toThrow(TypeError);
     });
 
-    describe('per-issue system definitions', function () {
+    describe('per-issue system definitions', function() {
         it('passed on per-issue system definition', () => {
             validate({
-                issues: [{
-                    id: 'vulnerabilities:CVE-2017-17713',
-                    description: 'CVE-2017-17713',
-                    systems: [
-                        '8e7d7f5f-160c-40cc-859c-a3e479007dce'
-                    ]
-                }]
+                issues: [
+                    {
+                        id: 'vulnerabilities:CVE-2017-17713',
+                        description: 'CVE-2017-17713',
+                        systems: ['8e7d7f5f-160c-40cc-859c-a3e479007dce']
+                    }
+                ]
             });
         });
 
         it('fails on no system definition', () => {
-            expect(() => validate({
-                issues: [{
-                    id: 'vulnerabilities:CVE-2017-17713',
-                    description: 'CVE-2017-17713'
-                }]
-            })).toThrow(TypeError);
+            expect(() =>
+                validate({
+                    issues: [
+                        {
+                            id: 'vulnerabilities:CVE-2017-17713',
+                            description: 'CVE-2017-17713'
+                        }
+                    ]
+                })
+            ).toThrow(TypeError);
         });
 
         it('fails on empty system list', () => {
-            expect(() => validate({
-                issues: [{
-                    id: 'vulnerabilities:CVE-2017-17713',
-                    description: 'CVE-2017-17713',
-                    systems: []
-                }]
-            })).toThrow(TypeError);
+            expect(() =>
+                validate({
+                    issues: [
+                        {
+                            id: 'vulnerabilities:CVE-2017-17713',
+                            description: 'CVE-2017-17713',
+                            systems: []
+                        }
+                    ]
+                })
+            ).toThrow(TypeError);
         });
     });
-
 });
-

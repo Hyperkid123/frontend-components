@@ -4,24 +4,26 @@ import { connect } from 'react-redux';
 import { Skeleton, SkeletonSize } from '@redhat-cloud-services/frontend-components';
 
 class AppInfo extends Component {
-    render () {
+    render() {
         const { activeApps, active, loaded } = this.props;
-        const activeApp = activeApps.find(item => item.name === active.appName) || activeApps[0];
+        const activeApp = activeApps.find((item) => item.name === active.appName) || activeApps[0];
         return (
             <Fragment>
-                { activeApp && <div className={ `ins-active-app-${activeApp.name}` }>
-                    { activeApp.component ? <activeApp.component /> : 'missing component' }
-                </div> }
-                { !loaded && <Skeleton size={ SkeletonSize.md } /> }
+                {activeApp && (
+                    <div className={`ins-active-app-${activeApp.name}`}>{activeApp.component ? <activeApp.component /> : 'missing component'}</div>
+                )}
+                {!loaded && <Skeleton size={SkeletonSize.md} />}
             </Fragment>
         );
     }
 }
 
 AppInfo.propTypes = {
-    activeApps: PropTypes.arrayOf(PropTypes.shape({
-        name: PropTypes.string
-    })),
+    activeApps: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string
+        })
+    ),
     active: PropTypes.shape({
         appName: PropTypes.string
     }),

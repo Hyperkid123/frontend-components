@@ -35,14 +35,14 @@ export const ConfigDefaults = {
     pad: 10,
     shift: 10,
     gridSize: 430,
-    colors: [ '#f0ab00', '#FF6666', '#d1d1d1', '#bee1f4' ]
+    colors: ['#f0ab00', '#FF6666', '#d1d1d1', '#bee1f4']
 };
 
 export const LabelsDefaults = {
     xLabel: 'Risk of change',
     yLabel: 'Impact',
     subLabels: {
-        xLabels: [ 'Low', 'High' ],
-        yLabels: [ 'Low', 'High' ]
+        xLabels: ['Low', 'High'],
+        yLabels: ['Low', 'High']
     }
 };

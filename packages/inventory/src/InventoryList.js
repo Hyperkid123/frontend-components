@@ -17,7 +17,7 @@ class ContextInventoryList extends React.Component {
         const { page, perPage, onRefresh, items, hasItems, sortBy, activeFilters } = this.props;
         const currPerPage = options.per_page || perPage;
         options = {
-            page: (hasItems && items.length <= currPerPage) ? 1 : (options.page || page),
+            page: hasItems && items.length <= currPerPage ? 1 : options.page || page,
             // eslint-disable-next-line camelcase
             per_page: currPerPage,
             orderBy: sortBy && sortBy.key,
@@ -31,17 +31,15 @@ class ContextInventoryList extends React.Component {
         }
 
         this.controller = CancelToken.source();
-        this.props.loadEntities && this.props.loadEntities(
-            items,
-            {
+        this.props.loadEntities &&
+            this.props.loadEntities(items, {
                 ...options,
                 controller: this.controller,
                 prefix: this.props.pathPrefix,
                 base: this.props.apiBase,
                 hasItems
-            }
-        );
-    }
+            });
+    };
 
     componentDidMount() {
         const { setRefresh, setUpdate } = this.props;
@@ -52,7 +50,7 @@ class ContextInventoryList extends React.Component {
 
     componentDidUpdate(prevProps) {
         const { items, hasItems, sortBy } = this.props;
-        if (hasItems && (JSON.stringify(items) !== JSON.stringify(prevProps.items))) {
+        if (hasItems && JSON.stringify(items) !== JSON.stringify(prevProps.items)) {
             this.loadEntities({}, false);
         } else if (!hasItems && JSON.stringify(prevProps.sortBy) !== JSON.stringify(sortBy)) {
             this.loadEntities({}, false);
@@ -64,8 +62,8 @@ class ContextInventoryList extends React.Component {
         return (
             <React.Fragment>
                 <Grid guttter="sm" className="ins-inventory-list">
-                    <GridItem span={ 12 }>
-                        <InventoryEntityTable { ...props } showHealth={ showHealth } />
+                    <GridItem span={12}>
+                        <InventoryEntityTable {...props} showHealth={showHealth} />
                     </GridItem>
                 </Grid>
             </React.Fragment>
@@ -113,9 +111,7 @@ ContextInventoryList.defaultProps = {
 
 const InventoryList = ({ ...props }) => (
     <InventoryContext.Consumer>
-        { ({ setRefresh, setUpdate }) => (
-            <ContextInventoryList { ...props } setRefresh={ setRefresh } setUpdate={ setUpdate } />
-        ) }
+        {({ setRefresh, setUpdate }) => <ContextInventoryList {...props} setRefresh={setRefresh} setUpdate={setUpdate} />}
     </InventoryContext.Consumer>
 );
 
@@ -135,23 +131,19 @@ function mapDispatchToProps(dispatch) {
                 config.page = 1;
             }
 
-            const itemIds = limitedItems.reduce((acc, curr) => (
-                [
-                    ...acc,
-                    curr && typeof curr === 'string' ? curr : curr.id
-                ]
-            ), []).filter(Boolean);
+            const itemIds = limitedItems.reduce((acc, curr) => [...acc, curr && typeof curr === 'string' ? curr : curr.id], []).filter(Boolean);
             dispatch(loadEntities(itemIds, config));
-            dispatch(showEntities(limitedItems.map(oneItem => (
-                { ...typeof oneItem === 'string' ? { id: oneItem } : oneItem }
-            ))));
+            dispatch(showEntities(limitedItems.map((oneItem) => ({ ...(typeof oneItem === 'string' ? { id: oneItem } : oneItem) }))));
         }
     };
 }
 
 export default connect(
-    ({ entities: { page, perPage, sortBy, activeFilters } }, { perPage: currPerPage }) => (
-        { page, perPage: currPerPage || perPage, sortBy, activeFilters }
-    ),
+    ({ entities: { page, perPage, sortBy, activeFilters } }, { perPage: currPerPage }) => ({
+        page,
+        perPage: currPerPage || perPage,
+        sortBy,
+        activeFilters
+    }),
     mapDispatchToProps
 )(InventoryList);

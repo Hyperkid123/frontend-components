@@ -8,25 +8,23 @@ const TagsModal = ({ showTagDialog, tags, activeSystemTag, tagCount, onToggleTag
     return (
         <TagModal
             width="auto"
-            isOpen={ showTagDialog }
+            isOpen={showTagDialog}
             toggleModal={() => onToggleTagModal()}
-            columns={ [
-                { title: 'Name' },
-                { title: 'Value' },
-                { title: 'Tag Source' }
-            ] }
-            systemName={ `${activeSystemTag.display_name} (${tagCount})` }
-            rows={ tags.map(({ key, value, namespace }) => ([ key, value, namespace ])) }
+            columns={[{ title: 'Name' }, { title: 'Value' }, { title: 'Tag Source' }]}
+            systemName={`${activeSystemTag.display_name} (${tagCount})`}
+            rows={tags.map(({ key, value, namespace }) => [key, value, namespace])}
         />
     );
 };
 
 TagsModal.propTypes = {
     showTagDialog: PropTypes.bool,
-    tags: PropTypes.arrayOf(PropTypes.shape({
-        value: PropTypes.node,
-        namespace: PropTypes.node
-    })),
+    tags: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.node,
+            namespace: PropTypes.node
+        })
+    ),
     tagCount: PropTypes.number,
     activeSystemTag: PropTypes.shape({
         id: PropTypes.string,
@@ -44,14 +42,17 @@ TagsModal.defaultProps = {
     onToggleTagModal: () => undefined
 };
 
-export default connect(({ entities, entityDetails }) => {
-    const { showTagDialog, activeSystemTag = { tags: [] } } = entities || entityDetails || {};
-    return ({
-        showTagDialog,
-        tags: activeSystemTag.tags,
-        activeSystemTag,
-        tagCount: activeSystemTag.tags && activeSystemTag.tags.length
-    });
-}, (dispatch) => ({
-    onToggleTagModal: () => dispatch(toggleTagModal(false))
-}))(TagsModal);
+export default connect(
+    ({ entities, entityDetails }) => {
+        const { showTagDialog, activeSystemTag = { tags: [] } } = entities || entityDetails || {};
+        return {
+            showTagDialog,
+            tags: activeSystemTag.tags,
+            activeSystemTag,
+            tagCount: activeSystemTag.tags && activeSystemTag.tags.length
+        };
+    },
+    (dispatch) => ({
+        onToggleTagModal: () => dispatch(toggleTagModal(false))
+    })
+)(TagsModal);

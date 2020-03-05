@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import propTypes from 'prop-types';
 import orderBy from 'lodash/orderBy';
 
@@ -6,16 +6,16 @@ import { Table, TableHeader, TableBody, TableVariant, sortable } from '@patternf
 import { CheckIcon } from '@patternfly/react-icons';
 import './IssueTable.scss';
 
-function needsRebootCell (needsReboot) {
+function needsRebootCell(needsReboot) {
     if (needsReboot) {
-        return <CheckIcon/>;
+        return <CheckIcon />;
     }
 
-    return (' ');
+    return ' ';
 }
 
 function buildRows(issues, state, getResolution) {
-    return issues.map(issue => {
+    return issues.map((issue) => {
         const resolution = getResolution(issue.id);
         return {
             cells: [
@@ -32,19 +32,23 @@ function buildRows(issues, state, getResolution) {
     });
 }
 
-function issueType (id) {
+function issueType(id) {
     switch (id.split(':')[0]) {
-        case 'advisor': return 'Insights';
+        case 'advisor':
+            return 'Insights';
         case 'ssg':
         case 'compliance':
             return 'Compliance';
-        case 'vulnerabilities': return 'Vulnerability';
-        case 'patch-advisory': return 'Patch';
-        default: return 'Unknown';
+        case 'vulnerabilities':
+            return 'Vulnerability';
+        case 'patch-advisory':
+            return 'Patch';
+        default:
+            return 'Unknown';
     }
 }
 
-function getSystemCount (issue, state) {
+function getSystemCount(issue, state) {
     if (issue.systems) {
         return issue.systems.length;
     }
@@ -63,43 +67,51 @@ class IssueTable extends React.Component {
 
     onSort = (event, sortBy, sortDir) => this.setState({ sortBy, sortDir });
 
-    render () {
+    render() {
         const { sortBy, sortDir } = this.state;
         const rows = buildRows(this.props.issues, this.props.state, this.props.getResolution);
-        const sorted = orderBy(rows, r => {
-            const cell = r.cells[sortBy];
-            if (typeof cell === 'object') {
-                return cell.value;
-            }
+        const sorted = orderBy(
+            rows,
+            (r) => {
+                const cell = r.cells[sortBy];
+                if (typeof cell === 'object') {
+                    return cell.value;
+                }
 
-            return cell;
-        }, [ this.state.sortDir ]);
+                return cell;
+            },
+            [this.state.sortDir]
+        );
 
         return (
             <Table
-                aria-label='Actions'
-                className='ins-c-remediation-summary-table'
-                variant={ TableVariant.compact }
-                cells={ [
+                aria-label="Actions"
+                className="ins-c-remediation-summary-table"
+                variant={TableVariant.compact}
+                cells={[
                     {
                         title: 'Action',
-                        transforms: [ sortable ]
-                    }, {
+                        transforms: [sortable]
+                    },
+                    {
                         title: 'Resolution'
-                    }, {
+                    },
+                    {
                         title: 'Reboot required',
-                        transforms: [ sortable ]
-                    }, {
+                        transforms: [sortable]
+                    },
+                    {
                         title: 'Systems',
-                        transforms: [ sortable ]
-                    }, {
+                        transforms: [sortable]
+                    },
+                    {
                         title: 'Type',
-                        transforms: [ sortable ]
-                    }]
-                }
-                rows={ sorted }
-                onSort={ this.onSort }
-                sortBy={ { index: sortBy, direction: sortDir } }
+                        transforms: [sortable]
+                    }
+                ]}
+                rows={sorted}
+                onSort={this.onSort}
+                sortBy={{ index: sortBy, direction: sortDir }}
             >
                 <TableHeader />
                 <TableBody />

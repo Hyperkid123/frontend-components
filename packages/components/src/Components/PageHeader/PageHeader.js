@@ -9,30 +9,19 @@ import ThemeContext from '../Dark/configContext';
  */
 
 const PageHeader = ({ className, children, ...props }) => {
-
-    let pageHeaderClasses = classNames(
-        className,
-        'pf-l-page-header',
-        'pf-c-page-header',
-        'pf-l-page__main-section',
-        'pf-c-page__main-section'
-    );
+    let pageHeaderClasses = classNames(className, 'pf-l-page-header', 'pf-c-page-header', 'pf-l-page__main-section', 'pf-c-page__main-section');
 
     return (
         <ThemeContext.Consumer>
-            { (theme = 'light') => {
-
-                let themeClasses = classNames(
-                    { [`pf-m-${ theme }-200`]: theme  === 'dark' },
-                    { [`pf-m-light`]: theme  === 'light' }
-                );
+            {(theme = 'light') => {
+                let themeClasses = classNames({ [`pf-m-${theme}-200`]: theme === 'dark' }, { [`pf-m-light`]: theme === 'light' });
 
                 return (
-                    <section { ...props } className={ `${ pageHeaderClasses } ${ themeClasses }` } widget-type='InsightsPageHeader'>
-                        { children }
+                    <section {...props} className={`${pageHeaderClasses} ${themeClasses}`} widget-type="InsightsPageHeader">
+                        {children}
                     </section>
                 );
-            } }
+            }}
         </ThemeContext.Consumer>
     );
 };

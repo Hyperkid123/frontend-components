@@ -5,14 +5,13 @@ import classNames from 'classnames';
 import './section.scss';
 
 const Section = ({ type, children, className, ...props }) => {
-
-    let sectionClasses = classNames(
-        className,
-        { [`ins-l-${type}`]: type !== undefined }
-    );
+    let sectionClasses = classNames(className, { [`ins-l-${type}`]: type !== undefined });
 
     return (
-        <section { ...props } className={ sectionClasses }> { children } </section>
+        <section {...props} className={sectionClasses}>
+            {' '}
+            {children}{' '}
+        </section>
     );
 };
 

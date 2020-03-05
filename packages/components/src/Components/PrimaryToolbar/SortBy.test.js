@@ -11,7 +11,7 @@ describe('PrimaryToolbar', () => {
         });
 
         it('desc direction', () => {
-            const wrapper = shallow(<SortBy direction="desc"/>);
+            const wrapper = shallow(<SortBy direction="desc" />);
             expect(toJson(wrapper)).toMatchSnapshot();
         });
     });
@@ -26,7 +26,7 @@ describe('PrimaryToolbar', () => {
 
         it('should call changeDirection - desc', () => {
             const onSortChange = jest.fn();
-            const wrapper = mount(<SortBy onSortChange={ onSortChange }/>);
+            const wrapper = mount(<SortBy onSortChange={onSortChange} />);
             wrapper.find('button').simulate('click');
             expect(onSortChange).toHaveBeenCalled();
             expect(onSortChange.mock.calls[0][1]).toBe('desc');
@@ -34,7 +34,7 @@ describe('PrimaryToolbar', () => {
 
         it('should call changeDirection - desc', () => {
             const onSortChange = jest.fn();
-            const wrapper = mount(<SortBy onSortChange={ onSortChange } direction="desc" />);
+            const wrapper = mount(<SortBy onSortChange={onSortChange} direction="desc" />);
             wrapper.find('button').simulate('click');
             expect(onSortChange).toHaveBeenCalled();
             expect(onSortChange.mock.calls[0][1]).toBe('asc');

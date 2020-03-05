@@ -1,18 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import propTypes from 'prop-types';
 
-import {
-    Switch,
-    Stack,
-    StackItem
-} from '@patternfly/react-core';
-import { RebootingIcon } from '@patternfly/react-icons';
+import { Switch, Stack, StackItem } from '@patternfly/react-core';
 
 import IssueTable from './IssueTable';
 
-function isRebootNeeded (state, getResolution) {
-    if (state.open.data.issues.some(issue => getResolution(issue.id).needs_reboot)) {
+function isRebootNeeded(state, getResolution) {
+    if (state.open.data.issues.some((issue) => getResolution(issue.id).needs_reboot)) {
         return true;
     }
 
@@ -23,7 +18,7 @@ function isRebootNeeded (state, getResolution) {
     return false;
 }
 
-function isAutoReboot (state) {
+function isAutoReboot(state) {
     if (state.autoRebootSwitch !== undefined) {
         return state.autoRebootSwitch;
     }
@@ -36,31 +31,36 @@ function isAutoReboot (state) {
 }
 
 function SummaryStep(props) {
-
     const { name } = props.state;
     const rebootNeeded = isRebootNeeded(props.state, props.getResolution);
 
     return (
-        <Stack gutter='sm'>
-            <StackItem><h1 className='ins-m-text__bold'>Playbook name: { name || 'Unnamed Playbook' }</h1></StackItem>
+        <Stack gutter="sm">
             <StackItem>
-                <IssueTable issues={ props.state.open.data.issues } state={ props.state } getResolution={ props.getResolution } />
+                <h1 className="ins-m-text__bold">Playbook name: {name || 'Unnamed Playbook'}</h1>
             </StackItem>
             <StackItem>
-                <Stack gutter='sm'>
-                    {
-                        rebootNeeded ?
-                            <StackItem><h1 className='ins-m-text__bold'>System reboot is required</h1></StackItem> :
-                            <StackItem><h1 className='ins-m-text__accent'>System reboot is not required</h1></StackItem>
-                    }
+                <IssueTable issues={props.state.open.data.issues} state={props.state} getResolution={props.getResolution} />
+            </StackItem>
+            <StackItem>
+                <Stack gutter="sm">
+                    {rebootNeeded ? (
+                        <StackItem>
+                            <h1 className="ins-m-text__bold">System reboot is required</h1>
+                        </StackItem>
+                    ) : (
+                        <StackItem>
+                            <h1 className="ins-m-text__accent">System reboot is not required</h1>
+                        </StackItem>
+                    )}
                     <StackItem>
                         <Switch
                             id="autoReboot"
                             aria-label="Auto reboot"
                             label="Auto reboot"
-                            isChecked={ rebootNeeded ? isAutoReboot(props.state) : false }
-                            isDisabled={ !rebootNeeded }
-                            onChange={ value => props.onAutoRebootSwitch(value) }
+                            isChecked={rebootNeeded ? isAutoReboot(props.state) : false}
+                            isDisabled={!rebootNeeded}
+                            onChange={(value) => props.onAutoRebootSwitch(value)}
                         />
                     </StackItem>
                 </Stack>

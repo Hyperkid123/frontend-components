@@ -3,7 +3,7 @@ import { ACTION_TYPES } from './action-types';
 
 export const defaultState = { loaded: false };
 
-export const sizes = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ];
+export const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
 // Kudos to https://stackoverflow.com/a/18650828/2560321
 export const formatBytes = (bytes) => {
@@ -25,22 +25,36 @@ export function systemProfilePending(state) {
 }
 
 export function calculateRepos(repos) {
-    return repos && repos.reduce((acc, curr) => ({
-        ...acc,
-        ...curr.enabled ? {
-            enabled: [ ...acc.enabled, curr ]
-        } : {
-            disabled: [ ...acc.disabled, curr ]
-        }
-    }), { enabled: [], disabled: [] });
+    return (
+        repos &&
+        repos.reduce(
+            (acc, curr) => ({
+                ...acc,
+                ...(curr.enabled
+                    ? {
+                          enabled: [...acc.enabled, curr]
+                      }
+                    : {
+                          disabled: [...acc.disabled, curr]
+                      })
+            }),
+            { enabled: [], disabled: [] }
+        )
+    );
 }
 
 export function calculateInterfaces(interfaces) {
-    return interfaces && interfaces.reduce((acc, curr) => ({
-        interfaces: [ ...acc.interfaces, curr ],
-        ipv4: [ ...acc.ipv4, ...curr.ipv4_addresses || [] ].filter(Boolean),
-        ipv6: [ ...acc.ipv6, ...curr.ipv6_addresses || [] ].filter(Boolean)
-    }), { interfaces: [], ipv4: [], ipv6: [] });
+    return (
+        interfaces &&
+        interfaces.reduce(
+            (acc, curr) => ({
+                interfaces: [...acc.interfaces, curr],
+                ipv4: [...acc.ipv4, ...(curr.ipv4_addresses || [])].filter(Boolean),
+                ipv6: [...acc.ipv6, ...(curr.ipv6_addresses || [])].filter(Boolean)
+            }),
+            { interfaces: [], ipv4: [], ipv6: [] }
+        )
+    );
 }
 
 export function onSystemProfile(state, { payload: { results } }) {

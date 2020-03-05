@@ -15,7 +15,7 @@ describe('GeneralInformation', () => {
     let mockStore;
 
     beforeEach(() => {
-        mockStore = configureStore([ promiseMiddleware() ]);
+        mockStore = configureStore([promiseMiddleware()]);
         initialState = {
             entityDetails: {
                 entity: {
@@ -32,21 +32,24 @@ describe('GeneralInformation', () => {
                     ...configTest,
                     ...testProperties,
                     network: {
-                        ipv4: [ '1', '2' ],
-                        ipv6: [ '6', '3' ],
-                        interfaces: [{
-                            mac_address: '0:0:0',
-                            mtu: 150,
-                            name: 'some name',
-                            state: 'UP',
-                            type: 'some type'
-                        }, {
-                            mac_address: '1:0:0',
-                            mtu: 1150,
-                            name: 'asome name',
-                            state: 'UP',
-                            type: 'asome type'
-                        }]
+                        ipv4: ['1', '2'],
+                        ipv6: ['6', '3'],
+                        interfaces: [
+                            {
+                                mac_address: '0:0:0',
+                                mtu: 150,
+                                name: 'some name',
+                                state: 'UP',
+                                type: 'some type'
+                            },
+                            {
+                                mac_address: '1:0:0',
+                                mtu: 1150,
+                                name: 'asome name',
+                                state: 'UP',
+                                type: 'asome type'
+                            }
+                        ]
                     }
                 }
             }
@@ -55,17 +58,21 @@ describe('GeneralInformation', () => {
 
     it('should render correctly - no data', () => {
         const store = mockStore({ systemProfileStore: {}, entityDetails: {} });
-        const wrapper = render(<Provider store={ store }>
-            <GeneralInformation />
-        </Provider>);
+        const wrapper = render(
+            <Provider store={store}>
+                <GeneralInformation />
+            </Provider>
+        );
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
     it('should render correctly', () => {
         const store = mockStore(initialState);
-        const wrapper = render(<Provider store={ store }>
-            <GeneralInformation />
-        </Provider>);
+        const wrapper = render(
+            <Provider store={store}>
+                <GeneralInformation />
+            </Provider>
+        );
         expect(toJson(wrapper)).toMatchSnapshot();
     });
 
@@ -78,19 +85,27 @@ describe('GeneralInformation', () => {
                     entity: {
                         id: 'test-id'
                     }
-                } });
-            mount(<Provider store={ store }>
-                <GeneralInformation />
-            </Provider>);
+                }
+            });
+            mount(
+                <Provider store={store}>
+                    <GeneralInformation />
+                </Provider>
+            );
             expect(store.getActions()[0].type).toBe('LOAD_SYSTEM_PROFILE_PENDING');
         });
 
         it('should open modal', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<Provider store={ store }>
-                <GeneralInformation />
-            </Provider>);
-            wrapper.find('a[href$="interfaces"]').first().simulate('click');
+            const wrapper = mount(
+                <Provider store={store}>
+                    <GeneralInformation />
+                </Provider>
+            );
+            wrapper
+                .find('a[href$="interfaces"]')
+                .first()
+                .simulate('click');
             wrapper.update();
             expect(wrapper.find('GeneralInformation').instance().state.isModalOpen).toBe(true);
             expect(wrapper.find('GeneralInformation').instance().state.modalTitle).toBe('Interfaces/NICs');
@@ -98,13 +113,21 @@ describe('GeneralInformation', () => {
 
         it('should update on sort', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<Provider store={ store }>
-                <GeneralInformation />
-            </Provider>);
-            wrapper.find('a[href$="interfaces"]').first().simulate('click');
+            const wrapper = mount(
+                <Provider store={store}>
+                    <GeneralInformation />
+                </Provider>
+            );
+            wrapper
+                .find('a[href$="interfaces"]')
+                .first()
+                .simulate('click');
             wrapper.update();
-            const [ firstRow, secondRow ] = wrapper.find('GeneralInformation').instance().state.rows;
-            wrapper.find('table th button').first().simulate('click');
+            const [firstRow, secondRow] = wrapper.find('GeneralInformation').instance().state.rows;
+            wrapper
+                .find('table th button')
+                .first()
+                .simulate('click');
             wrapper.update();
             expect(wrapper.find('GeneralInformation').instance().state.rows[0]).toEqual(secondRow);
             expect(wrapper.find('GeneralInformation').instance().state.rows[1]).toEqual(firstRow);
@@ -112,28 +135,39 @@ describe('GeneralInformation', () => {
 
         it('should open modal', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<Provider store={ store }>
-                <GeneralInformation />
-            </Provider>);
-            wrapper.find('a[href$="interfaces"]').first().simulate('click');
+            const wrapper = mount(
+                <Provider store={store}>
+                    <GeneralInformation />
+                </Provider>
+            );
+            wrapper
+                .find('a[href$="interfaces"]')
+                .first()
+                .simulate('click');
             wrapper.update();
-            wrapper.find('button.pf-m-plain').first().simulate('click');
+            wrapper
+                .find('button.pf-m-plain')
+                .first()
+                .simulate('click');
             wrapper.update();
             expect(wrapper.find('GeneralInformation').instance().state.isModalOpen).toBe(false);
         });
 
         it('should calculate first index when expandable', () => {
             const store = mockStore(initialState);
-            const wrapper = mount(<Provider store={ store }>
-                <GeneralInformation />
-            </Provider>);
-            wrapper.find('GeneralInformation').instance().handleModalToggle('title', {
-                cells: [{ title: 'one' }, { title: 'two' }],
-                rows: [
-                    { cells: [ 'a', 'aa' ] },
-                    { cells: [ 'b', 'bb' ] }],
-                expandable: true
-            });
+            const wrapper = mount(
+                <Provider store={store}>
+                    <GeneralInformation />
+                </Provider>
+            );
+            wrapper
+                .find('GeneralInformation')
+                .instance()
+                .handleModalToggle('title', {
+                    cells: [{ title: 'one' }, { title: 'two' }],
+                    rows: [{ cells: ['a', 'aa'] }, { cells: ['b', 'bb'] }],
+                    expandable: true
+                });
         });
     });
 });
