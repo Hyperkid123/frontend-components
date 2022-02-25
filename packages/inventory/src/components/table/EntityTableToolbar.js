@@ -175,6 +175,7 @@ const EntityTableToolbar = ({
    * @param {*} refresh refresh callback function.
    */
   const onSetFilter = (value, filterKey, refresh) => {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     const newFilters = [...filters?.filter((oneFilter) => !oneFilter.hasOwnProperty(filterKey)), { [filterKey]: value }];
     refresh({ page: 1, perPage, filters: newFilters });
   };

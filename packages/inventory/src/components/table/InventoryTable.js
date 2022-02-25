@@ -38,6 +38,7 @@ const propsCache = () => {
  * It also calculates pagination and sortBy from props or from store if consumer passed items or not.
  */
 
+// eslint-disable-next-line react/display-name
 const InventoryTable = forwardRef(
   (
     {

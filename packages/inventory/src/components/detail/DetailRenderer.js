@@ -5,6 +5,7 @@ import { Spinner } from '@patternfly/react-core';
 import DetailWrapper from './DetailWrapper';
 import AccessDenied from '../../shared/AccessDenied';
 
+// eslint-disable-next-line react/prop-types
 const DetailRenderer = ({ showInventoryDrawer, isRbacEnabled, ...props }) => {
   const { hasAccess } = usePermissions('inventory', ['inventory:*:*', 'inventory:*:read', 'inventory:hosts:read']);
   if (hasAccess === undefined) {

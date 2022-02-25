@@ -8,6 +8,7 @@ export type TreeTableDecoratorCollapse = (event: React.MouseEvent<HTMLButtonElem
 
 const treeTableDecorator =
   (onCollapse: TreeTableDecoratorCollapse) =>
+  // eslint-disable-next-line react/display-name
   (value: { title: React.ReactNode } | string = '', { rowData, ...props }: TreeTableRowProps = { rowData: {} }) => ({
     value,
     children:
