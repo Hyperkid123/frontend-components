@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Select, SelectOption, SelectVariant } from '@patternfly/react-core/deprecated';
+import { Badge, MenuToggle, Select, SelectList, SelectOption, SelectProps } from '@patternfly/react-core';
+
 import omit from 'lodash/omit';
 import TextFilter, { FilterItem, FilterValue, isFilterValue } from './TextFilter';
 
 export interface CheckboxFilterProps {
   /** Optional onChange event callback. */
   onChange?: (
-    e: React.MouseEvent | React.ChangeEvent | React.FormEvent<HTMLInputElement>,
+    e: React.MouseEvent | React.ChangeEvent | React.FormEvent<HTMLInputElement> | undefined,
     newSelection: string | FilterValue | (string | FilterValue)[],
     selection?: string | FilterValue
   ) => void;
@@ -58,7 +59,7 @@ const CheckboxFilter: React.FunctionComponent<CheckboxFilterProps> = ({
       ])
     );
 
-  const onSelect = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<Element>, selection: string | FilterValue) => {
+  const onSelect = (event: React.MouseEvent<Element, MouseEvent> | React.ChangeEvent<Element> | undefined, selection: string | FilterValue) => {
     let newSelection = calculateSelected();
     newSelection = newSelection.includes(selection) ? newSelection.filter((item) => item !== selection) : [...newSelection, selection];
 
@@ -66,33 +67,46 @@ const CheckboxFilter: React.FunctionComponent<CheckboxFilterProps> = ({
     setSelected(newSelection);
   };
 
+  const toggle: SelectProps['toggle'] = (toggleRef) => (
+    <MenuToggle isDisabled={isDisabled} onClick={() => setExpanded((prev) => !prev)} ref={toggleRef} isExpanded={isExpanded}>
+      {placeholder}
+      {selected.length > 0 && (
+        <Badge className="pf-v5-u-ml-sm" isRead>
+          {selected.length}
+        </Badge>
+      )}
+    </MenuToggle>
+  );
+
   return (
     <Fragment>
       {!items || (items && items.length <= 0) ? (
         <TextFilter {...props} onChange={onChange} isDisabled={isDisabled} value={`${calculateSelected()}`} />
       ) : (
         <Select
+          toggle={toggle}
           className={className}
-          variant={SelectVariant.checkbox}
           aria-label="Select Input"
-          onToggle={(_e, isExpanded) => setExpanded(isExpanded)}
-          isDisabled={isDisabled}
+          onOpenChange={(isExpanded) => setExpanded(isExpanded)}
           onSelect={(event, value) => onSelect(event, value as string | FilterValue)}
-          selections={calculateSelected()}
           isOpen={isExpanded}
-          placeholderText={placeholder}
+          placeholder={placeholder}
           ouiaId={placeholder}
         >
-          {items.map(({ value, onClick, label, id, ...item }, key) => (
-            <SelectOption
-              {...omit(item, 'onChange')}
-              key={id || key}
-              value={String(value || id || key)}
-              onClick={(e) => onClick?.(e, { value, label, id, ...item }, key)}
-            >
-              {label}
-            </SelectOption>
-          ))}
+          <SelectList>
+            {items.map(({ value, onClick, label, id, ...item }, key) => (
+              <SelectOption
+                hasCheckbox
+                isSelected={selected.includes(value)}
+                {...omit(item, 'onChange')}
+                key={id || key}
+                value={String(value || id || key)}
+                onClick={(e) => onClick?.(e, { value, label, id, ...item }, key)}
+              >
+                {label}
+              </SelectOption>
+            ))}
+          </SelectList>
         </Select>
       )}
     </Fragment>
